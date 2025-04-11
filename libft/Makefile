@@ -1,8 +1,11 @@
-NAME := libft
-SOURCES := libft.c 
-CC := cc
-CFLAGS := -Wall -Werror -Wextra
-OBJECTS := $(SOURCES:.c=.o)
+.POSIX:
+.PHONY: clean re fclean
+
+NAME = libft
+SOURCES = libft.c 
+CC = cc
+CFLAGS = -Wall -Werror -Wextra
+OBJECTS = $(SOURCES:.c=.o)
 
 all: $(NAME)
 
@@ -20,4 +23,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: clean
+
