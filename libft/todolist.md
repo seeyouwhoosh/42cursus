@@ -5,10 +5,10 @@ Verificación de caracteres y escritura directa.
 - [x] isalnum
 - [x] isascii
 - [x] isprint
-- [ ] tolower
-- [ ] ft_putchar_fd
-- [ ] ft_putstr_fd
-- [ ] ft_putendl_fd
+- [x] tolower
+- [x] ft_putchar_fd
+- [x] ft_putstr_fd
+- [x] ft_putendl_fd
 - [ ] ft_putnbr_fd
 
 ## 🟡 Nivel 2 – Con bucles/punteros

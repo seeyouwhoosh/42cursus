@@ -12,6 +12,8 @@
 
 // Character classification functions
 
+#include <unistd.h>
+
 int	ft_isalpha(int c)
 {
 	return ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'));
@@ -39,22 +41,71 @@ int	ft_isascii(int c)
 	return (c >= 0 && c <= 127);
 }
 
+int	ft_tolower(int c)
+{
+	if (c >= 'A' && c <= 'Z')
+	{
+		return (c + 32);
+	}
+	return (c);
+}
+
+int	ft_toupper(int c)
+{
+	if (c >= 'c' && c <= 'z')
+	{
+		return (c - 32);
+	}
+	return (c);
+}
+
+
+void	ft_putchar_fd(char c, int fd)
+{
+	write(fd, &c, 1);
+	return ;
+}
+
+void	ft_putstr_fd(char *s, int fd)
+{
+	while (*s)
+	{
+		ft_putchar_fd(*s, fd);
+		s++;
+	}
+	return ;
+}
+
+void	ft_putendl_fd(char *s, int fd)
+{
+	ft_putstr_fd(s, fd);
+	ft_putchar_fd('\n', fd);
+	return ;
+}
+
+void ft_putnbr_fd(int n, int fd)
+{
+	write(fd, &n, 1);
+}
+
 // Testing ground
 #include <stdio.h>
 int	main(void)
 {
-	printf("Is '1' numeric? %d\n", ft_isdigit('1'));
-	printf("Is 'a' alphabetical? %d\n", ft_isalpha('a'));
-	printf("Is 'f' alphanumerical? %d\n", ft_isalnum('f'));
-	printf("Is ' ' printable? %d\n", ft_isprint(' '));
-	printf("Is ')' ascii? %d\n", ft_isascii(' '));
+	int character = 7;
+	char *string = "Hello, World";
 
-	printf("Is 'i' numeric? %d\n", ft_isdigit('i'));
-	printf("Is '2' alphabetical? %d\n", ft_isalpha('2'));
-	printf("Is ';' alphanumerical? %d\n", ft_isalnum(';'));
-	printf("Is '\\n' printable? %d\n", ft_isprint('\0'));
-	printf("Is 'ó' ascii? %d\n", ft_isascii(129));
+	printf("numeric? %d\n", ft_isdigit(character));
+	printf("alphabetical? %d\n", ft_isalpha(character));
+	printf("alphanumerical? %d\n", ft_isalnum(character));
+	printf("printable? %d\n", ft_isprint(character));
+	printf("ascii? %d\n", ft_isascii(character));
+	printf("lowercase: %c\n", ft_tolower(character));
+	ft_putchar_fd(character, 1);
+	ft_putstr_fd(string, 1);
+	ft_putendl_fd(string, 1);
+	ft_putnbr_fd(character, 1);
 	return (0);
 }
-// End of testing ground
+// End of testing ground */
 
