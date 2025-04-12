@@ -2,7 +2,7 @@
 .PHONY: clean re fclean
 
 NAME = libft
-SOURCES = libft.c 
+SOURCES = string.c
 CC = cc
 CFLAGS = -Wall -Werror -Wextra
 OBJECTS = $(SOURCES:.c=.o)
