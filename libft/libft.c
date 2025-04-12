@@ -6,59 +6,76 @@
 /*   By: xwu <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 18:23:07 by xwu               #+#    #+#             */
-/*   Updated: 2025/04/07 18:48:50 by xwu              ###   ########.fr       */
+/*   Updated: 2025/04/12 13:29:38 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* Tasks to complete [General]
- * Learn how to make a Makefile (No debe hacer relink... qué es relink?
- * 	-Wall -Werror -Wextra
- * 	Contiene las normas $(NAME), all, clean, fclean y re
- * What is the command `ar`?
- * Why is the termination of the program *.a? 
-*/
+// is... character classification functions
 
-// List of functions from libc  to make
-// isalpha
-// isdigit
-// isalnum
-// isascii
-// isprint
-// strlen
-// memset
-// bzero
-// memcpy
-// memmove
-// strlcpy
-// strlcat
-//  toupper
-// tolower
-// strchr
-// strrchr
-// strncmp
-// memchr
-// memcmp
-// strnstr
-// atoi
-
-// special ones that require malloc():
-// calloc
-// strdup
-
-// functions that are not literally from libc
-// Look at the pdf
-
-char *ft_substr(char const *s, unsigned int start, size_t len) // Reserva y devuelve una substring de la string s, que empieza en el índice start y tiene una longitud máxima len
+int	ft_isalpha(int c)
 {
-	char substr[len + 1]; // El 1 es del '\0'
-	int i;
-
-	i = 0;	
-	while (len > i)
+	if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
 	{
-		s[start + i] = substr[i];
-		i++;
+		return (1);
 	}
-	return *substr;
+	return (0);
 }
+
+int	ft_isdigit(int c)
+{
+	if (c >= '0' && c <= '9')
+	{
+		return (1);
+	}
+	return (0);
+}
+
+int	ft_isalnum(int c)
+{
+	if (ft_isalpha(c) || ft_isdigit(c))
+	{
+		return (1);
+	}
+	return (0);
+}
+
+
+int	ft_isprint(int c)
+{
+	if (c >= 32 && c <= 126)
+	{
+		return (1);
+	}
+	return (0);
+}
+
+
+int	ft_isascii(int c)
+{
+	if (c >= 0 && c <= 127)
+	{
+		return (1);
+	}
+	return (0);
+}
+
+
+// Testing ground
+#include <stdio.h>
+int	main(void)
+{
+	printf("Is '1' numeric? %d\n", ft_isdigit('1'));
+	printf("Is 'a' alphabetical? %d\n", ft_isalpha('a'));
+	printf("Is 'f' alphanumerical? %d\n", ft_isalnum('f'));
+	printf("Is ' ' printable? %d\n", ft_isprint(' '));
+	printf("Is ')' ascii? %d\n", ft_isascii(' '));
+
+	printf("Is 'i' numeric? %d\n", ft_isdigit('i'));
+	printf("Is '2' alphabetical? %d\n", ft_isalpha('2'));
+	printf("Is ';' alphanumerical? %d\n", ft_isalnum(';'));
+	printf("Is '\\n' printable? %d\n", ft_isprint('\0'));
+	printf("Is 'ó' ascii? %d\n", ft_isascii(129));
+	return (0);
+}
+// End of testing ground
 
