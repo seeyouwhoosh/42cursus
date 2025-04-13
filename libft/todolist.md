@@ -9,18 +9,18 @@ Verificación de caracteres y escritura directa.
 - [x] ft_putchar_fd
 - [x] ft_putstr_fd
 - [x] ft_putendl_fd
-- [ ] ft_putnbr_fd
+- [x] ft_putnbr_fd
 
 ## 🟡 Nivel 2 – Con bucles/punteros
 Funciones con algo más de lógica, pero sin malloc.
-- [ ] strlen
+- [x] strlen
 - [x] strchr
 - [x] strrchr
-- [ ] strncmp
-- [ ] memset
-- [ ] bzero
-- [ ] memchr
-- [ ] memcmp
+- [x] strncmp
+- [x] memset
+- [x] bzero
+- [x] memchr
+- [x] memcmp
 - [ ] atoi
 - [ ] ft_striteri
 
