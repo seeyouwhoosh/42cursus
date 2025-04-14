@@ -21,7 +21,7 @@ Funciones con algo más de lógica, pero sin malloc.
 - [x] bzero
 - [x] memchr
 - [x] memcmp
-- [ ] atoi
+- [x] atoi
 - [ ] ft_striteri
 
 ## 🟠 Nivel 3 – Manipulación de memoria (sin malloc)

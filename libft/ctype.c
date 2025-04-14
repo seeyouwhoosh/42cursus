@@ -41,6 +41,12 @@ int	ft_isascii(int c)
 }
 
 
+int	ft_isspace(int c)
+{
+	return (c == ' '  || c == '\t' || c == '\n' || 
+			c == '\v' || c == '\f' || c == '\r') ;
+}
+
 int	ft_tolower(int c)
 {
 	if (c >= 'A' && c <= 'Z')

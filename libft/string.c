@@ -154,7 +154,7 @@ int	ft_memcmp(const void *s1, const void *s2, unsigned int n)
 	return (0);
 }
 
-// Testing ground
+/* // Testing ground
 #include <stdio.h>
 int	main(void)
 {
@@ -178,4 +178,4 @@ int	main(void)
 
 	return (0);
 }
-// End of testing ground
+// End of testing ground */
