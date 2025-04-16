@@ -45,6 +45,8 @@ int ft_atoi(const char *str)
     return (number * sign);
 }
 
+void *memcpy(void *restrict dst, const void *restrict src, size_t n);
+
 // Testing ground
 #include <stdio.h>
 int	main(void)

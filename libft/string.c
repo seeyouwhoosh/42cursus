@@ -154,6 +154,21 @@ int	ft_memcmp(const void *s1, const void *s2, unsigned int n)
 	return (0);
 }
 
+void    *ft_memcpy(void *restrict dst, const void *restrict src, int n)
+{
+	int index;
+	char *dst_copy;
+
+	dst_copy = (char *)dst;
+	index = 0;
+	while (n > index && &dst[index] != &src[index])
+	{
+		dst_copy[index] = ((char *)src)[index];
+		index++;
+	}
+	return (dst);
+}
+
 /* // Testing ground
 #include <stdio.h>
 int	main(void)
