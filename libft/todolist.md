@@ -23,11 +23,14 @@ Funciones con algo más de lógica, pero sin malloc.
 - [x] memcmp
 - [x] atoi
 - [x] ft_striteri
+- [x] ft_striteri
 
 ## 🟠 Nivel 3 – Manipulación de memoria (sin malloc)
 Funciones que manipulan buffers de memoria y cadenas, sin reserva dinámica.
 - [x] memcpy
 - [ ] memmove
+- [x] memcpy
+- [x] memmove
 - [ ] strlcpy
 - [ ] strlcat
 - [ ] strnstr
