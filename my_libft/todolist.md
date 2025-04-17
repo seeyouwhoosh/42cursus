@@ -28,9 +28,9 @@ Funciones con algo más de lógica, pero sin malloc.
 Funciones que manipulan buffers de memoria y cadenas, sin reserva dinámica.
 - [x] memcpy
 - [x] memmove
-- [ ] strlcpy
-- [ ] strlcat
-- [ ] strnstr
+- [x] strlcpy
+- [x] strlcat
+- [x] strnstr
 
 ## 🟡🟠 Nivel 3.5 – Con malloc pero lógicas sencillas
 Uso de `malloc` para copiar o reservar, sin estructuras complicadas.
