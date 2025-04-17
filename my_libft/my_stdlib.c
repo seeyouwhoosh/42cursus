@@ -17,35 +17,32 @@ int	ft_isspace(int c);
 
 int ft_atoi(const char *str)
 {
-    int index;
-    int number;
-    int sign;
+	int index;
+	int number;
+	int sign;
 
-    index = 0;
-    number = 0;
-    sign = 1;
-
-    while (ft_isspace(str[index]))
-    {
-        index++;
-    }
-    while (str[index] == '-' || str[0] == '+') // el atoi de la librería estandar no acepta múltiples signos
-    {
-        if (str[index] == '-')
-        {
-            sign *= -1;
-        }
-        index++;
-    }
-    while (ft_isdigit(str[index]))
-    {
-        number = number * 10 + (str[index] - '0');
-        index++;
-    }
-    return (number * sign);
+	index = 0;
+	number = 0;
+	sign = 1;
+	while (ft_isspace(str[index]))
+	{
+		index++;
+	}
+	while (str[index] == '-' || str[0] == '+') // el atoi de la librería estandar no acepta múltiples signos
+	{
+		if (str[index] == '-')
+		{
+			sign *= -1;
+		}
+		index++;
+	}
+	while (ft_isdigit(str[index]))
+	{
+		number = number * 10 + (str[index] - '0');
+		index++;
+	}
+	return (number * sign);
 }
-
-void *memcpy(void *restrict dst, const void *restrict src, size_t n);
 
 // Testing ground
 #include <stdio.h>
@@ -53,7 +50,7 @@ int	main(void)
 {
 	char *s = "    ----23 122";
 
-    printf("Number: %d", ft_atoi(s));
+	printf("Number: %d", ft_atoi(s));
 	return (0);
 }
 // End of testing ground */

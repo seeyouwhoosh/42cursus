@@ -44,22 +44,22 @@ void	ft_putnbr_fd(int nb, int fd)
 	if (nb == -2147483648)
 	{
 		write(fd, "-2147483648", 11);
-        return ;
+		return ;
 	}
 	if (nb < 0)
-    {
-        ft_putchar_fd('-', fd);
-        ft_putnbr_fd(-nb, fd);
-    }
-    if (nb >= 10)
-    {
-        ft_putnbr_fd(nb / 10, fd);
-        ft_putnbr_fd(nb % 10, fd);
-    }
-    else
-    {
-        ft_putchar_fd(nb + '0', fd);
-    }
+	{
+		ft_putchar_fd('-', fd);
+		ft_putnbr_fd(-nb, fd);
+	}
+	if (nb >= 10)
+	{
+		ft_putnbr_fd(nb / 10, fd);
+		ft_putnbr_fd(nb % 10, fd);
+	}
+	else
+	{
+		ft_putchar_fd(nb + '0', fd);
+	}
 	return ;
 }
 
@@ -71,7 +71,7 @@ int	main(void)
 	int character = 's';
 	char *string = "Hello, World";
 
-    ft_putchar_fd(character, 1);
+	ft_putchar_fd(character, 1);
 	ft_putstr_fd(string, 1);
 	ft_putendl_fd(string, 1);
 	ft_putnbr_fd(343, 1);

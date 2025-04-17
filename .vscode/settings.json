@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "unistd.h": "c"
+        "unistd.h": "c",
+        "stddef.h": "c",
+        "libft.h": "c"
     }
 }

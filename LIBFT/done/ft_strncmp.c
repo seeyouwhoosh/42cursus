@@ -1,32 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcpy.c                                        :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xwu <xwu@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: xiyu <xiyu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/16 19:54:04 by xwu               #+#    #+#             */
-/*   Updated: 2025/04/16 19:55:13 by xwu              ###   ########.fr       */
+/*   Created: 2025/04/17 01:19:13 by xiyu              #+#    #+#             */
+/*   Updated: 2025/04/17 11:07:31 by xiyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_memcmp(const void *s1, const void *s2, unsigned int n)
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	const unsigned char	*p1;
-	const unsigned char	*p2;
+	int	index;
 
-	p1 = (const unsigned char *)s1;
-	p2 = (const unsigned char *)s2;
-	while (n != 0)
+	index = 0;
+	while (n != 0 && s1[index] != '\0' && s2[index] != '\0')
 	{
-		if (*p1 != *p2)
+		if (s1[index] != s2[index])
 		{
-			return (*p1 - *p2);
+			return (s1[index] - s2[index]);
 		}
-		p1++;
-		p2++;
+		index++;
+		n--;
 	}
 	return (0);
 }

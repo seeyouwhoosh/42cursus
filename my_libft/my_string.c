@@ -1,17 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   string.c                                           :+:      :+:    :+:   */
+/*   my_string.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xwu <xwu@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 13:50:31 by xwu               #+#    #+#             */
-/*   Updated: 2025/04/16 17:29:25 by xwu              ###   ########.fr       */
+/*   Updated: 2025/04/17 11:31:46 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#define NULL ((void *)0)
-
+#include "libft.h"
 
 int	ft_strlen(const char *s)
 {
@@ -78,7 +77,7 @@ int	ft_strcmp(const char *s1, const char *s2)
 }
 
 
-int	ft_strncmp(const char *s1, const char *s2, int n)
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
 	int	index;
 
@@ -96,9 +95,9 @@ int	ft_strncmp(const char *s1, const char *s2, int n)
 }
 
 
-void	*ft_memset(void *b, int c, int n)
+void	*ft_memset(void *b, int c, size_t n)
 {
-	int	index;
+	size_t	index;
 	unsigned char	*b_copy;
 
 	index = 0;
@@ -112,18 +111,18 @@ void	*ft_memset(void *b, int c, int n)
 }
 
 
-void	ft_bzero(void *s, int n)
+void	ft_bzero(void *s, size_t n)
 {
 	ft_memset(s, 0, n);
 }
 
 
-void	*ft_memchr(const void *s, int c, unsigned int n)
+void	*ft_memchr(const void *s, int c, size_t n)
 {
 	const unsigned char	*s_copy;
 
 	s_copy = (const unsigned char *)s;
-	while (n != 0)
+	while (n)
 	{
 		if(*s_copy == (unsigned char)c)
 		{
@@ -135,7 +134,7 @@ void	*ft_memchr(const void *s, int c, unsigned int n)
 	return (NULL);
 }
 
-int	ft_memcmp(const void *s1, const void *s2, unsigned int n)
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
 	const unsigned char	*p1;
 	const unsigned char	*p2;
@@ -154,19 +153,45 @@ int	ft_memcmp(const void *s1, const void *s2, unsigned int n)
 	return (0);
 }
 
-void    *ft_memcpy(void *restrict dst, const void *restrict src, int n)
+void    *ft_memcpy(void *restrict dst, const void *restrict src, size_t n)
 {
-	int index;
+	size_t index;
 	char *dst_copy;
+	const char *src_copy;
 
 	dst_copy = (char *)dst;
+	src_copy = (const char*)src;
 	index = 0;
-	while (n > index && &dst[index] != &src[index])
+	while (n > index)
 	{
-		dst_copy[index] = ((char *)src)[index];
+		dst_copy[index] = src_copy[index];
 		index++;
 	}
 	return (dst);
+}
+
+void *ft_memmove(void *dest, const void *src, size_t count)
+{
+	size_t	index;
+
+	if (dest < src)
+	{
+		index = 0;
+		while (count > index)
+		{
+			((char *)dest)[index] = ((const char *)src)[index];
+			index++;
+		}
+	}
+	else if (dest > src)
+	{
+		while (count)
+		{
+			((char *)dest)[count - 1] = ((const char *)src)[count - 1];
+			count--;
+		}
+	}
+	return dest;
 }
 
 /* // Testing ground
