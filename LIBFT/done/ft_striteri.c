@@ -6,11 +6,11 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 11:32:30 by xwu               #+#    #+#             */
-/*   Updated: 2025/04/17 11:34:49 by xwu              ###   ########.fr       */
+/*   Updated: 2025/04/18 18:59:36 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void ft_striteri(char *s, void (*f)(unsigned int, char*))
+void	ft_striteri(char *s, void (*f)(unsigned int, char*))
 {
 	int	index;
 

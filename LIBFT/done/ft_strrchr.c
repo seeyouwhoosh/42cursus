@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiyu <xiyu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 01:15:22 by xiyu              #+#    #+#             */
-/*   Updated: 2025/04/17 01:15:44 by xiyu             ###   ########.fr       */
+/*   Updated: 2025/04/18 19:00:01 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*ft_strrchr(const char *s, int c)
 		if (*temp_s == (char)c)
 		{
 			ptr_c = temp_s;
-		}	
+		}
 		temp_s++;
 	}
 	return ((char *) ptr_c);

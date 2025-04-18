@@ -6,14 +6,15 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 17:15:17 by xwu               #+#    #+#             */
-/*   Updated: 2025/04/17 19:20:16 by xwu              ###   ########.fr       */
+/*   Updated: 2025/04/18 19:08:04 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
-#define LIBFT_H
-#include <stddef.h>
-#include <unistd.h>
+# define LIBFT_H
+# include <stddef.h>
+# include <unistd.h>
+# include <stdlib.h>
 
 /* Character identification */
 
@@ -45,7 +46,6 @@ void	ft_putstr_fd(char *s, int fd);
 
 void	ft_putendl_fd(char *s, int fd);
 
-
 /* Memory management */
 
 void	*ft_memset(void *b, int c, size_t n);
@@ -57,8 +57,6 @@ void	*ft_memchr(const void *s, int c, size_t n);
 int		ft_memcmp(const void *s1, const void *s2, size_t n);
 
 void	*ft_memcpy(void *restrict dst, const void *restrict src, size_t n);
-
-
 
 /* Strings */
 
@@ -78,9 +76,12 @@ size_t	ft_strlcat(char *dst, const char *src, size_t size);
 
 char	*strnstr(const char *big, const char *little, size_t len);
 
+/* Memory Management */
+
+void	*calloc(size_t nmemb, size_t size);
+
 /* Special functions */
 
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
-
 
 #endif 

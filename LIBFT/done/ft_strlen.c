@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiyu <xiyu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 01:17:44 by xiyu              #+#    #+#             */
-/*   Updated: 2025/04/17 01:18:50 by xiyu             ###   ########.fr       */
+/*   Updated: 2025/04/18 18:59:52 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_strlen(const char *s)
 {
-	int length;
+	int	length;
 
 	length = 0;
 	while (s[length] != '\0')

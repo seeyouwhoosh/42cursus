@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiyu <xiyu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 01:20:39 by xiyu              #+#    #+#             */
-/*   Updated: 2025/04/17 10:18:05 by xiyu             ###   ########.fr       */
+/*   Updated: 2025/04/18 18:59:13 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void *ft_memmove(void *dest, const void *src, size_t count)
+void	*ft_memmove(void *dest, const void *src, size_t count)
 {
 	size_t	index;
 
@@ -33,5 +33,5 @@ void *ft_memmove(void *dest, const void *src, size_t count)
 			count--;
 		}
 	}
-	return dest;
+	return (dest);
 }
