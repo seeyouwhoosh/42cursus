@@ -35,8 +35,8 @@ Funciones que manipulan buffers de memoria y cadenas, sin reserva dinámica.
 ## 🟡🟠 Nivel 3.5 – Con malloc pero lógicas sencillas
 Uso de `malloc` para copiar o reservar, sin estructuras complicadas.
 - [x] calloc
-- [ ] strdup
-- [ ] ft_substr
+- [x] strdup
+- [x] ft_substr
 - [ ] ft_strjoin
 
 ## 🔴 Nivel 4 – malloc + lógica más compleja

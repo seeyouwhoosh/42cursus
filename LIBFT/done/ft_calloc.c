@@ -6,21 +6,25 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 18:15:05 by xwu               #+#    #+#             */
-/*   Updated: 2025/04/18 18:50:26 by xwu              ###   ########.fr       */
+/*   Updated: 2025/04/18 20:13:28 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <stdint.h>
 #include "libft.h"
 
-#define MAX_INT 2147483647
 
-void	*calloc(size_t nmemb, size_t size)
+void	*ft_calloc(size_t nmemb, size_t size)
 {
 	void	*ptr;
 	size_t	total_size;
 
-	if (size != 0 && nmemb > MAX_INT / size)
+	if (!size || !nmemb)
+	{
+		return (malloc(1));
+	}
+	if (nmemb > SIZE_MAX / size)
 	{
 		return (NULL);
 	}

@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 17:15:17 by xwu               #+#    #+#             */
-/*   Updated: 2025/04/18 19:08:04 by xwu              ###   ########.fr       */
+/*   Updated: 2025/04/18 20:20:47 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,15 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 
 size_t	ft_strlcat(char *dst, const char *src, size_t size);
 
-char	*strnstr(const char *big, const char *little, size_t len);
+char	*ft_strnstr(const char *big, const char *little, size_t len);
 
-/* Memory Management */
+char	*ft_strdup(const char *s);
 
-void	*calloc(size_t nmemb, size_t size);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+
+/* Memory management specific functions */
+
+void	*ft_calloc(size_t nmemb, size_t size);
 
 /* Special functions */
 
