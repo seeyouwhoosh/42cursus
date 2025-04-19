@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 19:13:52 by xwu               #+#    #+#             */
-/*   Updated: 2025/04/18 20:12:50 by xwu              ###   ########.fr       */
+/*   Updated: 2025/04/19 18:08:18 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*ft_strdup(const char *s)
 	size_t	abs_len;
 
 	abs_len = ft_strlen(s) + 1;
-	ptr = (char *)malloc(abs_len);
+	ptr = malloc(abs_len);
 	if (!ptr)
 	{
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 19:55:14 by xwu               #+#    #+#             */
-/*   Updated: 2025/04/18 20:22:22 by xwu              ###   ########.fr       */
+/*   Updated: 2025/04/19 18:08:16 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		return (NULL);
 	if (len > (ft_strlen(s) - start))
 		len = ft_strlen(s) - start;
-	substr = (char *)malloc(len + 1);
+	substr = malloc(len + 1);
 	if (!substr)
 		return (NULL);
 	i = 0;

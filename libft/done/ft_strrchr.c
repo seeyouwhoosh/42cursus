@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 01:15:22 by xiyu              #+#    #+#             */
-/*   Updated: 2025/04/18 19:00:01 by xwu              ###   ########.fr       */
+/*   Updated: 2025/04/19 19:03:19 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,7 @@ char	*ft_strrchr(const char *s, int c)
 		}
 		temp_s++;
 	}
+	if ((char)c == '\0')
+		return ((char *)temp_s);
 	return ((char *) ptr_c);
 }

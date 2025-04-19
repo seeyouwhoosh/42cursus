@@ -37,7 +37,7 @@ Uso de `malloc` para copiar o reservar, sin estructuras complicadas.
 - [x] calloc
 - [x] strdup
 - [x] ft_substr
-- [ ] ft_strjoin
+- [x] ft_strjoin
 
 ## 🔴 Nivel 4 – malloc + lógica más compleja
 Reservas dinámicas con lógica adicional como recortes, índices, etc.

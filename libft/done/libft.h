@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 17:15:17 by xwu               #+#    #+#             */
-/*   Updated: 2025/04/18 20:20:47 by xwu              ###   ########.fr       */
+/*   Updated: 2025/04/19 18:43:27 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ int		ft_isalnum(int c);
 int		ft_isprint(int c);
 
 int		ft_isascii(int c);
-
-int		ft_isspace(int c);
 
 /* Character conversion */
 
@@ -79,6 +77,8 @@ char	*ft_strnstr(const char *big, const char *little, size_t len);
 char	*ft_strdup(const char *s);
 
 char	*ft_substr(char const *s, unsigned int start, size_t len);
+
+char	*ft_strjoin(char const *s1, char const *s2);
 
 /* Memory management specific functions */
 
