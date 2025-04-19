@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 17:48:23 by xwu               #+#    #+#             */
-/*   Updated: 2025/04/19 18:14:50 by xwu              ###   ########.fr       */
+/*   Updated: 2025/04/19 21:03:19 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	size_t	j;
 	size_t	total_size;
 
+	if (!s1 || !s2)
+		return (NULL);
 	total_size = ft_strlen(s1) + ft_strlen(s2) + 1;
 	str = malloc(total_size);
 	if (!str)

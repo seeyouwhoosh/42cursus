@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 11:25:53 by xwu               #+#    #+#             */
-/*   Updated: 2025/04/17 11:27:14 by xwu              ###   ########.fr       */
+/*   Updated: 2025/04/19 21:07:21 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ft_putnbr_fd(int nb, int fd)
 		ft_putchar_fd('-', fd);
 		ft_putnbr_fd(-nb, fd);
 	}
-	if (nb >= 10)
+	else if (nb >= 10)
 	{
 		ft_putnbr_fd(nb / 10, fd);
 		ft_putnbr_fd(nb % 10, fd);
