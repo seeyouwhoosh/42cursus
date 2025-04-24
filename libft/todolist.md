@@ -41,9 +41,9 @@ Uso de `malloc` para copiar o reservar, sin estructuras complicadas.
 
 ## 🔴 Nivel 4 – malloc + lógica más compleja
 Reservas dinámicas con lógica adicional como recortes, índices, etc.
-- [ ] ft_strtrim
-- [ ] ft_itoa
-- [ ] ft_strmapi
+- [x] ft_strtrim
+- [x] ft_itoa
+- [x] ft_strmapi
 
 ## 🔥 Nivel 5 – Difícil (malloc + gestión de errores)
 Reservas múltiples, manejo de arrays, cuidado extremo con errores y `free`.

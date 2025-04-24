@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 17:15:17 by xwu               #+#    #+#             */
-/*   Updated: 2025/04/19 18:43:27 by xwu              ###   ########.fr       */
+/*   Updated: 2025/04/24 13:57:07 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,12 @@ int		ft_isascii(int c);
 int		ft_tolower(int c);
 
 int		ft_toupper(int c);
+
+/* Number and string conversion */
+
+char *ft_itoa(int n);
+
+int	ft_atoi(const char *str);
 
 /* Outputting */
 
@@ -64,8 +70,6 @@ char	*ft_strchr(const char *s, int c);
 
 char	*ft_strrchr(const char *s, int c);
 
-int		ft_strcmp(const char *s1, const char *s2);
-
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 
 size_t	ft_strlcpy(char *dst, const char *src, size_t size);
@@ -80,6 +84,8 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 
 char	*ft_strjoin(char const *s1, char const *s2);
 
+char *ft_strtrim(char const *s1, char const *set);
+
 /* Memory management specific functions */
 
 void	*ft_calloc(size_t nmemb, size_t size);
@@ -87,5 +93,7 @@ void	*ft_calloc(size_t nmemb, size_t size);
 /* Special functions */
 
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
+
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 
 #endif 
