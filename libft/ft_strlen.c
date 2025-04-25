@@ -1,33 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/18 19:13:52 by xwu               #+#    #+#             */
-/*   Updated: 2025/04/19 18:08:18 by xwu              ###   ########.fr       */
+/*   Created: 2025/04/17 01:17:44 by xiyu              #+#    #+#             */
+/*   Updated: 2025/04/25 19:35:48 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strdup(const char *s)
+size_t	ft_strlen(const char *s)
 {
-	char	*ptr;
-	size_t	abs_len;
+	size_t	length;
 
-	abs_len = ft_strlen(s) + 1;
-	ptr = malloc(abs_len);
-	if (!ptr)
+	length = 0;
+	while (s[length] != '\0')
 	{
-		return (NULL);
+		length++;
 	}
-	ptr[abs_len - 1] = '\0';
-	while (abs_len)
-	{
-		abs_len--;
-		ptr[abs_len] = s[abs_len];
-	}
-	return (ptr);
+	return (length);
 }

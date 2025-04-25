@@ -6,12 +6,11 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 12:18:49 by xwu               #+#    #+#             */
-/*   Updated: 2025/04/24 13:32:50 by xwu              ###   ########.fr       */
+/*   Updated: 2025/04/25 18:44:38 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
 
 int	ft_intlen(int n)
 {
@@ -33,7 +32,7 @@ int	ft_intlen(int n)
 	return (i);
 }
 
-char *ft_itoa(int n)
+char	*ft_itoa(int n)
 {
 	char	*nbr_str;
 	long	nbr_cpy;

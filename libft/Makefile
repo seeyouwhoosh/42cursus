@@ -1,8 +1,4 @@
-.POSIX:
-.PHONY: all clean fclean re
-
 NAME = libft.a
-
 SOURCES = \
 	ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c \
 	ft_strlen.c ft_atoi.c ft_memset.c ft_bzero.c ft_calloc.c \
@@ -12,20 +8,25 @@ SOURCES = \
 	ft_strrchr.c ft_strchr.c ft_strdup.c ft_itoa.c ft_strnstr.c ft_strtrim.c \
 	ft_substr.c ft_striteri.c ft_strjoin.c ft_strmapi.c ft_split.c 
 
-BSOURCES = 
-
 OBJECTS = $(SOURCES:.c=.o)
+BOBJECTS = $(BSOURCES:.c=.o)
+
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror
 
 all: $(NAME)
 
 $(NAME): $(OBJECTS)
-	$(AR) -rcs $@ $?
+	$(AR) -r $@ $?
+
+bonus: $(OBJECTS) $(BOBJECTS)
+	$(AR) -r $(NAME) $?
 
 %.o: %.c
-	$(CC) -c $(CFLAGS) $< -o $@
+	$(CC) -c $(CFLAGS) $?
 
 clean:
-	rm -f $(OBJECTS)
+	rm -f $(OBJECTS) $(BOBJECTS)
 
 fclean: clean
 	rm -f $(NAME)
@@ -33,4 +34,3 @@ fclean: clean
 re: fclean all
 
 .PHONY: all bonus clean fclean re
-

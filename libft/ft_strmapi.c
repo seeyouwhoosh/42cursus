@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 13:34:03 by xwu               #+#    #+#             */
-/*   Updated: 2025/04/24 13:56:04 by xwu              ###   ########.fr       */
+/*   Updated: 2025/04/25 18:51:06 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,14 @@ los resultados de las sucesivas aplicaciones de
 ’f’ */
 
 #include "libft.h"
+
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
 	size_t	i;
 	char	*result;
 
+	if (!s || !f)
+		return (NULL);
 	i = 0;
 	result = malloc(sizeof(char) * ft_strlen(s) + 1);
 	if (!result)

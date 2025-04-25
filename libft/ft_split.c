@@ -6,23 +6,21 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 18:55:19 by xwu               #+#    #+#             */
-/*   Updated: 2025/04/25 13:02:44 by xwu              ###   ########.fr       */
+/*   Updated: 2025/04/25 20:18:15 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stddef.h>
 
-size_t	ft_strwords(const char *s, char c)
+static size_t	ft_strwords(const char *s, char c)
 {
 	size_t	i;
 	size_t	count;
 
 	i = 0;
 	count = 0;
-	if (*s == '\0')
+	if (!s)
 		return (0);
-
 	while (s[i])
 	{
 		while (s[i] == c)
@@ -41,13 +39,13 @@ void	ft_freesplit(char **words, size_t ls)
 {
 	while (ls)
 	{
-		free(words[ls]);
+		free(words[ls - 1]);
 		ls--;
 	}
 	free(words);
 }
 
-char	*ft_wordcpy(const char *s, size_t j, size_t i)
+static char	*ft_wordcpy(const char *s, size_t j, size_t i)
 {
 	char	*word;
 
@@ -65,8 +63,9 @@ char	**ft_split(char const *s, char c)
 	size_t	ls;
 	char	**result;
 
-	if (!s || !(result = (char **)malloc((ft_strwords(s, c) + 1) * sizeof(char *))))
-		return (NULL);
+	result = malloc((ft_strwords(s, c) + 1) * sizeof(char *));
+	if (!result || !s)
+		return (free(result), NULL);
 	i = 0;
 	ls = 0;
 	while (s[i])
@@ -76,15 +75,14 @@ char	**ft_split(char const *s, char c)
 			j = i;
 			while (s[i] && s[i] != c)
 				i++;
-			if (!(result[ls] = ft_wordcpy(s, j, i)))
+			result[ls++] = ft_wordcpy(s, j, i);
+			if (!result[ls - 1])
 				return (ft_freesplit(result, ls), NULL);
-			ls++;
 		}
 		else
 			i++;
 	}
-	result[ls] = NULL;
-	return (result);
+	return (result[ls] = NULL, result);
 }
 
 void	ft_putstrstr(char **s, size_t quantity)
@@ -101,11 +99,10 @@ void	ft_putstrstr(char **s, size_t quantity)
 	}
 }
 
-/*
-#include <stdio.h>
+/* #include <stdio.h>
 int main(void)
 {
-	char *str = " ";
+	char *str = "Hello World";
 	
 	char **strstr = ft_split(str, ' ');
 	size_t	n = ft_strwords(str, ' ');
@@ -114,4 +111,4 @@ int main(void)
 	printf("Número de palabras en la frase \"%s\" es %zu", str, n);
 	return (0);
 }
-*/
+ */
