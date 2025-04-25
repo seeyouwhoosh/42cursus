@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 17:15:17 by xwu               #+#    #+#             */
-/*   Updated: 2025/04/24 13:57:07 by xwu              ###   ########.fr       */
+/*   Updated: 2025/04/25 13:01:07 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
 
 char *ft_strtrim(char const *s1, char const *set);
+
+char	**ft_split(char const *s, char c);
 
 /* Memory management specific functions */
 

@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 18:55:19 by xwu               #+#    #+#             */
-/*   Updated: 2025/04/24 21:21:20 by xwu              ###   ########.fr       */
+/*   Updated: 2025/04/25 13:02:44 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,20 +46,15 @@ void	ft_freesplit(char **words, size_t ls)
 	}
 	free(words);
 }
-void	ft_checkmemory(char *str)
-{
-	if (!str)
-		return (NULL)
-}
 
-char	*ft_wordcpy(char *s, size_t j, size_t i)
+char	*ft_wordcpy(const char *s, size_t j, size_t i)
 {
 	char	*word;
 
 	word = malloc(i - j + 1);
 	if (!word)
 		return (NULL);
-	ft_strlcpy(word, &s[i], i - j + 1);
+	ft_strlcpy(word, &s[j], i - j + 1);
 	return (word);
 }
 
@@ -70,27 +65,23 @@ char	**ft_split(char const *s, char c)
 	size_t	ls;
 	char	**result;
 
-	if (!s)
-		return (NULL);
-	result = (char **)malloc((ft_strwords(s, c) + 1) * sizeof(char *));
-	if (!result)
+	if (!s || !(result = (char **)malloc((ft_strwords(s, c) + 1) * sizeof(char *))))
 		return (NULL);
 	i = 0;
 	ls = 0;
 	while (s[i])
 	{
-		while (s[i] == c)
-			i++;
-		j = i;
-		while (s[i] && s[i] != c)
-			i++;
-		if (i > j)
+		if (s[i] != c)
 		{
-			result[ls] = ft_wordcpy(s, j, i);
-			if (!result[ls])
+			j = i;
+			while (s[i] && s[i] != c)
+				i++;
+			if (!(result[ls] = ft_wordcpy(s, j, i)))
 				return (ft_freesplit(result, ls), NULL);
 			ls++;
 		}
+		else
+			i++;
 	}
 	result[ls] = NULL;
 	return (result);
@@ -109,15 +100,18 @@ void	ft_putstrstr(char **s, size_t quantity)
 		i++;
 	}
 }
+
+/*
 #include <stdio.h>
 int main(void)
 {
-	char *str = "Érase una vez una patata";
+	char *str = " ";
 	
 	char **strstr = ft_split(str, ' ');
 	size_t	n = ft_strwords(str, ' ');
 	ft_putstrstr(strstr, n);
 	ft_freesplit(strstr, n);
-	printf("Número de palabras en la frase \"%s\" es %zu", str, ft_strwords(str, ' '));
+	printf("Número de palabras en la frase \"%s\" es %zu", str, n);
 	return (0);
 }
+*/
