@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 17:57:58 by xwu               #+#    #+#             */
-/*   Updated: 2025/05/01 18:41:05 by xwu              ###   ########.fr       */
+/*   Updated: 2025/05/03 10:25:44 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,11 @@ void foo(char *fmt, ...)
 }
 */
 
+int	ft_isspace(int c)
+{
+	return (c == 32 || (c >= 9 && c <= 13));
+}
+
 void	ft_putchar(char c)
 {
 	write(1, &c, 1);
@@ -57,11 +62,37 @@ void	ft_putstr(char *s)
 	}
 }
 
+int	ft_redirect(char id, va_list args)
+{
+	if (id == 'c')
+		ft_putchar(va_arg(args, int));
+	else if (id == 's')
+		ft_putstr(va_arg(args, char *));
+	else if (id == 'p')
+		ft_putstr(va_arg(args, char *));
+	else if (id == '%')
+		ft_putchar(id);
+	else if (id == 'd')
+		;
+	else if (id == 'i')
+		;
+	else if (id == 'u')
+		;
+	else if (id == 'x')
+		;
+	else if (id == 'X')
+		;
+	else
+		return (0);
+	return (1);
+}
+
 int	ft_printf(char const *s, ...)
 {
 	va_list	args;
 	int		i;
 
+	i = 0;
 	va_start(args, s);
 	while (s[i])
 	{
@@ -69,22 +100,11 @@ int	ft_printf(char const *s, ...)
 			ft_putchar(s[i]);
 		else
 		{
-			i++;
-			if (s[i] == 'c')
-			{
-				putchar(va_arg(args, char));
-			}
+			while (ft_isspace(s[i + 1]))
+				i++;
+			i += ft_redirect(s[i + 1], args);
 		}
 		i++;
 	}
-	return (0);
-}
-#include <stdio.h>
-int	main(int argc, char **argv)
-{
-	printf("The printf trials: \n");
-	
-	char c = 'a';
-	printf("char %c", c);
 	return (0);
 }
