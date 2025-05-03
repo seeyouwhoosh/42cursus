@@ -6,4 +6,4 @@
 -[ ] %u Imprime un número decimal (base 10) sin signo.
 -[ ] %x Imprime un número hexadecimal (base 16) en minúsculas.
 -[ ] %X Imprime un número hexadecimal (base 16) en mayúsculas.
--[ ] %% para imprimir el símbolo del porcentaje.
+-[x] %% para imprimir el símbolo del porcentaje.
