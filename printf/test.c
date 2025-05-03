@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 02:06:24 by xwu               #+#    #+#             */
-/*   Updated: 2025/05/03 14:47:34 by xwu              ###   ########.fr       */
+/*   Updated: 2025/05/03 17:21:26 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	main(void)
 	ft_printf_value = ft_printf("3.1. Void pointer: %p\n", ptr2);
 
 
-	int n = -213;
+	int n = -2384;
 	printf_value = printf("4. Decimal: %d\n", n);
 	ft_printf_value = ft_printf("   Decimal: %d\n", n);
 	printf("   Exp: %d	Rea: %d\n\n", printf_value, ft_printf_value);

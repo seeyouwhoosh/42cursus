@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 17:57:58 by xwu               #+#    #+#             */
-/*   Updated: 2025/05/03 14:45:36 by xwu              ###   ########.fr       */
+/*   Updated: 2025/05/03 17:22:09 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,12 @@ int	ft_putnbr(int n)
 	{
 		ft_putchar('-');
 		i++;
-		ft_putnbr(-n);
+		i += ft_putnbr(-n);
 	}
 	else if (n > 10)
 	{
-		ft_putnbr(n / 10);
-		ft_putnbr(n % 10);
+		i += ft_putnbr(n / 10);
+		i += ft_putnbr(n % 10);
 	}
 	else
 	{
@@ -70,11 +70,15 @@ int	ft_putnbr(int n)
 	return (i);
 }
 
-void	ft_putubnr(unsigned int n)
+int	ft_putubnr(unsigned int n)
 {
+	int	i;
+
+	i = 1;
 	if (n >= 10)
-		ft_putubnr(n / 10);
+		i += ft_putubnr(n / 10);
 	ft_putchar((n % 10) + '0');
+	return (i);
 }
 int	ft_strlen(char *s)
 {
@@ -103,7 +107,7 @@ int	ft_redirect(char id, va_list args)
 	else if (id == 'd' || id == 'i')
 		return (ft_putnbr(va_arg(args, int)));
 	else if (id == 'u')
-		ft_putubnr(va_arg(args, unsigned int));
+		return (ft_putubnr(va_arg(args, unsigned int)));
 	else if (id == 'x')
 		;
 	else if (id == 'X')
