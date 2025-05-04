@@ -6,21 +6,18 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 17:57:58 by xwu               #+#    #+#             */
-/*   Updated: 2025/05/03 17:22:09 by xwu              ###   ########.fr       */
+/*   Updated: 2025/05/04 17:27:25 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdarg.h>
 #include <unistd.h>
+#include <stdint.h>
 
-int	ft_isspace(int c)
-{
-	return (c == 32 || (c >= 9 && c <= 13));
-}
-
-void	ft_putchar(char c)
+int	ft_putchar(char c)
 {
 	write(1, &c, 1);
+	return (1);
 }
 
 int	ft_putstr(char *s)
@@ -29,15 +26,9 @@ int	ft_putstr(char *s)
 
 	i = 0;
 	if (!s)
-	{
-		ft_putstr("(null)");
-		return (0);
-	}
+		return (ft_putstr("(null)"));
 	while (s[i])
-	{
-		ft_putchar(s[i]);
-		i++;
-	}
+		i += ft_putchar(s[i]);
 	return (i);
 }
 
@@ -80,50 +71,56 @@ int	ft_putubnr(unsigned int n)
 	ft_putchar((n % 10) + '0');
 	return (i);
 }
-int	ft_strlen(char *s)
+
+int	ft_puthex(unsigned long n, int upper, int prefix)
 {
-	int i;
+	char	*hex;
+	int		i;
 
 	i = 0;
-	if (!s)
-		return (0);
-	while (s[i++]);
+	if (upper)
+		hex = "0123456789ABCDEF";
+	else
+		hex = "0123456789abcdef";
+	if (prefix)
+	{
+		i += ft_putstr("0x");
+		prefix = 0;
+	}
+	if (n >= 16)
+		i += ft_puthex(n / 16, upper, prefix);
+	ft_putchar(hex[n % 16]);
+	i++;
 	return (i);
 }
 
 int	ft_redirect(char id, va_list args)
 {
-	char *s;
-
 	if (id == 'c')
-		return (ft_putchar(va_arg(args, int)), 1);
+		return (ft_putchar(va_arg(args, int)));
 	else if (id == 's')
-	{
-		s = va_arg(args, char *);
-		return(ft_putstr(s));
-	}
+		return (ft_putstr(va_arg(args, char *)));
 	else if (id == 'p')
-		;
+		return (ft_puthex((uintptr_t)va_arg(args, void *), 0, 1));
 	else if (id == 'd' || id == 'i')
 		return (ft_putnbr(va_arg(args, int)));
 	else if (id == 'u')
 		return (ft_putubnr(va_arg(args, unsigned int)));
 	else if (id == 'x')
-		;
+		return (ft_puthex(va_arg(args, unsigned int), 0, 0));
 	else if (id == 'X')
-		;
+		return (ft_puthex(va_arg(args, unsigned int), 1, 0));
 	else if (id == '%')
-		return(ft_putchar('%'), 1);
+		return (ft_putchar('%'));
 	else
 		return (0);
-	return (1);
 }
 
 int	ft_printf(char const *s, ...)
 {
 	va_list	args;
 	int		i;
-	int count;
+	int		count;
 
 	i = 0;
 	count = 0;
@@ -135,10 +132,10 @@ int	ft_printf(char const *s, ...)
 			ft_putchar(s[i]);
 			count++;
 		}
-		else
+		else if (s[i + 1])
 		{
+			count += ft_redirect(s[i + 1], args);
 			i++;
-			count += ft_redirect(s[i], args);
 		}
 		i++;
 	}

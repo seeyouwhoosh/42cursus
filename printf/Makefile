@@ -5,7 +5,7 @@ CC = cc
 AR = ar -rcs
 CFLAGS = -Wall -Wextra -Werror
 
-NAME = libprintf.a
+NAME = libftprintf.a
 
 SOURCES = ft_printf.c
 OBJECTS = $(SOURCES:.c=.o)
@@ -20,7 +20,7 @@ $(NAME): $(OBJECTS)
 	$(AR) $@ $^
 
 $(TEST): $(NAME) $(TEST_OBJECTS)
-	$(CC) $(CFLAGS) -o $@ $(TEST_OBJECTS) -L. -lprintf
+	$(CC) $(CFLAGS) -o $@ $(TEST_OBJECTS) -L. -lftprintf
 	./$@
 
 %.o: %.c
