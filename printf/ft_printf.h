@@ -6,13 +6,12 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:46:16 by xwu               #+#    #+#             */
-/*   Updated: 2025/05/05 02:15:10 by xwu              ###   ########.fr       */
+/*   Updated: 2025/05/05 18:59:36 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
-
 # include <stdarg.h>
 
 int		ft_printf(const char *s, ...);
@@ -28,8 +27,5 @@ int		ft_putnbr(int n);
 int		ft_putubnr(unsigned int n);
 
 int		ft_puthex(unsigned long n, int upper);
-
-
-
 
 #endif

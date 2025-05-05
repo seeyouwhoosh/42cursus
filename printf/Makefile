@@ -10,26 +10,18 @@ NAME = libftprintf.a
 SOURCES = ft_printf.c ft_utils.c
 OBJECTS = $(SOURCES:.c=.o)
 
-TEST = test
-TEST_SOURCES = test.c
-TEST_OBJECTS = $(TEST_SOURCES:.c=.o)
-
-all: $(NAME) $(TEST)
+all: $(NAME)
 
 $(NAME): $(OBJECTS)
 	$(AR) $@ $^
-
-$(TEST): $(NAME) $(TEST_OBJECTS)
-	$(CC) $(CFLAGS) -o $@ $(TEST_OBJECTS) -L. -lftprintf
-	./$@
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJECTS) $(TEST_OBJECTS)
+	rm -f $(OBJECTS)
 
 fclean: clean
-	rm -f $(NAME) $(TEST)
+	rm -f $(NAME)
 
 re: fclean all
