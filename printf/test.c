@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 02:06:24 by xwu               #+#    #+#             */
-/*   Updated: 2025/05/04 17:27:57 by xwu              ###   ########.fr       */
+/*   Updated: 2025/05/05 02:28:15 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	main(void)
 	printf("   Exp: %d	Rea: %d\n\n", printf_value, ft_printf_value);
 
 	void *ptr = str;
-	void *ptr2 = (void *) 0;
+	void *ptr2 = NULL;
  	printf_value = printf("3. Pointer: %p\n", ptr);
 	ft_printf_value = ft_printf("   Pointer: %p\n", ptr);
 	printf("   Exp: %d	Rea: %d\n\n", printf_value, ft_printf_value);
@@ -71,13 +71,15 @@ int	main(void)
 	printf("   Exp: %d	Rea: %d\n\n", printf_value, ft_printf_value);
 
 	
-	printf_value = printf("9. Percentage: %    %\n");
-	ft_printf_value = ft_printf("   Percentage: %    %\n");
+	printf_value = printf("9. Percentage: %%\n");
+	ft_printf_value = ft_printf("   Percentage: %%\n");
 	printf("   Exp: %d	Rea: %d\n\n", printf_value, ft_printf_value);
 
 	printf("******* END OF THE PRINTF TRIALS *******\n\n");
 	printf("Independent testing area \n");
 
-	ft_printf("%c%c%c%c%c", 'a', 'i', 'u', 'e', 'o');	
+	printf("Characters: %c%c%c%c%c\n", 'a', 'b', 'c', 'd', 'e');
+	ft_printf("Characters: %c%c%c%c%c\n", 'a', 'b', 'c', 'd', 'e');
+	
 	return (0);
 }

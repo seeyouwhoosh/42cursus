@@ -4,6 +4,8 @@
         "libft.h": "c",
         "stddef.h": "c",
         "ft_printf.h": "c",
-        "limits.h": "c"
+        "limits.h": "c",
+        "stdint.h": "c",
+        "stdarg.h": "c"
     }
 }

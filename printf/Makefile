@@ -7,7 +7,7 @@ CFLAGS = -Wall -Wextra -Werror
 
 NAME = libftprintf.a
 
-SOURCES = ft_printf.c
+SOURCES = ft_printf.c ft_utils.c
 OBJECTS = $(SOURCES:.c=.o)
 
 TEST = test
