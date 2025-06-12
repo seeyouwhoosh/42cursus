@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiyu <xiyu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: xwu <xwu@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:36:28 by xwu               #+#    #+#             */
-/*   Updated: 2025/06/12 00:42:08 by xiyu             ###   ########.fr       */
+/*   Updated: 2025/06/12 18:53:34 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 
 #define BUFFER_SIZE 2048
 
-int	ft_strchrpos(char *line, int c) // No sé si esto tiene algún sentido, pero yo creo que sí
+int	ft_strchrpos(char *line, int c)
 {
 	unsigned int	i;
 
 	i = 0;
-	while(line[i]++)
+	while (line[i]++)
 		if (line[i] == c)
 			return (i);
 	return (-1);
@@ -29,63 +29,70 @@ int	ft_strchrpos(char *line, int c) // No sé si esto tiene algún sentido, pero
 size_t	ft_strlen(char *str) 
 {
 	size_t	n;
+
 	while(*str++)
 		n++;
 	return (n);
 }
 
-void	ft_strndump(char **dump, char *litter) // Brainrot. 
+#include <stdio.h>
+
+char	*ft_strndump(char **dump, char *litter, unsigned int n)
 {
-	char 			*newstring;
-	unsigned int	r;
+	char			*newstring;
+	unsigned int	i;
 	unsigned int	ndump;
-	unsigned int	nlitter;
-	
+
 	ndump = ft_strlen(*dump);
-	nlitter = ft_strlen(litter);
-	r = ndump + nlitter + 1;
-	newstring = malloc(r);
+	if (n == 0)
+		n = ft_strlen(litter);
+	if (n > ft_strlen(litter))
+		return (NULL);
+	i = ndump + n + 1;
+	newstring = malloc(i);
 	if (!newstring)
 		return (NULL);
-	newstring[r] = '\0';
-	while (--r)
+	newstring[i] = '\0';
+	i--;
+	while (i--)
 	{
-		if (r > ndump)
-			newstring[r] = litter[r - ndump];
+		if (i >= ndump)
+			newstring[i] = litter[i - ndump];
 		else
-			newstring[r] = (*dump)[r];
+			newstring[i] = (*dump)[i];
 	}
 	free(*dump);
-	*dump = newstring;
+	dump = &newstring;
+	return (*dump);
 }
 
 char	*get_next_line(int fd)
 {
-	char		*readline;
+	char		*chunk;
 	static char	*pile;
+	char		*line;
 	int			nbytes;
-	
-	nbytes = 0;
-	readline = (char *) malloc(BUFFER_SIZE + 1);
-	if (!readline)
-		return (NULL);
-	nbytes = read(fd, readline, BUFFER_SIZE);
-	if (nbytes <= 0)
-	{
-		free(readline);
-		return (NULL);
-	}
-	if (ft_strchr(readline) != -1)
-	{
-		ft_strdump(&pile, readline);
-		readline[nbytes] = '\0';
+	int			i;
 
-	}
-	else
+	chunk = (char *)malloc(BUFFER_SIZE);
+	if (!chunk)
+		return (NULL);
+	while (nbytes > 0)
 	{
-		;
+		nbytes = read(fd, chunk, BUFFER_SIZE);
+		if (nbytes <= 0)
+			return (free(chunk), NULL);
+		i = ft_strchrpos(chunk, '\n');
+		if (i != -1)
+		{
+			ft_strndump(&line, chunk, i + 1);
+			ft_strndump(&pile, &chunk[i], 0);
+			return (line);
+		}
+		else
+			ft_strndump(&line, chunk, 0);
 	}
-	
+	return (line);
 }
 
 /*
@@ -99,7 +106,6 @@ char	*get_next_line(int fd)
 */
 
 #include <fcntl.h>
-#include <stdio.h>
 int	main(void)
 {
 	char	*filename = "text.txt";
@@ -115,5 +121,9 @@ int	main(void)
 	}
 	close(fp);
 	printf("EOF");
+	char *f = "hola, safjisdaf ";
+	char *s = "socorro, help";
+	printf("%s", ft_strndump(&f, s, 7));
 	return (0);
 }
+
