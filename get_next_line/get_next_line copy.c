@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:36:28 by xwu               #+#    #+#             */
-/*   Updated: 2025/06/14 17:26:24 by xwu              ###   ########.fr       */
+/*   Updated: 2025/06/18 16:59:37 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,10 @@ size_t	ft_strlen(char *str)
 {
 	size_t	n;
 
-	while(*str++)
+	while (*str++)
 		n++;
 	return (n);
 }
-
 
 
 char	*ft_strndump(char **dump, char *litter, unsigned int n) /* Esta creo que es la función que más falla. Se supone que coge dos punteros y la cantidad que se tiene que copiar. Creoq ue lo má feo de este programa es que sobreescribre directamente sobre la dirección del puntero. */
@@ -71,17 +70,21 @@ char	*ft_strndump(char **dump, char *litter, unsigned int n) /* Esta creo que es
 char	*get_next_line(int fd) /* La lógica creo que debería estar bien, pero como lo he usado teniendo en cuenta las funciones anteriores, pues bueno xd. */
 {
 	char		*chunk;
-	static char	*pile;
+	static char	*buffer;
 	char		*line;
 	int			nbytes;
 	int			i;
 
 	nbytes = 1;
-	pile = (char *)malloc(BUFFER_SIZE);
+	buffer = (char *)malloc(BUFFER_SIZE);
 	chunk = (char *)malloc(BUFFER_SIZE);
 	line = NULL;
 	if (!chunk)
 		return (NULL);
+	if (!(buffer))
+	{
+		; /* Aquí comprobar que no está vacío xd 																	*/
+	}
 	while (nbytes > 0)
 	{
 		nbytes = read(fd, chunk, BUFFER_SIZE);
@@ -91,7 +94,7 @@ char	*get_next_line(int fd) /* La lógica creo que debería estar bien, pero com
 		if (i != -1)
 		{
 			ft_strndump(&line, chunk, i + 1);
-			pile = &chunk[i];
+			buffer = &chunk[i];
 			return (line);
 		}
 		else
