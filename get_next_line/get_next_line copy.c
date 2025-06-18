@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:36:28 by xwu               #+#    #+#             */
-/*   Updated: 2025/06/18 16:59:37 by xwu              ###   ########.fr       */
+/*   Updated: 2025/06/18 19:56:49 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ size_t	ft_strlen(char *str)
 }
 
 
-char	*ft_strndump(char **dump, char *litter, unsigned int n) /* Esta creo que es la función que más falla. Se supone que coge dos punteros y la cantidad que se tiene que copiar. Creoq ue lo má feo de este programa es que sobreescribre directamente sobre la dirección del puntero. */
+char	*ft_strndump(char **dump, char *litter, unsigned int n) /* Esta creo que es la función que más falla. Se supone que coge dos punteros y la cantidad que se tiene que copiar. Creo que lo más feo de este programa es que sobreescribre directamente sobre la dirección del puntero. */
 {
 	char			*newstring;
 	unsigned int	i;
@@ -70,20 +70,19 @@ char	*ft_strndump(char **dump, char *litter, unsigned int n) /* Esta creo que es
 char	*get_next_line(int fd) /* La lógica creo que debería estar bien, pero como lo he usado teniendo en cuenta las funciones anteriores, pues bueno xd. */
 {
 	char		*chunk;
-	static char	*buffer;
+	static char	buffer[BUFFER_SIZE + 1];
 	char		*line;
 	int			nbytes;
 	int			i;
 
 	nbytes = 1;
-	buffer = (char *)malloc(BUFFER_SIZE);
 	chunk = (char *)malloc(BUFFER_SIZE);
 	line = NULL;
 	if (!chunk)
 		return (NULL);
 	if (!(buffer))
 	{
-		; /* Aquí comprobar que no está vacío xd 																	*/
+		; /* Aquí comprobar que no está vacío xd */
 	}
 	while (nbytes > 0)
 	{
@@ -94,7 +93,7 @@ char	*get_next_line(int fd) /* La lógica creo que debería estar bien, pero com
 		if (i != -1)
 		{
 			ft_strndump(&line, chunk, i + 1);
-			buffer = &chunk[i];
+			buffer = &chunk[i]; //memvmove)
 			return (line);
 		}
 		else

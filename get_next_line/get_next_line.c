@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:36:28 by xwu               #+#    #+#             */
-/*   Updated: 2025/06/18 16:35:38 by xwu              ###   ########.fr       */
+/*   Updated: 2025/06/18 19:45:18 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,34 +17,51 @@
 #include <stdio.h>
 #include <fcntl.h>
 
-int	ft_strchrpos(char *line, int c)
+int	ft_strchr(char *line, int c)
 {
-	unsigned int	i;
-
-	i = 0;
-	while (line[i]++)
-		if (line[i] == c)
-			return (i);
-	return (-1);
+	while (*line++)
+		if (*line == c)
+			return (1);
+	return (0);
 }
 
 size_t	ft_strlen(char *str)
 {
 	size_t	n;
 
+	n = 0;
+	if (!str)
+		return (0);
 	while (*str++)
 		n++;
 	return (n);
+}
 
+char	*get_next_line(int fd)
+{
+	static char	buffer[BUFFER_SIZE + 1];
+	char		*dump;
+	char		*line;
+	int			nbytes;
 
-/*
+	int			i;
 
-Function prototype(fd)
-
-return puntero1
-
-
-*/
+	if (fd < 0 || BUFFER_SIZE < 0)
+		return (NULL);
+	nbytes = 1;
+	if (buffer)
+		line = ft_strndup(buffer, ft_strlen(buffer));
+	while (nbytes > 0 && !ft_strchr(buffer, '\n'))
+	{
+		nbytes = read(fd, buffer, BUFFER_SIZE);
+		if (nbytes <= 0)
+			break;
+		buffer[nbytes] = '\0';
+		dump = ft_strjoin(line, buffer);
+	}
+	line = ft_extractline(dump, buffer);
+	return (line);
+}
 
 int	main(void)
 {
@@ -59,11 +76,7 @@ int	main(void)
 	}
 	close(fp);
 	printf("EOF");
-	
-	// Checking strndump
-	char *f = "hola, safjisdaf ";
-	char *s = "socorro, help";
-	printf("%s", ft_strndump(&f, s, 7));
+
 	return (0);
 }
 
