@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:36:28 by xwu               #+#    #+#             */
-/*   Updated: 2025/06/20 23:35:32 by marvin           ###   ########.fr       */
+/*   Updated: 2025/06/20 23:38:50 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,35 +133,21 @@ char	*get_next_line(int fd)
 	size_t		remaining;
 	while (1)
 	{
-		printf("Checkpoint 0\n");
 		line = NULL; // el problmea no debería ser este... puesto que sobreescribimos line
 		if (buffer[0] == '\0')
 		{
 			bytesread = read(fd, buffer, BUFFER_SIZE);
-			printf("Checkpoint 1\n");
 			if (bytesread <= 0)
 				return (NULL);
-			printf("Checkpoint 2\n");
 			buffer[bytesread] = '\0';
-			printf("Checkpoint 3\n");
 		}
 		newlinepos = ft_strchr(buffer, '\n');
-		printf("Checkpoint 3.1\n");
 		nmoved = ft_strpdump(&line, buffer, newlinepos); 
-		printf("Checkpoint 3.2\n");
 		remaining = ft_strlen(buffer) - nmoved + 1;
-		printf("Checkpoint 4\n");
-		printf("Position of '\\n': %p\nCharacters read: %ld\nCharacters dumped: %ld\nCharacters remained (added \\0): %ld\n", newlinepos, ft_strlen(buffer), ft_strlen(line), remaining);
 		if (remaining == 1 || newlinepos)
-		{
-			printf("Checkpoint 5\n");
-			return (ft_gnl_memmove(buffer, newlinepos, remaining), printf("BUFFER: %s\n", buffer), line);
-		}
+			return (ft_gnl_memmove(buffer, newlinepos, remaining), line);
 		else
-		{
-			printf("Checkpoint 6\n");
 			buffer[0] = '\0';
-		}
 	}
 }
 
@@ -227,14 +213,15 @@ int	main(void)
 	FILE *fp = fopen("text.txt", "r");
 	char *gline = NULL;
 	size_t m = 0;
-	size_t totalnlines = 0;
+	size_t totalnlinescmp = 0;
+	extern totalnlines;
 	ssize_t nline = getline(&gline, &m, fp);
 	while (nline > -1)
 	{
-		totalnlines += nline;
+		totalnlinescmp += nline;
 		nline = getline(&gline, &m, fp);
 	}
-	printf("Total characters read: %ld\n", totalnlines);
+	printf("Total characters read: %ld\n", totalnlinescmp);
 	free(gline);
 	fclose(fp);
 
