@@ -6,6 +6,7 @@
         "ft_printf.h": "c",
         "limits.h": "c",
         "stdint.h": "c",
-        "stdarg.h": "c"
+        "stdarg.h": "c",
+        "stdio.h": "c"
     }
 }

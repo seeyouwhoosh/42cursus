@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:36:28 by xwu               #+#    #+#             */
-/*   Updated: 2025/06/19 18:41:11 by marvin           ###   ########.fr       */
+/*   Updated: 2025/06/20 18:40:32 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,22 @@
 #include <stdlib.h>
 #define BUFFER_SIZE 2048
 
-#include <stdio.h>
-#include <fcntl.h>
-
-int	ft_strchrpos(char *line, int c)
+char	*ft_strchr(const char *s, int c)
 {
-	unsigned int	i;
+	char	*s_cp;
 
-	i = 0;
-	if (!line)
-		return (-1);
-	while (line[i])
+	s_cp = (char *)s;
+	if (!s_cp)
+		return (NULL);
+	while (*s_cp)
 	{
-		if (line[i] == c)
-			return (i);
-		i++;
+		if (*s_cp == c)
+			return(s_cp);
+		s_cp++;
 	}
-	return (-1);
+	if (c == '\0')
+		return (s_cp);
+	return (NULL);
 }
 
 size_t	ft_strlen(char *str)
@@ -72,66 +71,99 @@ char	*ft_strndump(char **dump, char *litter, unsigned int n)
 	dump = &newstring;
 	return (*dump);
 }
+ */
+
+// size_t ft_strpdump(char **line, char *buffer, char *newlinepos); (incluyendo el newline) if newlinepos == NULL, se copia todo, si buffer == NULL, return 0; Se añade el '\0' al final.
+
+size_t ft_strpdump(char **line, char *buffer, char *newlinepos)
+{
+	;
+}
 
 char	*get_next_line(int fd)
 {
-	char		*chunk;
 	static char	buffer[BUFFER_SIZE + 1];
 	char		*line;
-	int			nbytes;
-	int			i;
+	size_t		bytesread;
+	char		*newlinepos;
+	size_t		nmoved;
+	size_t		remaining;
 
-	nbytes = 1;
-	chunk = (char *)malloc(BUFFER_SIZE);
-	line = NULL;
-	if (!chunk)
-		return (NULL);
-	if (!(buffer))
+	while (1)
 	{
-		; 
-	}
-	while (nbytes > 0)
-	{
-		nbytes = read(fd, chunk, BUFFER_SIZE);
-		if (nbytes <= 0)
-			return (free(chunk), NULL);
-		i = ft_strchrpos(chunk, '\n');
-		if (i != -1)
+		if (!(buffer[0]))
 		{
-			ft_strndump(&line, chunk, i + 1);
-			buffer = &chunk[i]; //memvmove)
-			return (line);
+			bytesread = read(fd, buffer, BUFFER_SIZE);
+			if (bytesread <= 0)
+				return (NULL);
+			buffer[bytesread] = '\0';
 		}
+		newlinepos = ft_strchr(buffer, '\n');
+		nmoved = ft_strpdump(&line, buffer, newlinepos); 
+		remaining = ft_strlen(buffer + nmoved) + 1;
+		if (newlinepos)
+			return (ft_memmove(buffer, newlinepos, remaining), line);
 		else
-			ft_strndump(&line, chunk, 0);
+			buffer[0] = '\0';
 	}
-	return (line);
 }
- */
 
+ 
+#include <stdio.h>
+#include <string.h>
+#include <fcntl.h>
 int	main(void)
 {
 	char list[][100] = {"", "Hello\n", "esto es \n una frase", " ", "\n"};
-	int nlist[] = {0, 6, 19, 1, 1};
-	int nllist[] = {-1, 5, 8, -1, 0};
-	int n;
 
-	printf("\nft_strlen test\n");
+	/* TESTS DE FUNCIONES AUXILIARES */
+	printf("\nft_strlen test: ");
+	size_t n;
+	size_t ncomp;
 	for (size_t i = 0; i < 5; i++)
 	{
-		n = (int)ft_strlen(list[i]);
-		printf("\"%s\": %d == %d?. %s\n", list[i],
-			n , nlist[i],
-			(n == nlist[i]) ? "Pass": "Break");
+		if ((n = ft_strlen(list[i])) != (ncomp = strlen(list[i])))
+		{
+			printf("Break in %s\n", list[i]);
+			n = -1;
+			break;
+		}
 	}
+	if (n != -1)
+		printf("Pass");
+
+	printf("\nft_strchr test: ");
+	char *s;
+	char *scomp;
+	for (size_t i = 0; i < 5; i++)
+	{
+		if ((s = ft_strchr(list[i], '\n')) != (scomp = ft_strchr(list[i], '\n')))
+		{
+			printf("Break in %s\n", list[i]);
+			s = NULL;
+			break;
+		}
+	}
+	if (s)
+		printf("Pass");
+
+	printf("\n");
+	FILE *fp = fopen("text.txt", "r");
+	char *gline = NULL;
+	size_t m = 0;
+	size_t totalnlines = 0;
+	ssize_t nline = getline(&gline, &m, fp);
+	while (nline > -1)
+	{
+		totalnlines += nline;
+		nline = getline(&gline, &m, fp);
+	}
+	printf("Total characters read: %ld\n", totalnlines);
+	free(gline);
+	fclose(fp);
+
+	int fd = open("text.txt", O_RDONLY);
+	printf("%s", get_next_line(fd));
 	
-	printf("\nft_strchrpos test\n");
-	for (size_t i = 0; i < 5; i++)
-	{
-		n = ft_strchrpos(list[i], '\n');
-		printf("\"%s\": %d == %d?. %s\n", list[i],
-			n , nllist[i],
-			(n == nllist[i]) ? "Pass": "Break");
-	}
 	return (0);
 }
