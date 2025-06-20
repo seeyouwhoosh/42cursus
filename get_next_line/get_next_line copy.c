@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:36:28 by xwu               #+#    #+#             */
-/*   Updated: 2025/06/20 22:24:39 by marvin           ###   ########.fr       */
+/*   Updated: 2025/06/20 23:35:32 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,23 +77,25 @@ char	*ft_strndump(char **dump, char *litter, unsigned int n)
 }
  */
 
-void	*ft_memmove(void *dest, const void *src, size_t count)
+void	*ft_gnl_memmove(void *dest, const void *src, size_t count)
 {
 	size_t	i;
 
-	if (dest < src)
+	if (!src)
 	{
-		i = 0;
-		while (count > i)
-			((char *)dest)[i] = ((const char *)src)[i++];
+		((char *)dest)[0] = '\0';
+		return (NULL);
 	}
-	else if (dest > src)
-		while (count--)
-			((char *)dest)[count] = ((const char *)src)[count];
+	i = 0;
+	src++;
+	while (count > i)
+	{
+		((char *)dest)[i] = ((const char *)src)[i];
+		i++;
+	}
+	((char *)dest)[i] = '\0';
 	return (dest);
 }
-
-// size_t ft_strpdump(char **line, char *buffer, char *newlinepos); (incluyendo el newline) if newlinepos == NULL, se copia todo, si buffer == NULL, return 0; Se añade el '\0' al final.
 
 size_t ft_strpdump(char **line, char *buffer, char *newlinepos)
 {
@@ -129,27 +131,39 @@ char	*get_next_line(int fd)
 	char		*newlinepos;
 	size_t		nmoved;
 	size_t		remaining;
-
 	while (1)
 	{
-		if (!(buffer[0]))
+		printf("Checkpoint 0\n");
+		line = NULL; // el problmea no debería ser este... puesto que sobreescribimos line
+		if (buffer[0] == '\0')
 		{
 			bytesread = read(fd, buffer, BUFFER_SIZE);
+			printf("Checkpoint 1\n");
 			if (bytesread <= 0)
 				return (NULL);
+			printf("Checkpoint 2\n");
 			buffer[bytesread] = '\0';
+			printf("Checkpoint 3\n");
 		}
 		newlinepos = ft_strchr(buffer, '\n');
+		printf("Checkpoint 3.1\n");
 		nmoved = ft_strpdump(&line, buffer, newlinepos); 
-		remaining = ft_strlen(buffer + nmoved) + 1;
-		if (newlinepos)
-			return (ft_memmove(buffer, newlinepos, remaining), line);
+		printf("Checkpoint 3.2\n");
+		remaining = ft_strlen(buffer) - nmoved + 1;
+		printf("Checkpoint 4\n");
+		printf("Position of '\\n': %p\nCharacters read: %ld\nCharacters dumped: %ld\nCharacters remained (added \\0): %ld\n", newlinepos, ft_strlen(buffer), ft_strlen(line), remaining);
+		if (remaining == 1 || newlinepos)
+		{
+			printf("Checkpoint 5\n");
+			return (ft_gnl_memmove(buffer, newlinepos, remaining), printf("BUFFER: %s\n", buffer), line);
+		}
 		else
+		{
+			printf("Checkpoint 6\n");
 			buffer[0] = '\0';
+		}
 	}
 }
-
-
 
 int	main(void)
 {
@@ -205,7 +219,7 @@ int	main(void)
 	for (size_t i = 0; i < 5; i++)
 		free(lines[i]);
 	if (s)
-		printf("\nTest result: Pass");
+		printf("\nTest result: Pass\n");
 
 
 	
@@ -225,7 +239,9 @@ int	main(void)
 	fclose(fp);
 
 	int fd = open("text.txt", O_RDONLY);
-	// printf("%s", get_next_line(fd));
+	printf("\nPRINTED LINE: %s", get_next_line(fd));
+	printf("\nPRINTED LINE: %s", get_next_line(fd));
+
 	
 	return (0);
 }
