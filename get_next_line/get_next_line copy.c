@@ -6,13 +6,17 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:36:28 by xwu               #+#    #+#             */
-/*   Updated: 2025/06/20 19:33:58 by marvin           ###   ########.fr       */
+/*   Updated: 2025/06/20 22:17:24 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
 #define BUFFER_SIZE 2048
+
+#include <stdio.h>
+#include <string.h>
+#include <fcntl.h>
 
 char	*ft_strchr(const char *s, int c)
 {
@@ -73,11 +77,48 @@ char	*ft_strndump(char **dump, char *litter, unsigned int n)
 }
  */
 
+void	*ft_memmove(void *dest, const void *src, size_t count)
+{
+	size_t	i;
+
+	if (dest < src)
+	{
+		i = 0;
+		while (count > i)
+			((char *)dest)[i] = ((const char *)src)[i++];
+	}
+	else if (dest > src)
+		while (count--)
+			((char *)dest)[count] = ((const char *)src)[count];
+	return (dest);
+}
+
 // size_t ft_strpdump(char **line, char *buffer, char *newlinepos); (incluyendo el newline) if newlinepos == NULL, se copia todo, si buffer == NULL, return 0; Se añade el '\0' al final.
 
 size_t ft_strpdump(char **line, char *buffer, char *newlinepos)
 {
-	;
+	char	*newline;
+	char	**ogline;
+	size_t	i;
+
+	i = 0;
+	ogline = line;
+	if (!(*line))
+		newline = malloc(ft_strlen(buffer) + 1);
+	else
+	{
+		newline = malloc(ft_strlen(*line) + ft_strlen(buffer) + 1);
+		if (!newline)
+			return (0);
+		while (**line)
+			newline[i++] = *(*line)++;
+	}
+	while (buffer <= newlinepos)
+		newline[i++] = *buffer++;
+	newline[i] = '\0';
+	free(*ogline);
+	*ogline = newline;
+	return (i);
 }
 
 char	*get_next_line(int fd)
@@ -108,10 +149,8 @@ char	*get_next_line(int fd)
 	}
 }
 
- 
-#include <stdio.h>
-#include <string.h>
-#include <fcntl.h>
+
+
 int	main(void)
 {
 	char list[][100] = {"", "Hello\n", "esto es \n una frase", " ", "\n"};
@@ -124,7 +163,7 @@ int	main(void)
 	{
 		if ((n = ft_strlen(list[i])) != (ncomp = strlen(list[i])))
 		{
-			printf("Break in %s\n", list[i]);
+			printf("Break in %ld\n", i);
 			n = -1;
 			break;
 		}
@@ -139,7 +178,7 @@ int	main(void)
 	{
 		if ((s = ft_strchr(list[i], '\n')) != (scomp = ft_strchr(list[i], '\n')))
 		{
-			printf("Break in %s\n", list[i]);
+			printf("Break in %ld\n", i);
 			s = NULL;
 			break;
 		}
@@ -147,23 +186,29 @@ int	main(void)
 	if (s)
 		printf("Pass");
 
-	printf("\nft_strpdump test: ");
-	char lines[4][128];
+	printf("\nft_strpdump test (MANUAL)\n");
+	char **lines = malloc(sizeof(char *) * 5);
 	char correct_lines[][128] = {"", "Hello\n", "esto es \n", " ", "\n"};
-
+	
 	for (size_t i = 0; i < 5; i++)
 	{
-		ft_strpdump(&(lines[i]), list[i], ft_strchr(list[i], '\n'));
-		if (!strcmp(lines[i], correct_lines[i]))
+		size_t ndump = ft_strpdump(&(lines[i]), list[i], ft_strchr(list[i], '\n'));
+		int ncmp = strcmp(lines[i], correct_lines[i]);
+		printf("\n---\nString to dump: \"%s\"\nString dumped:\"%s\"\nCharacters dumped: %ld\nComparison return: %d\n---\n", list[i], lines[i], ndump, ncmp);
+		if (ncmp)
 		{
-			printf("Break in %s\n", list[i]);
+			printf("Break in %ld\n", i);
 			s = NULL;
 			break;
 		}
 	}
+	for (size_t i = 0; i < 5; i++)
+		free(lines[i]);
 	if (s)
 		printf("Pass");
 
+
+	
 	printf("\n");
 	FILE *fp = fopen("text.txt", "r");
 	char *gline = NULL;
@@ -180,7 +225,7 @@ int	main(void)
 	fclose(fp);
 
 	int fd = open("text.txt", O_RDONLY);
-	printf("%s", get_next_line(fd));
+	// printf("%s", get_next_line(fd));
 	
 	return (0);
 }
