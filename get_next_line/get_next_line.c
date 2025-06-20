@@ -3,26 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xwu <xwu@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:36:28 by xwu               #+#    #+#             */
-/*   Updated: 2025/06/18 19:45:18 by xwu              ###   ########.fr       */
+/*   Updated: 2025/06/21 00:07:01 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
-#define BUFFER_SIZE 2048
+#define BUFFER_SIZE 1000000
+extern size_t totalnlines;
 
-#include <stdio.h>
-#include <fcntl.h>
-
-int	ft_strchr(char *line, int c)
+char	*ft_strchr(const char *s, int c)
 {
-	while (*line++)
-		if (*line == c)
-			return (1);
-	return (0);
+	char	*s_cp;
+
+	s_cp = (char *)s;
+	if (!s_cp)
+		return (NULL);
+	while (*s_cp)
+	{
+		if (*s_cp == c)
+			return(s_cp);
+		s_cp++;
+	}
+	if (c == '\0')
+		return (s_cp);
+	return (NULL);
 }
 
 size_t	ft_strlen(char *str)
@@ -30,53 +38,83 @@ size_t	ft_strlen(char *str)
 	size_t	n;
 
 	n = 0;
-	if (!str)
-		return (0);
 	while (*str++)
 		n++;
 	return (n);
 }
 
+void	*ft_gnl_memmove(void *dest, const void *src, size_t count)
+{
+	size_t	i;
+
+	if (!src)
+	{
+		((char *)dest)[0] = '\0';
+		return (NULL);
+	}
+	i = 0;
+	src++;
+	while (count > i)
+	{
+		((char *)dest)[i] = ((const char *)src)[i];
+		i++;
+	}
+	((char *)dest)[i] = '\0';
+	return (dest);
+}
+
+size_t ft_strpdump(char **line, char *buffer, char *newlinepos)
+{
+	char	*newline;
+	char	**ogline;
+	size_t	i;
+
+	i = 0;
+	ogline = line;
+	if (!(*line))
+		newline = malloc(ft_strlen(buffer) + 1);
+	else
+	{
+		newline = malloc(ft_strlen(*line) + ft_strlen(buffer) + 1);
+		if (!newline)
+			return (0);
+		while (**line)
+			newline[i++] = *(*line)++;
+	}
+	while (buffer <= newlinepos || ((!newlinepos) && *buffer))
+		newline[i++] = *buffer++;
+	newline[i] = '\0';
+	free(*ogline);
+	*ogline = newline;
+	return (i);
+}
+
 char	*get_next_line(int fd)
 {
 	static char	buffer[BUFFER_SIZE + 1];
-	char		*dump;
 	char		*line;
-	int			nbytes;
-
-	int			i;
-
-	if (fd < 0 || BUFFER_SIZE < 0)
-		return (NULL);
-	nbytes = 1;
-	if (buffer)
-		line = ft_strndup(buffer, ft_strlen(buffer));
-	while (nbytes > 0 && !ft_strchr(buffer, '\n'))
+	size_t		bytesread;
+	char		*newlinepos;
+	size_t		nmoved;
+	size_t		remaining;
+	
+	while (1)
 	{
-		nbytes = read(fd, buffer, BUFFER_SIZE);
-		if (nbytes <= 0)
-			break;
-		buffer[nbytes] = '\0';
-		dump = ft_strjoin(line, buffer);
+		line = NULL;
+		if (buffer[0] == '\0')
+		{
+			bytesread = read(fd, buffer, BUFFER_SIZE);
+			if (bytesread <= 0)
+				return (NULL);
+			buffer[bytesread] = '\0';
+		}
+		newlinepos = ft_strchr(buffer, '\n');
+		nmoved = ft_strpdump(&line, buffer, newlinepos); totalnlines += nmoved; // QUITAR ESTA LÍNEA
+		remaining = ft_strlen(buffer) - nmoved + 1;
+		if (remaining == 1 || newlinepos)
+			return (ft_gnl_memmove(buffer, newlinepos, remaining), line);
+		else
+			buffer[0] = '\0';
 	}
-	line = ft_extractline(dump, buffer);
-	return (line);
-}
-
-int	main(void)
-{
-	char	*filename = "text.txt";
-	int	fp = open(filename, O_RDONLY);
-	char *line = get_next_line(fp);
-	while (line != NULL)
-	{
-		printf("%s", line);
-		free(line);
-		line = get_next_line(fp);
-	}
-	close(fp);
-	printf("EOF");
-
-	return (0);
 }
 
