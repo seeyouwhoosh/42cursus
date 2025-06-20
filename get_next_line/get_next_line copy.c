@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:36:28 by xwu               #+#    #+#             */
-/*   Updated: 2025/06/20 23:38:50 by marvin           ###   ########.fr       */
+/*   Updated: 2025/06/20 23:47:03 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <fcntl.h>
+size_t totalnlines = 0;
 
 char	*ft_strchr(const char *s, int c)
 {
@@ -131,6 +132,7 @@ char	*get_next_line(int fd)
 	char		*newlinepos;
 	size_t		nmoved;
 	size_t		remaining;
+	
 	while (1)
 	{
 		line = NULL; // el problmea no debería ser este... puesto que sobreescribimos line
@@ -143,6 +145,7 @@ char	*get_next_line(int fd)
 		}
 		newlinepos = ft_strchr(buffer, '\n');
 		nmoved = ft_strpdump(&line, buffer, newlinepos); 
+		totalnlines += nmoved;
 		remaining = ft_strlen(buffer) - nmoved + 1;
 		if (remaining == 1 || newlinepos)
 			return (ft_gnl_memmove(buffer, newlinepos, remaining), line);
@@ -214,7 +217,6 @@ int	main(void)
 	char *gline = NULL;
 	size_t m = 0;
 	size_t totalnlinescmp = 0;
-	extern totalnlines;
 	ssize_t nline = getline(&gline, &m, fp);
 	while (nline > -1)
 	{
@@ -226,9 +228,12 @@ int	main(void)
 	fclose(fp);
 
 	int fd = open("text.txt", O_RDONLY);
-	printf("\nPRINTED LINE: %s", get_next_line(fd));
-	printf("\nPRINTED LINE: %s", get_next_line(fd));
-
+	char *gnlline;
+	while (gnlline = get_next_line(fd))
+	{
+		;
+	}
+	printf("Total characters read: %ld\n", totalnlines);
 	
 	return (0);
 }
