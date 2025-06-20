@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:36:28 by xwu               #+#    #+#             */
-/*   Updated: 2025/06/20 18:40:32 by marvin           ###   ########.fr       */
+/*   Updated: 2025/06/20 19:33:58 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,23 @@ int	main(void)
 	for (size_t i = 0; i < 5; i++)
 	{
 		if ((s = ft_strchr(list[i], '\n')) != (scomp = ft_strchr(list[i], '\n')))
+		{
+			printf("Break in %s\n", list[i]);
+			s = NULL;
+			break;
+		}
+	}
+	if (s)
+		printf("Pass");
+
+	printf("\nft_strpdump test: ");
+	char lines[4][128];
+	char correct_lines[][128] = {"", "Hello\n", "esto es \n", " ", "\n"};
+
+	for (size_t i = 0; i < 5; i++)
+	{
+		ft_strpdump(&(lines[i]), list[i], ft_strchr(list[i], '\n'));
+		if (!strcmp(lines[i], correct_lines[i]))
 		{
 			printf("Break in %s\n", list[i]);
 			s = NULL;
