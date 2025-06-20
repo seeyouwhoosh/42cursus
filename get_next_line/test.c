@@ -101,7 +101,7 @@ int	main(void)
 	printf("%s", (totalnlines == totalnlinescmp)? "Pass\n": "Break");
 	if (totalnlines != totalnlinescmp)
 		printf(" in %ld != %ld\n", totalnlines, totalnlinescmp);
-	
+
 	free(gline);
 	fclose(fp);
 	free(gnlline);
