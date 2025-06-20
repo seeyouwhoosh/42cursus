@@ -10,15 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "get_next_line.h"
+#include "get_next_line.c"
+
 #include <stdio.h>
 #include <string.h>
 #include <fcntl.h>
 size_t totalnlines = 0;
-#include "get_next_line.c"
 
 int	main(void)
 {
 	char list[][100] = {"", "Hello World\n", "Esto es \n una línea nueva", " ", "\n"};
+
 
 	/* ----------------- TESTS DE FUNCIONES AUXILIARES -----------------*/
 	printf("\nTEST ft_strlen: ");
@@ -36,6 +39,7 @@ int	main(void)
 	if (n != -1)
 		printf("Pass");
 
+
 	printf("\nTEST ft_strchr: ");
 	char *s;
 	char *scomp;
@@ -50,6 +54,7 @@ int	main(void)
 	}
 	if (s)
 		printf("Pass");
+
 
 	printf("\nTEST ft_strpdump (MANUAL)\n");
 	char **lines = malloc(sizeof(char *) * 5);
@@ -73,9 +78,7 @@ int	main(void)
 		printf("\nTEST result: Pass\n");
 
 
-
 	/* ----------------- TESTS DE FUNCIÖN PRINCIPAL -----------------*/
-
 	printf("\nTEST get_next_line: ");
 	FILE *fp = fopen("text.txt", "r");
 	char *gline;

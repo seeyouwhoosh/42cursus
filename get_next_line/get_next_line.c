@@ -6,14 +6,11 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:36:28 by xwu               #+#    #+#             */
-/*   Updated: 2025/06/21 00:07:01 by marvin           ###   ########.fr       */
+/*   Updated: 2025/06/21 00:37:11 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdlib.h>
-#define BUFFER_SIZE 1000000
-extern size_t totalnlines;
+#include "get_next_line.h"
 
 char	*ft_strchr(const char *s, int c)
 {
