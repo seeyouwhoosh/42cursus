@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:36:28 by xwu               #+#    #+#             */
-/*   Updated: 2025/06/20 22:17:24 by marvin           ###   ########.fr       */
+/*   Updated: 2025/06/20 22:24:39 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ size_t ft_strpdump(char **line, char *buffer, char *newlinepos)
 		while (**line)
 			newline[i++] = *(*line)++;
 	}
-	while (buffer <= newlinepos)
+	while (buffer <= newlinepos || ((!newlinepos) && *buffer))
 		newline[i++] = *buffer++;
 	newline[i] = '\0';
 	free(*ogline);
@@ -153,7 +153,7 @@ char	*get_next_line(int fd)
 
 int	main(void)
 {
-	char list[][100] = {"", "Hello\n", "esto es \n una frase", " ", "\n"};
+	char list[][100] = {"", "Hello World\n", "Esto es \n una línea nueva", " ", "\n"};
 
 	/* TESTS DE FUNCIONES AUXILIARES */
 	printf("\nft_strlen test: ");
@@ -188,7 +188,7 @@ int	main(void)
 
 	printf("\nft_strpdump test (MANUAL)\n");
 	char **lines = malloc(sizeof(char *) * 5);
-	char correct_lines[][128] = {"", "Hello\n", "esto es \n", " ", "\n"};
+	char correct_lines[][128] = {"", "Hello World\n", "Esto es \n", " ", "\n"};
 	
 	for (size_t i = 0; i < 5; i++)
 	{
@@ -205,7 +205,7 @@ int	main(void)
 	for (size_t i = 0; i < 5; i++)
 		free(lines[i]);
 	if (s)
-		printf("Pass");
+		printf("\nTest result: Pass");
 
 
 	
