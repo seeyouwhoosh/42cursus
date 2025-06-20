@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line copy.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xwu <xwu@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:36:28 by xwu               #+#    #+#             */
-/*   Updated: 2025/06/18 19:56:49 by xwu              ###   ########.fr       */
+/*   Updated: 2025/06/19 18:41:11 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,19 @@
 #include <stdio.h>
 #include <fcntl.h>
 
-int	ft_strchrpos(char *line, int c) /* Devuelve la posición en la que se encuentra el character c, un poco inútil, la verdad */
+int	ft_strchrpos(char *line, int c)
 {
 	unsigned int	i;
 
 	i = 0;
-	while (line[i]++)
+	if (!line)
+		return (-1);
+	while (line[i])
+	{
 		if (line[i] == c)
 			return (i);
+		i++;
+	}
 	return (-1);
 }
 
@@ -32,13 +37,14 @@ size_t	ft_strlen(char *str)
 {
 	size_t	n;
 
+	n = 0;
 	while (*str++)
 		n++;
 	return (n);
 }
 
-
-char	*ft_strndump(char **dump, char *litter, unsigned int n) /* Esta creo que es la función que más falla. Se supone que coge dos punteros y la cantidad que se tiene que copiar. Creo que lo más feo de este programa es que sobreescribre directamente sobre la dirección del puntero. */
+/* 
+char	*ft_strndump(char **dump, char *litter, unsigned int n)
 {
 	char			*newstring;
 	unsigned int	i;
@@ -67,7 +73,7 @@ char	*ft_strndump(char **dump, char *litter, unsigned int n) /* Esta creo que es
 	return (*dump);
 }
 
-char	*get_next_line(int fd) /* La lógica creo que debería estar bien, pero como lo he usado teniendo en cuenta las funciones anteriores, pues bueno xd. */
+char	*get_next_line(int fd)
 {
 	char		*chunk;
 	static char	buffer[BUFFER_SIZE + 1];
@@ -82,7 +88,7 @@ char	*get_next_line(int fd) /* La lógica creo que debería estar bien, pero com
 		return (NULL);
 	if (!(buffer))
 	{
-		; /* Aquí comprobar que no está vacío xd */
+		; 
 	}
 	while (nbytes > 0)
 	{
@@ -101,26 +107,31 @@ char	*get_next_line(int fd) /* La lógica creo que debería estar bien, pero com
 	}
 	return (line);
 }
-
+ */
 
 int	main(void)
 {
-	char	*filename = "text.txt";
-	int	fp = open(filename, O_RDONLY);
-	char *line = malloc(4096);
+	char list[][100] = {"", "Hello\n", "esto es \n una frase", " ", "\n"};
+	int nlist[] = {0, 6, 19, 1, 1};
+	int nllist[] = {-1, 5, 8, -1, 0};
+	int n;
 
-	line = get_next_line(fp);
-	while (line != NULL)
+	printf("\nft_strlen test\n");
+	for (size_t i = 0; i < 5; i++)
 	{
-		printf("%s", line);
-		free(line);
-		line = get_next_line(fp);
+		n = (int)ft_strlen(list[i]);
+		printf("\"%s\": %d == %d?. %s\n", list[i],
+			n , nlist[i],
+			(n == nlist[i]) ? "Pass": "Break");
 	}
-	close(fp);
-	printf("EOF");
-	char *f = "hola, safjisdaf ";
-	char *s = "socorro, help";
-	printf("%s", ft_strndump(&f, s, 7));
+	
+	printf("\nft_strchrpos test\n");
+	for (size_t i = 0; i < 5; i++)
+	{
+		n = ft_strchrpos(list[i], '\n');
+		printf("\"%s\": %d == %d?. %s\n", list[i],
+			n , nllist[i],
+			(n == nllist[i]) ? "Pass": "Break");
+	}
 	return (0);
 }
-
