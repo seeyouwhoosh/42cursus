@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:36:28 by xwu               #+#    #+#             */
-/*   Updated: 2025/06/23 10:14:50 by xwu              ###   ########.fr       */
+/*   Updated: 2025/06/23 10:34:00 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ char	*ft_pos_nl(const char *s)
 	s_cp = (char *)s;
 	if (!s_cp)
 		return (NULL);
-	printf("Checkpoint");
 	while (*s_cp)
 	{
 		if (*s_cp == '\n')
@@ -79,7 +78,10 @@ char	*get_next_line(int fd)
 			if (bytesread <= 0)
 				return (NULL);
 			buffer[bytesread] = '\0';
-		}
+		} // Esto está bien
+
+
+		
 		newlinepos = ft_strchr(buffer, '\n');
 		nmoved = ft_strpdump(&line, buffer, newlinepos);
 		totalnlines += nmoved; // QUITAR ESTA LÍNEA
