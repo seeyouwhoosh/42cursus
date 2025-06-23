@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:36:28 by xwu               #+#    #+#             */
-/*   Updated: 2025/06/23 13:23:39 by xwu              ###   ########.fr       */
+/*   Updated: 2025/06/23 13:35:44 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,10 +109,10 @@ char	*get_next_line(int fd)
 
 		pos_nl = ft_pos_nl(buffer);
 		ft_strpdump(&line, buffer, pos_nl);
-		totalnlines += pos_nl - buffer; // QUITAR ESTA LÍNEA
+		totalnlines += pos_nl - (char *)buffer; // QUITAR ESTA LÍNEA
 		n = strlen(buffer) - (pos_nl - buffer) + 1;
 		ft_gnl_memmove(buffer, pos_nl, n);
-		if(ft_pos_nl(line))
+		if (ft_pos_nl(line))
 			return(line);
 	}
 }
