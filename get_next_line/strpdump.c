@@ -94,7 +94,7 @@ size_t	ft_strpdump2(char **line, char *buffer, char *newlinepos) //No funciona
 */
 
 
-size_t	ft_strpdump3_1(char **line, char *buffer, char *pos_nl)
+size_t	ft_strpdump3_1(char **line, char *buffer, char *pos_nl) // Más o menos, pero usa demasiadas funciones
 {
 	size_t	n;
 	char	*newline;
@@ -104,7 +104,7 @@ size_t	ft_strpdump3_1(char **line, char *buffer, char *pos_nl)
 	if (!pos_nl)
 		n = strlen(buffer);
 	else
-		n = pos_nl - buffer;
+		n = pos_nl - buffer + 1;
 	if (*line)
 	{
 		newline = malloc(strlen(*line) + n + 1);
@@ -122,7 +122,7 @@ size_t	ft_strpdump3_1(char **line, char *buffer, char *pos_nl)
 	return (n);
 }
 
-size_t	ft_strpdump3(char **line, char *buffer, char *pos_nl)
+size_t	ft_strpdump3_2(char **line, char *buffer, char *pos_nl)
 {
 	size_t	n;
 	char	*newline;
@@ -146,13 +146,49 @@ size_t	ft_strpdump3(char **line, char *buffer, char *pos_nl)
 	return (n);
 }
 
+size_t	ft_strpdump3(char **line, char *buffer, char *pos_nl)
+{
+	size_t	n;
+	char	*newline;
+	size_t	i;
+
+	if (!buffer)
+		return (0);
+	if (!pos_nl)
+		n = strlen(buffer);
+	else
+		n = pos_nl - buffer + 1;
+	i = 0;
+	if (*line)
+	{
+		newline = malloc(strlen(*line) + n + 1);
+		if (!newline)
+			return (0);
+		while ((*line)[i++])
+			newline[i - 1] = (*line)[i - 1];
+	}
+	else
+	{
+		newline = malloc(n + 1);
+		if (!newline)
+			return (0);
+	}
+	newline[i] = '\0';
+	newline = strncat(newline, buffer, n);
+	free(*line);
+	*line = newline;
+	return (n);
+}
+
+
 int main(void)
 {
 	char buffer[][128] = {"P", "Sin salto de línea", "Con salto de línea\nen el medio", "Con salto de línea al final\n", "\n", "", " ", "P\n", "Fin."};
-	char *line = NULL;
+	char *line;
 
 	for (size_t i = 0; i < sizeof(buffer)/128; i++)
 	{
+		line = NULL;
 		printf("\n%zu. \"%s\"\nPOS: %p\n", i + 1, buffer[i], &buffer[i]);
 		char *posnl = ft_pos_nl(buffer[i]);
 		printf("POS_NL: %p\n", posnl);
@@ -160,7 +196,6 @@ int main(void)
 		ft_strpdump3(&line, buffer[i], posnl);
 		printf("LINE: \"%s\"\n", line);
 		free(line);
-		line = NULL;
 	}
 	
 	return 0;

@@ -6,13 +6,14 @@
 /*   By: xwu <xwu@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:36:28 by xwu               #+#    #+#             */
-/*   Updated: 2025/06/23 10:34:00 by xwu              ###   ########.fr       */
+/*   Updated: 2025/06/23 12:06:29 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 
-#include "get_next_line.h"
+#include "get_next_line_utils.c"
+#include <get_next_line.h>
 
 char	*ft_pos_nl(const char *s)
 {
@@ -29,7 +30,6 @@ char	*ft_pos_nl(const char *s)
 	}
 	return (NULL);
 }
-
 
 size_t	ft_strlen(char *str)
 {
@@ -59,6 +59,30 @@ void	*ft_gnl_memmove(void *dest, const void *src, size_t count)
 	}
 	((char *)dest)[i] = '\0';
 	return (dest);
+}
+
+size_t	ft_strpdump3(char **line, char *buffer, char *pos_nl)
+{
+	size_t	n;
+	char	*newline;
+
+	if (!buffer)
+		return (0);
+	if (!pos_nl)
+		n = strlen(buffer);
+	else
+		n = pos_nl - buffer + 1;
+	if (*line)
+		newline = malloc(strlen(*line) + n + 1);
+	else
+		newline = malloc(n + 1);
+	newline[0] = '\0';
+	if (*line)
+		newline = strcpy(newline, *line);
+	newline = strncat(newline, buffer, n);
+	free(*line);
+	*line = newline;
+	return (n);
 }
 
 char	*get_next_line(int fd)
