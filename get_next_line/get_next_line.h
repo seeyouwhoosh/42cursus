@@ -14,12 +14,11 @@
 # define GET_NEXT_LINE_H
 # include <unistd.h>
 # include <stdlib.h>
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1
+# endif
 
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 1
-#endif
-
-extern size_t totalnlines;
+extern size_t	totalnlines;
 
 char	*get_next_line(int fd);
 
