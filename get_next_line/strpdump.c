@@ -146,7 +146,7 @@ size_t	ft_strpdump3_2(char **line, char *buffer, char *pos_nl)
 	return (n);
 }
 
-size_t	ft_strpdump3(char **line, char *buffer, char *pos_nl)
+size_t	ft_strpdump3_3(char **line, char *buffer, char *pos_nl)
 {
 	size_t	n;
 	char	*newline;
@@ -180,6 +180,33 @@ size_t	ft_strpdump3(char **line, char *buffer, char *pos_nl)
 	return (n);
 }
 
+size_t	ft_strpdump3(char **line, char *buffer, char *pos_nl)
+{
+	size_t	n;
+	char	*newline;
+	size_t	i;
+
+	if (!pos_nl)
+		n = strlen(buffer);
+	else
+		n = pos_nl - buffer + 1;
+	i = 0;
+
+	if (*line)
+		newline = malloc(strlen(*line) + n + 1);
+	else
+		newline = malloc(n + 1);
+	if (!newline)
+		return (0);
+	if (*line)
+		while ((*line)[i++])
+			newline[i - 1] = (*line)[i - 1];
+	newline[i] = '\0';
+	newline = strncat(newline, buffer, n);
+	free(*line);
+	*line = newline;
+	return (n);
+}
 
 int main(void)
 {
@@ -192,11 +219,9 @@ int main(void)
 		printf("\n%zu. \"%s\"\nPOS: %p\n", i + 1, buffer[i], &buffer[i]);
 		char *posnl = ft_pos_nl(buffer[i]);
 		printf("POS_NL: %p\n", posnl);
-		
 		ft_strpdump3(&line, buffer[i], posnl);
 		printf("LINE: \"%s\"\n", line);
 		free(line);
 	}
-	
 	return 0;
 }
