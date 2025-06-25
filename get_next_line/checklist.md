@@ -1,3 +1,0 @@
-- [ ] man read()
-- [ ] Variables estáticas
-- [ ] -D BUFFER_SIZE

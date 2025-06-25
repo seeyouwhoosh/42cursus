@@ -6,11 +6,11 @@
 /*   By: xwu <xwu@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:36:28 by xwu               #+#    #+#             */
-/*   Updated: 2025/06/23 12:02:21 by xwu              ###   ########.fr       */
+/*   Updated: 2025/06/25 16:29:29 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#include "get_next_line.h"
 
 char	*ft_pos_nl(const char *s)
 {
@@ -32,65 +32,86 @@ size_t	ft_strlen(char *str)
 {
 	size_t	n;
 
+	if (!str)
+		return (0);
 	n = 0;
 	while (*str++)
 		n++;
 	return (n);
 }
 
-void	*ft_gnl_memmove(void *dest, const void *src, size_t count)
+void	ft_gnl_memmove(char *dest, const char *src, size_t count)
 {
 	size_t	i;
 
 	if (!src)
 	{
-		((char *)dest)[0] = '\0';
-		return (NULL);
+		dest[0] = '\0';
+		return ;
 	}
 	i = 0;
 	src++;
 	while (count > i)
 	{
-		((char *)dest)[i] = ((const char *)src)[i];
+		dest[i] = src[i];
 		i++;
 	}
-	((char *)dest)[i] = '\0';
-	return (dest);
+	dest[i] = '\0';
+	return ;
 }
 
 size_t	ft_strpdump(char **line, char *buffer, char *pos_nl)
 {
 	size_t	n;
-	size_t	n;
 	char	*newline;
+	size_t	i;
+	size_t	j;
 
-	if (!buffer)
-		return (0);
+	i = 0;
+	j = 0;
 	if (!pos_nl)
-		n = strlen(buffer);
+		n = ft_strlen(buffer);
 	else
 		n = pos_nl - buffer + 1;
-	if (*line)
-		newline = malloc(strlen(*line) + n + 1);
-	else
-		newline = malloc(n + 1);
-	newline[0] = '\0';
-	if (*line)
-		newline = strcpy(newline, *line);
-	newline = strncat(newline, buffer, n);
+	newline = malloc(ft_strlen(*line) + n + 1);
+	if (!newline)
+		return (0);
+	while (*line && (*line)[i])
+	{
+		newline[i] = (*line)[i];
+		i++;
+	}
+	while (j++ < n)
+		newline[i + j - 1] = buffer[j - 1];
+	newline[i + j - 1] = '\0';
 	free(*line);
 	*line = newline;
 	return (n);
 }
 
-char	*ft_strncat(char *dest, const char *src, size_t n)
+char	*get_next_line(int fd)
 {
-	char	*ret;
-	return ret;
-}
+	static char	buffer[BUFFER_SIZE + 1];
+	char		*line;
+	size_t		bytesread;
+	char		*pos_nl;
+	size_t		n;
 
-char	*ft_strcpy(char *dest, const char *src)
-{
-	char	*ret;
-	return ret;
+	line = NULL;
+	while (1)
+	{
+		if (buffer[0] == '\0')
+		{
+			bytesread = read(fd, buffer, BUFFER_SIZE);
+			if (bytesread <= 0)
+				return (line);
+			buffer[bytesread] = '\0';
+		}
+		pos_nl = ft_pos_nl(buffer);
+		ft_strpdump(&line, buffer, pos_nl);
+		n = strlen(buffer) - (pos_nl - buffer) + 1;
+		ft_gnl_memmove(buffer, pos_nl, n);
+		if (ft_pos_nl(line))
+			return (line);
+	}
 }

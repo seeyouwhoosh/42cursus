@@ -2,6 +2,18 @@
 #include <string.h>
 #include <stdlib.h>
 
+size_t	ft_strlen(char *str)
+{
+	size_t	n;
+
+	if (!str)
+		return (0);
+	n = 0;
+	while (*str++)
+		n++;
+	return (n);
+}
+
 char	*ft_pos_nl(const char *s)
 {
 	char	*s_cp;
@@ -208,6 +220,35 @@ size_t	ft_strpdump3(char **line, char *buffer, char *pos_nl)
 	return (n);
 }
 
+size_t	ft_strpdump4(char **line, char *buffer, char *pos_nl)
+{
+	size_t	n;
+	char	*newline;
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	if (!pos_nl)
+		n = ft_strlen(buffer);
+	else
+		n = pos_nl - buffer + 1;
+	newline = malloc(ft_strlen(*line) + n + 1);
+	if (!newline)
+		return (0);
+	while (*line && (*line)[i])
+	{
+		newline[i] = (*line)[i];
+		i++;
+	}
+	while (j++ < n)
+		newline[i + j - 1] = buffer[j - 1];
+	newline[i + j - 1] = '\0';
+	free(*line);
+	*line = newline;
+	return (n);
+}
+
 int main(void)
 {
 	char buffer[][128] = {"P", "Sin salto de línea", "Con salto de línea\nen el medio", "Con salto de línea al final\n", "\n", "", " ", "P\n", "Fin."};
@@ -219,7 +260,7 @@ int main(void)
 		printf("\n%zu. \"%s\"\nPOS: %p\n", i + 1, buffer[i], &buffer[i]);
 		char *posnl = ft_pos_nl(buffer[i]);
 		printf("POS_NL: %p\n", posnl);
-		ft_strpdump3(&line, buffer[i], posnl);
+		ft_strpdump4(&line, buffer[i], posnl);
 		printf("LINE: \"%s\"\n", line);
 		free(line);
 	}
