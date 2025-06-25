@@ -18,8 +18,6 @@
 #  define BUFFER_SIZE 1
 # endif
 
-extern size_t	totalnlines;
-
 char	*get_next_line(int fd);
 
 #endif

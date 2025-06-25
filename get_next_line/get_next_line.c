@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xwu <xwu@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:36:28 by xwu               #+#    #+#             */
-/*   Updated: 2025/06/23 13:35:44 by xwu              ###   ########.fr       */
+/*   Updated: 2025/06/24 01:57:39 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ size_t	ft_strlen(char *str)
 {
 	size_t	n;
 
+	if (!str)
+		return (0);
 	n = 0;
 	while (*str++)
 		n++;
@@ -65,24 +67,29 @@ size_t	ft_strpdump(char **line, char *buffer, char *pos_nl) // CAUTION: No PASAR
 	size_t	n;
 	char	*newline;
 	size_t	i;
+	size_t	j;
 
+	i = 0;
+	j = 0;
 	if (!pos_nl)
-		n = strlen(buffer);
+		n = ft_strlen(buffer);
 	else
 		n = pos_nl - buffer + 1;
-	i = 0;
-
-	if (*line)
-		newline = malloc(strlen(*line) + n + 1);
-	else
-		newline = malloc(n + 1);
+	
+	newline = malloc(ft_strlen(*line) + n + 1);
 	if (!newline)
 		return (0);
-	if (*line)
-		while ((*line)[i++])
-			newline[i - 1] = (*line)[i - 1];
-	newline[i] = '\0';
-	newline = strncat(newline, buffer, n);
+	while (*line && (*line)[i])
+	{
+		newline[i] = (*line)[i];
+		i++;
+	}
+	while (j < n)
+	{
+		newline[i + j] = buffer[j];
+		j++;
+	}
+	newline[i + j] = '\0';
 	free(*line);
 	*line = newline;
 	return (n);
@@ -109,7 +116,6 @@ char	*get_next_line(int fd)
 
 		pos_nl = ft_pos_nl(buffer);
 		ft_strpdump(&line, buffer, pos_nl);
-		totalnlines += pos_nl - (char *)buffer; // QUITAR ESTA LÍNEA
 		n = strlen(buffer) - (pos_nl - buffer) + 1;
 		ft_gnl_memmove(buffer, pos_nl, n);
 		if (ft_pos_nl(line))

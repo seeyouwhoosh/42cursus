@@ -28,12 +28,14 @@ int	main(void)
 	size_t m = 0;
 	size_t totalnlinescmp = 0;
 	ssize_t nline;
+	size_t i = 0;
 
 	int fd = open("text.txt", O_RDONLY);
 	char *gnlline;
 
 	while ((nline = getline(&gline, &m, fp)) > -1)
 	{
+		i++;
 		gnlline = get_next_line(fd);
 		totalnlinescmp += nline;
 		if (strcmp(gnlline, gline))
@@ -42,11 +44,10 @@ int	main(void)
 			m = -1;
 			break;
 		}
+		else
+			printf("%ld:\nGNL \"%s\"\nGL \"%s\"\n", i, gnlline, gline);
 	}
 
-	printf("%s", (totalnlines == totalnlinescmp)? "Pass\n": "Break");
-	if (totalnlines != totalnlinescmp)
-		printf(" in %ld != %ld\n", totalnlines, totalnlinescmp);
 
 	free(gline);
 	fclose(fp);
