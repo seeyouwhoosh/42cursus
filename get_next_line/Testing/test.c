@@ -51,6 +51,13 @@ int	main(void)
 		else
 			printf("%ld:\nGNL \"%s\"\nGL \"%s\"\n", i, gnlline, gline);
 	}
+	printf("TEST read from file complete\n\nTEST standard input starting\n");
+
+	while (read(1, gline, 200)) // No funciona
+	{
+		fseek(1, 0, SEEK_END);
+		printf("%s", gline);
+	}
 
 	free(gline);
 	fclose(fp);
