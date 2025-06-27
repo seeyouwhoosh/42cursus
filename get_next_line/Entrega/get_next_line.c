@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:36:28 by xwu               #+#    #+#             */
-/*   Updated: 2025/06/25 16:32:06 by xwu              ###   ########.fr       */
+/*   Updated: 2025/06/27 12:31:01 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,3 +38,43 @@ char	*get_next_line(int fd)
 			return (line);
 	}
 }
+
+/* 
+#include <fcntl.h>
+#include <stdio.h>
+char	*get_next_line(int fd);
+
+int	main(void)
+{
+	printf("\nTEST get_next_line: \n");
+	FILE	*fp = fopen("text.txt", "r");
+	char	*gline = NULL;
+	size_t	m = 0;
+	size_t	i = 0;
+	int		fd = open("text.txt", O_RDONLY);
+	char	*gnlline = NULL;
+
+	while (getline(&gline, &m, fp) > -1)
+	{
+		i++;
+		gnlline = get_next_line(fd);
+		if (strcmp(gnlline, gline))
+		{
+			printf("Diff in \"%s\" != \"%s\"\n", gnlline, gline);
+			m = -1;
+			free(gnlline);
+			break ;
+		}
+		else
+			printf("%ld:	GNL \"%s\"\nGL  \"%s\"\n", i, gnlline, gline);
+		free(gnlline);
+	}
+	printf("TEST read from file complete\n");
+
+	free(gline);
+	fclose(fp);
+	close(fd);
+
+	return (0);
+}
+*/

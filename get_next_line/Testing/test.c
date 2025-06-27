@@ -16,7 +16,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-#ifndef BUFFER_SIZE // Te animo a cambiar esto también xd
+#ifndef BUFFER_SIZE 
 # define BUFFER_SIZE 1
 #endif
 
@@ -47,7 +47,7 @@ int	main(void)
 			break ;
 		}
 		else
-			printf("%ld:\nGNL \"%s\"\nGL \"%s\"\n", i, gnlline, gline);
+			printf("%ld:	GNL \"%s\"\nGL  \"%s\"\n", i, gnlline, gline);
 		free(gnlline);
 	}
 	printf("TEST read from file complete\n");
@@ -56,7 +56,6 @@ int	main(void)
 	fclose(fp);
 	close(fd);
 
-	//system("valgrind --tool=memcheck  --leak-check=full -v ./a.out");
 	return (0);
 }
 
