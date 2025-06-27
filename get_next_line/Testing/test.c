@@ -29,39 +29,31 @@ int	main(void)
 {
 	printf("\nTEST get_next_line: \n");
 	FILE	*fp = fopen("text.txt", "r");
-	char	*gline;
+	char	*gline = NULL;
 	size_t	m = 0;
-	size_t	totalnlinescmp = 0;
-	ssize_t	nline;
 	size_t	i = 0;
 	int		fd = open("text.txt", O_RDONLY);
-	char	*gnlline;
+	char	*gnlline = NULL;
 
-	while ((nline = getline(&gline, &m, fp)) > -1)
+	while (getline(&gline, &m, fp) > -1)
 	{
 		i++;
 		gnlline = get_next_line(fd);
-		totalnlinescmp += nline;
 		if (strcmp(gnlline, gline))
 		{
 			printf("Diff in \"%s\" != \"%s\"\n", gnlline, gline);
 			m = -1;
+			free(gnlline);
 			break ;
 		}
 		else
 			printf("%ld:\nGNL \"%s\"\nGL \"%s\"\n", i, gnlline, gline);
+		free(gnlline);
 	}
-	printf("TEST read from file complete\n\nTEST standard input starting\n");
-
-	while (read(1, gline, 200)) // No funciona
-	{
-		fseek(1, 0, SEEK_END);
-		printf("%s", gline);
-	}
+	printf("TEST read from file complete\n");
 
 	free(gline);
 	fclose(fp);
-	free(gnlline);
 	close(fd);
 
 	//system("valgrind --tool=memcheck  --leak-check=full -v ./a.out");
