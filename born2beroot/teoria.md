@@ -29,6 +29,7 @@ Al parecer linux mint es más ligero que Ubuntu, yay. Me hace demasiada gracia l
 ## Configuración del sistema
 
 0. Actualizar paquetes del sistema: `apt update && apt upgrade`
+   1. ¿Qué es apt? ¿Y qué es aptitude? APT = Advanced Package Tool. Ambos son gestores de paquetes, pero Aptitude tiene interfaz visual, recuerda lo que es dependencia y lo que es instalación directa (y de la misma forma, elimina las dependencias junto con el paquete principal; apt tiene el comando `autoremove`). 
 1. Configuración de usuario
    1. Para ser root: `su`
    2. `apt install sudo` & reboot
@@ -46,25 +47,30 @@ Al parecer linux mint es más ligero que Ubuntu, yay. Me hace demasiada gracia l
 3. ufw
    1. `ufw enable`
    2. `ufw allow 4242`
+4. Política de sudo
+   1. crear archivo sudo_config en /etc/sudoerd.d
+https://born2beroot-tracking.pages.dev/
+https://42-cursus.gitbook.io/guide/1-rank-01/born2beroot/install-your-virtual-machine
+https://noreply.gitbook.io/born2beroot/virtual-machine-setup/sudo-policies
 
-4. ¿Qué es SELinux?
+5. ¿Qué es SELinux?
 
-5. ¿Qué es AppArmor?
+6. ¿Qué es AppArmor?
 
-6. ¿Cómo se cifra una partición?
+7. ¿Cómo se cifra una partición?
 
-7.  ¿Cuál es la diferencia entre aptitude y apt?
+8.  ¿Cuál es la diferencia entre aptitude y apt?
 
-8.  ¿Debería permitir loguearme con contraseña o solo con ssh?
+9.  ¿Debería permitir loguearme con contraseña o solo con ssh?
 
-9.  ¿Cómo se implementa una política de contraseñas?
+10. ¿Cómo se implementa una política de contraseñas?
 
-10. ¿Cómo se modifica el hostname de la máquina?
+11. ¿Cómo se modifica el hostname de la máquina?
 
-11. ¿Cómo creo un usuario y le asigno un grupo?
+12. ¿Cómo creo un usuario y le asigno un grupo?
 
-12. ¿Qué es modo TTY?
+13. ¿Qué es modo TTY?
 
-13. ¿Qué es wall?
+14. ¿Qué es wall?
 
-14. ¿Qué es UTM?
+15. ¿Qué es UTM?
