@@ -49,6 +49,11 @@ Al parecer linux mint es más ligero que Ubuntu, yay. Me hace demasiada gracia l
    2. `ufw allow 4242`
 4. Política de sudo
    1. crear archivo sudo_config en /etc/sudoerd.d
+   
+5. Política de contraseña
+6. Cambio de nombre de host
+7. Monitoreo
+8. Pasos finales
 https://born2beroot-tracking.pages.dev/
 https://42-cursus.gitbook.io/guide/1-rank-01/born2beroot/install-your-virtual-machine
 https://noreply.gitbook.io/born2beroot/virtual-machine-setup/sudo-policies
