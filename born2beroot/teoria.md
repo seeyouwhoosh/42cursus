@@ -34,48 +34,76 @@ Al parecer linux mint es más ligero que Ubuntu, yay. Me hace demasiada gracia l
    1. Para ser root: `su`
    2. `apt install sudo` & reboot
    3. Para crear usuario: `adduser [usuario]` (spoiler: para eliminar el user del)
-   4. Crear grupo: `addgroup [ grupo]` (comprobar con `getent group`)
+   4. Crear grupo: `addgroup [grupo]` (comprobar con `getent group`)
       1. sudo
       2. user42
    5. Añadir usuario a grupo: `adduser [usuario] [grupo]`
+   ```sh
+   su
+   apt install sudo
+   addgroup user42
+   adduser xwu user42
+   adduser xwu sudo
+   ```
 2. ssh
    1. Comprobar si está con `service ssh status`
    2. Si no está, instalar el openssh-server
    3. Cambiar puerto a 4242 tanto de escucha como de respuesta
    4. PermitRootLogin no
    5. Hay Port Forwarding en en virtual machine xd
+   ```sh
+   service ssh status
+   apt install openssh-server
+   cd /etc/ssh
+   nano sshd_config
+   ```
 3. ufw
    1. `ufw enable`
    2. `ufw allow 4242`
+   ```sh
+   ufw enable
+   ufw allow 4242
+   ```
 4. Política de sudo
-   1. crear archivo sudo_config en /etc/sudoerd.d
-   
+   1. mkdir /var/log/sudo para almacenar logs
+   2. crear archivo sudo_config en /etc/sudoerd.d
+   ```sh
+   Defaults  passwd_tries=3
+   Defaults  badpass_message="Mensaje de error personalizado"
+   Defaults  logfile="/var/log/sudo/sudo_config"
+   Defaults  log_input, log_output
+   Defaults  iolog_dir="/var/log/sudo"
+   Defaults  requiretty
+   Defaults  secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+   ```
+
 5. Política de contraseña
+      1. Se cambia con `chage`y las corrrespondientes opciones
+         1.  expirar cada 30 días
+         2.  número mínimo de días permitido antes de modificar una contraseña deberá ser 2
+         3.  mensaje de aviso 7 días antes de que su contraseña expire
 6. Cambio de nombre de host
+   1. 
 7. Monitoreo
+   1. 
 8. Pasos finales
 https://born2beroot-tracking.pages.dev/
 https://42-cursus.gitbook.io/guide/1-rank-01/born2beroot/install-your-virtual-machine
 https://noreply.gitbook.io/born2beroot/virtual-machine-setup/sudo-policies
 
-5. ¿Qué es SELinux?
+1. ¿Qué es SELinux?
 
-6. ¿Qué es AppArmor?
+2. ¿Qué es AppArmor?
 
-7. ¿Cómo se cifra una partición?
+3.  ¿Cuál es la diferencia entre aptitude y apt?
 
-8.  ¿Cuál es la diferencia entre aptitude y apt?
+4.  ¿Cómo se implementa una política de contraseñas?
 
-9.  ¿Debería permitir loguearme con contraseña o solo con ssh?
+5.  ¿Cómo se modifica el hostname de la máquina?
 
-10. ¿Cómo se implementa una política de contraseñas?
 
-11. ¿Cómo se modifica el hostname de la máquina?
+8.  ¿Qué es modo TTY?
 
-12. ¿Cómo creo un usuario y le asigno un grupo?
+9.  ¿Qué es wall?
 
-13. ¿Qué es modo TTY?
-
-14. ¿Qué es wall?
-
-15. ¿Qué es UTM?
+10. ¿Qué es UTM?
