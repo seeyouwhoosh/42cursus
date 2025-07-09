@@ -76,34 +76,27 @@ Al parecer linux mint es más ligero que Ubuntu, yay. Me hace demasiada gracia l
    Defaults  requiretty
    Defaults  secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
    ```
-
 5. Política de contraseña
-      1. Se cambia con `chage`y las corrrespondientes opciones
+      1. La expiración de contraseña y fechas así se cambia con `chage`y las correspondientes opciones
          1.  expirar cada 30 días
          2.  número mínimo de días permitido antes de modificar una contraseña deberá ser 2
          3.  mensaje de aviso 7 días antes de que su contraseña expire
-6. Cambio de nombre de host
+      2. Alternativa: editar /etc/var/login.defs
+      3.  `minlen=10 dcredit=1 ucredit=1 lcredit=1 maxrepeat=3 usercheck=1 enforce_for_root`
+```
+password [success=1 default=ignore] pam_succeed_if.so user != root
+password requisite pam_pwquality.so difok=7
+password requisite pam_pwquality.so minlen=10 dcredit=1 ucredit=1 lcredit=1 maxrepeat=3 usercheck=1 enforce_for_root
+```
+1. Cambio de nombre de host
+   1. Archivos a cambiar: /etc/hostname y /etc/hosts
+   2. Reboot
+2. Monitoreo
    1. 
-7. Monitoreo
-   1. 
-8. Pasos finales
+3. Pasos finales
 https://born2beroot-tracking.pages.dev/
-https://42-cursus.gitbook.io/guide/1-rank-01/born2beroot/install-your-virtual-machine
+https://ostechnix.com/how-to-set-password-policies-in-linux/
 https://noreply.gitbook.io/born2beroot/virtual-machine-setup/sudo-policies
 
-1. ¿Qué es SELinux?
+1. ¿Qué es AppArmor?
 
-2. ¿Qué es AppArmor?
-
-3.  ¿Cuál es la diferencia entre aptitude y apt?
-
-4.  ¿Cómo se implementa una política de contraseñas?
-
-5.  ¿Cómo se modifica el hostname de la máquina?
-
-
-8.  ¿Qué es modo TTY?
-
-9.  ¿Qué es wall?
-
-10. ¿Qué es UTM?
