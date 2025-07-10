@@ -20,4 +20,12 @@
 
 char	*get_next_line(int fd);
 
+char	*ft_pos_nl(const char *s);
+
+size_t	ft_strlen(char *str);
+
+void	ft_gnl_memmove(char *dest, const char *src, size_t count);
+
+size_t	ft_strpdump(char **line, char *buffer, char *pos_nl);
+
 #endif

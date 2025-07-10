@@ -88,30 +88,3 @@ size_t	ft_strpdump(char **line, char *buffer, char *pos_nl)
 	*line = newline;
 	return (n);
 }
-
-char	*get_next_line(int fd)
-{
-	static char	buffer[BUFFER_SIZE + 1];
-	char		*line;
-	size_t		bytesread;
-	char		*pos_nl;
-	size_t		n;
-
-	line = NULL;
-	while (1)
-	{
-		if (buffer[0] == '\0')
-		{
-			bytesread = read(fd, buffer, BUFFER_SIZE);
-			if (bytesread <= 0)
-				return (line);
-			buffer[bytesread] = '\0';
-		}
-		pos_nl = ft_pos_nl(buffer);
-		ft_strpdump(&line, buffer, pos_nl);
-		n = strlen(buffer) - (pos_nl - buffer) + 1;
-		ft_gnl_memmove(buffer, pos_nl, n);
-		if (ft_pos_nl(line))
-			return (line);
-	}
-}
