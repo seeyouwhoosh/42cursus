@@ -82,21 +82,64 @@ Al parecer linux mint es más ligero que Ubuntu, yay. Me hace demasiada gracia l
          2.  número mínimo de días permitido antes de modificar una contraseña deberá ser 2
          3.  mensaje de aviso 7 días antes de que su contraseña expire
       2. Alternativa: editar /etc/var/login.defs
-      3.  `minlen=10 dcredit=1 ucredit=1 lcredit=1 maxrepeat=3 usercheck=1 enforce_for_root`
-```
-password [success=1 default=ignore] pam_succeed_if.so user != root
-password requisite pam_pwquality.so difok=7
-password requisite pam_pwquality.so minlen=10 dcredit=1 ucredit=1 lcredit=1 maxrepeat=3 usercheck=1 enforce_for_root
-```
+      3.  Calidad de la contraseña
+          1.  sudo apt install libpam-pwquality
+          2.  En /etc/pam.d/common-password:
+            ```
+            password [success=1 default=ignore] pam_succeed_if.so user != root
+            password requisite pam_pwquality.so difok=7
+            password requisite pam_pwquality.so minlen=10 dcredit=1 ucredit=1 lcredit=1 maxrepeat=3 usercheck=1 enforce_for_root
+            ```
 1. Cambio de nombre de host
    1. Archivos a cambiar: /etc/hostname y /etc/hosts
    2. Reboot
-2. Monitoreo
-   1. 
-3. Pasos finales
-https://born2beroot-tracking.pages.dev/
-https://ostechnix.com/how-to-set-password-policies-in-linux/
-https://noreply.gitbook.io/born2beroot/virtual-machine-setup/sudo-policies
+## Monitoreo
 
-1. ¿Qué es AppArmor?
+Cuando el servidor inicie, el script mostrará cierta información (listada debajo) en
+todos los terminales cada 10 minutos (Échale un vistazo a wall). El banner de wall es
+opcional. Ningún error debe ser visible
+
+
+1. La arquitectura de tu sistema operativo y su versión de kernel.
+```sh
+uname --all
+```
+2. El número de núcleos físicos.
+```sh
+grep "physical id" /proc/cpuinfo | wc -l
+```
+```ssh
+grep "cpu cores" /proc/cpuinfo | awk 'END{print $4}'
+```
+3. El número de núcleos virtuales.
+```sh
+grep "physical id" /proc/cpuinfo | wc -l
+```
+```sh
+nproc
+```
+4. La memoria RAM disponible actualmente en tu servidor y su porcentaje de uso.
+```sh
+
+```
+5. La memoria disponible actualmente en tu servidor y su utilización como un porcentaje.
+```sh
+
+```
+6. El porcentaje actual de uso de tus núcleos.
+```sh
+
+```
+7. La fecha y hora del último reinicio.
+```sh
+
+```
+8. Si LVM está activo o no.
+```sh
+
+```
+9.  El número de conexiones activas.
+10. El número de usuarios del servidor.
+11. La dirección IPv4 de tu servidor y su MAC (Media Access Control)
+12. El número de comandos ejecutados con sudo.
 
