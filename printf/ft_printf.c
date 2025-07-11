@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
+/*   By: xwu <xwu@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 17:57:58 by xwu               #+#    #+#             */
-/*   Updated: 2025/05/05 18:59:22 by xwu              ###   ########.fr       */
+/*   Updated: 2025/06/25 15:38:52 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	ft_printf(char const *s, ...)
 	return (count);
 }
 
-/* 
+/*
 #include <stdio.h>
 
 int	main(void)
@@ -133,7 +133,7 @@ int	main(void)
 
 	
 	printf_value = printf("9. Percentage: %%\n");
-	ft_printf_value = ft_printf("   Percentage: %k\n");
+	ft_printf_value = ft_printf("   Percentage: %%\n");
 	printf("   Exp: %d	Rea: %d\n\n", printf_value, ft_printf_value);
 
 	printf("******* END OF THE PRINTF TRIALS *******\n\n");

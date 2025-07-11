@@ -120,6 +120,8 @@ nproc
 ```
 4. La memoria RAM disponible actualmente en tu servidor y su porcentaje de uso.
 ```sh
+free --mega | awk '$1 == "Mem:" {print $4}'
+free --mega | awk '$1 == "Mem:" {printf("%0.2f", $3/$2*100)}'
 
 ```
 5. La memoria disponible actualmente en tu servidor y su utilización como un porcentaje.
@@ -143,3 +145,6 @@ nproc
 11. La dirección IPv4 de tu servidor y su MAC (Media Access Control)
 12. El número de comandos ejecutados con sudo.
 
+```sh
+
+```

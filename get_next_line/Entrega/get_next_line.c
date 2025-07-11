@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xwu <xwu@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:36:28 by xwu               #+#    #+#             */
-/*   Updated: 2025/07/01 18:39:52 by marvin           ###   ########.fr       */
+/*   Updated: 2025/07/01 18:39:52 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*get_next_line(int fd)
 		if (buffer[0] == '\0')
 		{
 			bytesread = read(fd, buffer, BUFFER_SIZE);
-			if (bytesread <= 0)
+			if (fd < 0 || bytesread <= 0 || BUFFER_SIZE < 0 || !(*buffer))
 				return (line);
 			buffer[bytesread] = '\0';
 		}
@@ -44,7 +44,9 @@ char	*get_next_line(int fd)
 #include <string.h>
 #include <stdio.h>
 char	*get_next_line(int fd);
+*/
 
+/* 
 int	main(void)
 {
 	printf("\nTEST get_next_line: \n");
@@ -77,6 +79,47 @@ int	main(void)
 	fclose(fp);
 	close(fd);
 
+	return (0);
+}
+/*/ /*
+int	main(int argc, char **argv)
+{
+	int		fd;
+	char	*line;
+	int		i = 1;
+
+	if (argc >= 2)
+	{
+		while (i < argc)
+		{
+			fd = open(argv[i], O_RDONLY);
+			if (fd < 0)
+			{
+				perror(argv[i]);
+				i++;
+				continue;
+			}
+			printf("📂 Leyendo archivo: %s\n", argv[i]);
+			while ((line = get_next_line(fd)))
+			{
+				printf("👉 \"%s\"\n", line);
+				free(line);
+			}
+			close(fd);
+			printf("TEST read from file complete\n");
+			i++;
+		}
+	}
+	else
+	{
+	printf("🔁 Leyendo desde stdin (escribe y pulsa Ctrl+D para terminar):\n");
+		while ((line = get_next_line(0)))
+		{
+			printf("👉 \"%s\"\n", line);
+			free(line);
+		}
+		printf("TEST read from file complete\n");
+	}
 	return (0);
 }
 */
