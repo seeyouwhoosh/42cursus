@@ -66,12 +66,12 @@ Al parecer linux mint es más ligero que Ubuntu, yay. Me hace demasiada gracia l
    ```
 4. Política de sudo
    1. mkdir /var/log/sudo para almacenar logs
-   2. crear archivo sudo_config en /etc/sudoerd.d
+   2. crear archivo sudo_config en /etc/sudoers.d
    ```sh
    Defaults  passwd_tries=3
-   Defaults  badpass_message="Mensaje de error personalizado"
-   Defaults  logfile="/var/log/sudo/sudo_config"
-   Defaults  log_input, log_output
+   Defaults  badpass_message="Upsies, wrong password, silly."
+   Defaults  logfile="/var/log/sudo/sudo.log"
+   Defaults  log_input,log_output
    Defaults  iolog_dir="/var/log/sudo"
    Defaults  requiretty
    Defaults  secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
@@ -88,7 +88,7 @@ Al parecer linux mint es más ligero que Ubuntu, yay. Me hace demasiada gracia l
             ```
             password [success=1 default=ignore] pam_succeed_if.so user != root
             password requisite pam_pwquality.so difok=7
-            password requisite pam_pwquality.so minlen=10 dcredit=1 ucredit=1 lcredit=1 maxrepeat=3 usercheck=1 enforce_for_root
+            password requisite pam_pwquality.so retry=3 minlen=10 dcredit=-1 ucredit=-1 lcredit=-1 maxrepeat=3 usercheck=1 enforce_for_root
             ```
 1. Cambio de nombre de host
    1. Archivos a cambiar: /etc/hostname y /etc/hosts
@@ -96,8 +96,7 @@ Al parecer linux mint es más ligero que Ubuntu, yay. Me hace demasiada gracia l
 ## Monitoreo
 
 Cuando el servidor inicie, el script mostrará cierta información (listada debajo) en
-todos los terminales cada 10 minutos (Échale un vistazo a wall). El banner de wall es
-opcional. Ningún error debe ser visible
+todos los terminales cada 10 minutos (Échale un vistazo a wall). El banner de wall es opcional. Ningún error debe ser visible
 
 
 1. La arquitectura de tu sistema operativo y su versión de kernel.
@@ -113,7 +112,7 @@ grep "cpu cores" /proc/cpuinfo | awk 'END{print $4}'
 ```
 3. El número de núcleos virtuales.
 ```sh
-grep "physical id" /proc/cpuinfo | wc -l
+grep "processor" /proc/cpuinfo | wc -l
 ```
 ```sh
 nproc
@@ -122,29 +121,83 @@ nproc
 ```sh
 free --mega | awk '$1 == "Mem:" {print $4}'
 free --mega | awk '$1 == "Mem:" {printf("%0.2f", $3/$2*100)}'
-
 ```
 5. La memoria disponible actualmente en tu servidor y su utilización como un porcentaje.
 ```sh
-
+df -h --total | grep total | awk '{print $4}'
+df -h --total | grep total | awk '{print $5}'
 ```
 6. El porcentaje actual de uso de tus núcleos.
 ```sh
-
+top -bn1 | grep '^%Cpu' | xargs | awk '{printf("%.1f%", $2 + $4)}'
 ```
 7. La fecha y hora del último reinicio.
 ```sh
-
+who -b | awk '{print $3 " " $4}'
 ```
 8. Si LVM está activo o no.
 ```sh
-
+if [ $(lsblk | grep lvm | wc -l) -eq 0 ]; then echo no; else echo yes; fi
 ```
 9.  El número de conexiones activas.
-10. El número de usuarios del servidor.
-11. La dirección IPv4 de tu servidor y su MAC (Media Access Control)
-12. El número de comandos ejecutados con sudo.
-
 ```sh
+grep TCP /proc/net/sockstat | awk '{print $3}'
+```
+10. El número de usuarios del servidor.
+```sh
+who | wc -l
+```
+12. La dirección IPv4 de tu servidor y su MAC (Media Access Control)
+```sh
+hostname -I | awk '{print $1}'
+ip link show | grep link/ether | awk '{print $2}'
+```
+13. El número de comandos ejecutados con sudo.
+```sh
+cat /var/log/sudo/sudo.log | grep USER | wc -l
+```
+### sh file
+```sh
+#!/bin/bash
+ARCH=$(uname --all)
 
+PCPU=$(grep "physical id" /proc/cpuinfo | wc -l)
+
+VCPU=$(grep "processor" /proc/cpuinfo | wc -l)
+
+RAM_TOTAL=$(free -h | grep Mem | awk '{print $2}')
+RAM_USED=$(free -h | grep Mem | awk '{print $3}')
+RAM_PERC=$(free -k | grep Mem | awk '{printf("%.2f%%", $3/$2*100)}')
+
+DISK_TOTAL=$(df -h --total | grep total | awk '{print $2}')
+DISK_USED=$(df -h --total | grep total | awk '{print $3}')
+DISK_PERC=$(df -k --total | grep total | awk '{print $5}')
+
+CPU_LOAD=$(top -bn1 | grep '^%Cpu' | xargs | awk '{printf("%.1f%%"), $2 + $4}')
+
+LAST_BOOT=$(who -b | awk '{print($3 " " $4)}')
+
+LVM=$(if [ $(lsblk | grep lvm | wc -l) -eq 0 ]; then echo no; else echo yes; fi)
+
+TCP=$(grep TCP /proc/net/sockstat | awk '{print $3}')
+
+USER_LOG=$(who | wc -l)
+
+IP_ADDR=$(hostname -I | awk '{print $1}')
+
+MAC_ADDR=$(ip link show | grep link/ether | awk '{print $2}')
+
+SUDO_LOG=$(cat /var/log/sudo/sudo.log | grep USER | wc -l)
+
+wall "   # Architecture:    $ARCH
+   # Physical CPUs:   $PCPU
+   # Virtual CPUs:    $VCPU
+   # RAM usage:       $RAM_USED/$RAM_TOTAL ($RAM_PERC)
+   # Disk usage:      $DISK_USED/$DISK_TOTAL ($DISK_PERC)
+   # CPU load:        $CPUT_BOOT
+   # LVM use:         $LVM
+   # TCP connections: $TCP established
+   # Users logged:    $USER_LOG
+   # Network:         IP $IP_ADDR ($MAC_ADDR)
+   # Number of sudos: $SUDO_LOG cmd"
 ```

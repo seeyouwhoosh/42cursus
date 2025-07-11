@@ -9,7 +9,7 @@
       "x": 316,
       "y": 144,
       "width": 511.50000000000006,
-      "height": 263.5,
+      "height": 414.2142857142858,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -25,11 +25,11 @@
         "type": 3
       },
       "seed": 1214664591,
-      "version": 162,
-      "versionNonce": 421042433,
+      "version": 226,
+      "versionNonce": 1396650996,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1751970378051,
+      "updated": 1752243112412,
       "link": null,
       "locked": false
     },
@@ -75,8 +75,8 @@
       "type": "text",
       "x": 345.8674621582031,
       "y": 203,
-      "width": 400.61962890625,
-      "height": 175,
+      "width": 438.33953857421875,
+      "height": 325,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -90,20 +90,20 @@
       "index": "a5",
       "roundness": null,
       "seed": 1874951439,
-      "version": 229,
-      "versionNonce": 864755969,
+      "version": 586,
+      "versionNonce": 52631796,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1751970365382,
+      "updated": 1752242708671,
       "link": null,
       "locked": false,
-      "text": "Hostname  = xwu42\n\nParticiones:\n* /swap: (1GB)\n* /home: encriptado\n* /boot: creo que no es necesario (1 GB)\n* /root: encriptado (3GB)",
+      "text": "Hostname  = xwu42\n\nParticiones (16GB)\n*Partición 1:\n    * /boot: (500 MB)\n* Partición sin montar:\n    * /home: (2.6GB) ext4; mount in /home\n    * /root: (3GB) ext4; mount in /\n    * /srv: (1.2GB) /srv\n    * /swap: (1.2GB) swap area\n    * /tmp: (1.6GB) ext4; mount in /tmp\n    * /var: (1.6GB) ext4; mount in /var\n    * /var-log: (2GB) ext4; mount in /var/log",
       "fontSize": 20,
       "fontFamily": 5,
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Hostname  = xwu42\n\nParticiones:\n* /swap: (1GB)\n* /home: encriptado\n* /boot: creo que no es necesario (1 GB)\n* /root: encriptado (3GB)",
+      "originalText": "Hostname  = xwu42\n\nParticiones (16GB)\n*Partición 1:\n    * /boot: (500 MB)\n* Partición sin montar:\n    * /home: (2.6GB) ext4; mount in /home\n    * /root: (3GB) ext4; mount in /\n    * /srv: (1.2GB) /srv\n    * /swap: (1.2GB) swap area\n    * /tmp: (1.6GB) ext4; mount in /tmp\n    * /var: (1.6GB) ext4; mount in /var\n    * /var-log: (2GB) ext4; mount in /var/log",
       "autoResize": true,
       "lineHeight": 1.25
     },
@@ -1256,176 +1256,6 @@
       "lastCommittedPoint": null
     },
     {
-      "id": "ScJMXBe0PaK9zgqB8Ud4U",
-      "type": "freedraw",
-      "x": 437.1971118661917,
-      "y": 368.3732738927227,
-      "width": 99.04997687049183,
-      "height": 1.0708105607620837,
-      "angle": 0,
-      "strokeColor": "#1971c2",
-      "backgroundColor": "transparent",
-      "fillStyle": "hachure",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 0,
-      "opacity": 50,
-      "groupIds": [],
-      "frameId": null,
-      "index": "b0E",
-      "roundness": null,
-      "seed": 1452650767,
-      "version": 17,
-      "versionNonce": 577419873,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1751972932645,
-      "link": null,
-      "locked": false,
-      "points": [
-        [
-          0,
-          0
-        ],
-        [
-          2.1416211215241674,
-          0.5354052803810418
-        ],
-        [
-          8.566484486096556,
-          1.0708105607620837
-        ],
-        [
-          14.991347850669058,
-          1.0708105607620837
-        ],
-        [
-          24.628642897527698,
-          1.0708105607620837
-        ],
-        [
-          34.80134322476738,
-          1.0708105607620837
-        ],
-        [
-          49.79269107543644,
-          1.0708105607620837
-        ],
-        [
-          62.64241780458133,
-          1.0708105607620837
-        ],
-        [
-          77.09836037486934,
-          1.0708105607620837
-        ],
-        [
-          88.87727654325215,
-          1.0708105607620837
-        ],
-        [
-          95.30213990782465,
-          1.0708105607620837
-        ],
-        [
-          96.90835574896778,
-          1.0708105607620837
-        ],
-        [
-          97.97916630972975,
-          1.0708105607620837
-        ],
-        [
-          98.51457159011079,
-          1.0708105607620837
-        ],
-        [
-          99.04997687049183,
-          1.0708105607620837
-        ],
-        [
-          99.04997687049183,
-          1.0708105607620837
-        ]
-      ],
-      "pressures": [],
-      "simulatePressure": true,
-      "lastCommittedPoint": null
-    },
-    {
-      "id": "ehRLUOgHA7pD_G_8PMUKx",
-      "type": "freedraw",
-      "x": 442.01575938962105,
-      "y": 319.1159880976673,
-      "width": 97.4437610293487,
-      "height": 0,
-      "angle": 0,
-      "strokeColor": "#1971c2",
-      "backgroundColor": "transparent",
-      "fillStyle": "hachure",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 0,
-      "opacity": 50,
-      "groupIds": [],
-      "frameId": null,
-      "index": "b0F",
-      "roundness": null,
-      "seed": 278952527,
-      "version": 11,
-      "versionNonce": 985096577,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1751972933813,
-      "link": null,
-      "locked": false,
-      "points": [
-        [
-          0,
-          0
-        ],
-        [
-          1.6062158411430119,
-          0
-        ],
-        [
-          6.96026864495343,
-          0
-        ],
-        [
-          18.739184813336237,
-          0
-        ],
-        [
-          38.54918018743467,
-          0
-        ],
-        [
-          63.17782308496237,
-          0
-        ],
-        [
-          82.98781845906069,
-          0
-        ],
-        [
-          95.30213990782454,
-          0
-        ],
-        [
-          97.4437610293487,
-          0
-        ],
-        [
-          97.4437610293487,
-          0
-        ]
-      ],
-      "pressures": [],
-      "simulatePressure": true,
-      "lastCommittedPoint": null
-    },
-    {
       "id": "SFUIm6FdttmxcFu5ER2ds",
       "type": "text",
       "x": 1278.0387338524122,
@@ -1715,20 +1545,20 @@
       "index": "b0X",
       "roundness": null,
       "seed": 2068146104,
-      "version": 150,
-      "versionNonce": 851519197,
+      "version": 152,
+      "versionNonce": 893948020,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1752141695280,
+      "updated": 1752244475965,
       "link": null,
       "locked": false,
-      "text": "mkdir /var/log/sudo\ntouch /etc/sudoerd.d/sudo_config ",
+      "text": "mkdir /var/log/sudo\ntouch /etc/sudoers.d/sudo_config ",
       "fontSize": 20,
       "fontFamily": 8,
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "mkdir /var/log/sudo\ntouch /etc/sudoerd.d/sudo_config ",
+      "originalText": "mkdir /var/log/sudo\ntouch /etc/sudoers.d/sudo_config ",
       "autoResize": true,
       "lineHeight": 1.25
     },
@@ -1846,7 +1676,7 @@
       "id": "yjzx73iLs4p58HufhM13p",
       "type": "text",
       "x": 1507.7293871009992,
-      "y": 11.179212487586767,
+      "y": 13.179212487586767,
       "width": 1065.8849912232188,
       "height": 475,
       "angle": 0,
@@ -1864,20 +1694,20 @@
       "index": "b0ZG",
       "roundness": null,
       "seed": 760909000,
-      "version": 674,
-      "versionNonce": 1847158461,
+      "version": 692,
+      "versionNonce": 30952250,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1752141709214,
+      "updated": 1752250855784,
       "link": null,
       "locked": false,
-      "text": "Defaults  passwd_tries=3\n\n\nDefaults  badpass_message=\"Mensaje de error personalizado\"\n\n\nDefaults  logfile=\"/var/log/sudo/sudo_config\"\n\n\nDefaults  log_input, log_output\n\n\nDefaults  iolog_dir=\"/var/log/sudo\"\n\n\nDefaults  requiretty\n\n\nDefaults  secure_path=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin\"",
+      "text": "Defaults  passwd_tries=3\n\n\nDefaults  badpass_message=\"Mensaje de error personalizado\"\n\n\nDefaults  logfile=\"/var/log/sudo/sudo.log\"\n\n\nDefaults  log_input,log_output\n\n\nDefaults  iolog_dir=\"/var/log/sudo\"\n\n\nDefaults  requiretty\n\n\nDefaults  secure_path=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin\"",
       "fontSize": 20,
       "fontFamily": 8,
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Defaults  passwd_tries=3\n\n\nDefaults  badpass_message=\"Mensaje de error personalizado\"\n\n\nDefaults  logfile=\"/var/log/sudo/sudo_config\"\n\n\nDefaults  log_input, log_output\n\n\nDefaults  iolog_dir=\"/var/log/sudo\"\n\n\nDefaults  requiretty\n\n\nDefaults  secure_path=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin\"",
+      "originalText": "Defaults  passwd_tries=3\n\n\nDefaults  badpass_message=\"Mensaje de error personalizado\"\n\n\nDefaults  logfile=\"/var/log/sudo/sudo.log\"\n\n\nDefaults  log_input,log_output\n\n\nDefaults  iolog_dir=\"/var/log/sudo\"\n\n\nDefaults  requiretty\n\n\nDefaults  secure_path=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin\"",
       "autoResize": false,
       "lineHeight": 1.25
     },
@@ -1905,11 +1735,11 @@
         "type": 3
       },
       "seed": 1218405816,
-      "version": 308,
-      "versionNonce": 2065139485,
+      "version": 312,
+      "versionNonce": 579933772,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1752141709214,
+      "updated": 1752244399743,
       "link": null,
       "locked": false
     },
@@ -1935,11 +1765,11 @@
       "index": "b0Zl",
       "roundness": null,
       "seed": 1059033016,
-      "version": 962,
-      "versionNonce": 405969789,
+      "version": 968,
+      "versionNonce": 1471734822,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1752141709214,
+      "updated": 1752250835629,
       "link": null,
       "locked": false,
       "text": "sudo a 3 intentos\n\n\nMensaje si está la contraseña mal\n\n\nDónde quedan registradas la información sobre el sudo\n\n\nRegistrar el input y output de los comandos\n\n\nDónde se almacenan los inputs y outputs\n\n\nSolo se permitirá el uso de sudo cuando hay una tty real \n\n\nSitios en los que no se puede usar sudo\n\n",
@@ -1974,11 +1804,11 @@
       "index": "b0a",
       "roundness": null,
       "seed": 271744440,
-      "version": 511,
-      "versionNonce": 497820637,
+      "version": 515,
+      "versionNonce": 1462791372,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1752141709214,
+      "updated": 1752244399743,
       "link": null,
       "locked": false,
       "text": "Printea el nombre del archivo de\nla terminal que está conectada\ncon su standard input. No es\ntty si el standard input no es\nuna terminal",
@@ -2015,8 +1845,8 @@
         "type": 3
       },
       "seed": 712925368,
-      "version": 120,
-      "versionNonce": 1603641405,
+      "version": 126,
+      "versionNonce": 1139971572,
       "isDeleted": false,
       "boundElements": [
         {
@@ -2024,7 +1854,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1752141709214,
+      "updated": 1752244399743,
       "link": null,
       "locked": false
     },
@@ -2050,11 +1880,11 @@
       "index": "b0b",
       "roundness": null,
       "seed": 1633345720,
-      "version": 80,
-      "versionNonce": 940471549,
+      "version": 84,
+      "versionNonce": 446755660,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1752141709214,
+      "updated": 1752244399743,
       "link": null,
       "locked": false,
       "points": [
@@ -2122,10 +1952,10 @@
     {
       "id": "lMrodj8uQPPcTud6LS4it",
       "type": "arrow",
-      "x": 2118.77763284969,
-      "y": 302.35727490555615,
-      "width": 115.4252461732508,
-      "height": 119.44626805274584,
+      "x": 2119.4480662194574,
+      "y": 301.78916088101556,
+      "width": 116.09567954301838,
+      "height": 120.01438207728643,
       "angle": 0,
       "strokeColor": "#2f9e44",
       "backgroundColor": "transparent",
@@ -2143,11 +1973,11 @@
         "type": 2
       },
       "seed": 205443512,
-      "version": 268,
-      "versionNonce": 1261380147,
+      "version": 277,
+      "versionNonce": 589019750,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1752141709938,
+      "updated": 1752250886288,
       "link": null,
       "locked": false,
       "points": [
@@ -2156,19 +1986,19 @@
           0
         ],
         [
-          -73.35631399015983,
-          62.16091359066422
+          -74.02674735992741,
+          62.729027615204814
         ],
         [
-          -115.4252461732508,
-          119.44626805274584
+          -116.09567954301838,
+          120.01438207728643
         ]
       ],
       "lastCommittedPoint": null,
       "startBinding": {
         "elementId": "cmYz7_Bqae9ZDhy3qEHJX",
-        "focus": 0.5403339566546359,
-        "gap": 6.501306502906573
+        "focus": 0.5403339566546358,
+        "gap": 5.830873133138994
       },
       "endBinding": null,
       "startArrowhead": null,
@@ -2487,20 +2317,20 @@
       "index": "b1Hd",
       "roundness": null,
       "seed": 1230670280,
-      "version": 849,
-      "versionNonce": 1343620755,
+      "version": 862,
+      "versionNonce": 1261560806,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1752141728265,
+      "updated": 1752250952984,
       "link": null,
       "locked": false,
-      "text": "password [success=1 default=ignore] pam_succeed_if.so user != root\n\n\npassword requisite pam_pwquality.so difok=7\n\n\npassword requisite pam_pwquality.so minlen=10 dcredit=1 ucredit=1 lcredit=1 maxrepeat=3\nusercheck=1 enforce_for_root",
+      "text": "password [success=1 default=ignore] pam_succeed_if.so user != root\n\n\npassword requisite pam_pwquality.so difok=7\n\n\npassword requisite pam_pwquality.so retry=3 minlen=10 dcredit=-1 ucredit=-1 lcredit=-1\nmaxrepeat=3 usercheck=1 enforce_for_root",
       "fontSize": 20,
       "fontFamily": 8,
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "password [success=1 default=ignore] pam_succeed_if.so user != root\n\n\npassword requisite pam_pwquality.so difok=7\n\n\npassword requisite pam_pwquality.so minlen=10 dcredit=1 ucredit=1 lcredit=1 maxrepeat=3 usercheck=1 enforce_for_root",
+      "originalText": "password [success=1 default=ignore] pam_succeed_if.so user != root\n\n\npassword requisite pam_pwquality.so difok=7\n\n\npassword requisite pam_pwquality.so retry=3 minlen=10 dcredit=-1 ucredit=-1 lcredit=-1 maxrepeat=3 usercheck=1 enforce_for_root",
       "autoResize": false,
       "lineHeight": 1.25
     },
@@ -3048,11 +2878,11 @@
       "index": "b1Il",
       "roundness": null,
       "seed": 970379699,
-      "version": 902,
-      "versionNonce": 1149770035,
+      "version": 906,
+      "versionNonce": 1378299494,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1752141728265,
+      "boundElements": [],
+      "updated": 1752250934359,
       "link": null,
       "locked": false,
       "text": "Se ejecuta 1 línea de abajo en caso de que el usuario no sea root\n\n\nLa contraaseña debe tener al menos 7 caracteres distintos a la contraseña antigua\n\n\n\n*credit: máximo de >= 0 caracteres; mínimo <0 caracteres\nmaxrepeat: caracteres iguales consecutivos",
@@ -3088,7 +2918,7 @@
       "version": 442,
       "versionNonce": 169372221,
       "isDeleted": false,
-      "boundElements": null,
+      "boundElements": [],
       "updated": 1752141202533,
       "link": null,
       "locked": false,
