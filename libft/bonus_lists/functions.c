@@ -14,6 +14,8 @@
 #include <stddef.h>
 #include <stdlib.h>
 
+
+
 /* Crea un nuevo nodo utilizando malloc(3). La
 variable miembro ’content’ se inicializa con el
 contenido del parámetro ’content’. La variable
@@ -24,7 +26,6 @@ t_list	*ft_lstnew(void *content)
 
 	newlist = malloc(sizeof(t_list *));
 	newlist->content = malloc(sizeof(content));
-	newlist.next = NULL;
 	return (&newlist);
 }
 /* Añade el nodo ’new’ al principio de la lista ’lst’. */
@@ -39,6 +40,6 @@ int	main(void)
 {
 	void *p;
 
-	printf("%zu", sizeof(t_list *));
+	printf("%zu; %zu; %zu", sizeof(t_list *), sizeof(t_list.content));
 	return (0);
 }

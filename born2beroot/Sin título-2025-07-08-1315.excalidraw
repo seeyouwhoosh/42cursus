@@ -4,12 +4,83 @@
   "source": "https://excalidraw.com",
   "elements": [
     {
+      "id": "TvgtDX0kF-xqRbWR3_nYM",
+      "type": "rectangle",
+      "x": 2791.7069840953613,
+      "y": -115.28364655882382,
+      "width": 939.3474573146,
+      "height": 1104.674742781281,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#a5d8ff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 50,
+      "groupIds": [
+        "JQarLq7XAbo-eWU6_EGrd"
+      ],
+      "frameId": null,
+      "index": "Zw",
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1329483779,
+      "version": 746,
+      "versionNonce": 534371363,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1752502325735,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "sYW-BUqqdtY1aU7il6gmq",
+      "type": "text",
+      "x": 2825.9640460859955,
+      "y": -85.0296085015168,
+      "width": 879.9989624023438,
+      "height": 1050,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#a5d8ff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [
+        "JQarLq7XAbo-eWU6_EGrd"
+      ],
+      "frameId": null,
+      "index": "Zy",
+      "roundness": null,
+      "seed": 110452461,
+      "version": 334,
+      "versionNonce": 1026580419,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1752502325735,
+      "link": null,
+      "locked": false,
+      "text": "#!/bin/bash\nARCH=$(uname --all)\n\nPCPU=$(grep \"physical id\" /proc/cpuinfo | wc -l)\n\nVCPU=$(grep \"processor\" /proc/cpuinfo | wc -l)\n\nRAM_TOTAL=$(free -h | grep Mem | awk '{print $2}')\nRAM_USED=$(free -h | grep Mem | awk '{print $3}')\nRAM_PERC=$(free -k | grep Mem | awk '{printf(\"%.2f%%\", $3/$2*100)}')\n\nDISK_TOTAL=$(df -h --total | grep total | awk '{print $2}')\nDISK_USED=$(df -h --total | grep total | awk '{print $3}')\nDISK_PERC=$(df -k --total | grep total | awk '{print $5}')\n\nCPU_LOAD=$(top -bn1 | grep '^%Cpu' | xargs | awk '{printf(\"%.1f%%\"), $2 + $4}')\n\nLAST_BOOT=$(who -b | awk '{print($3 \" \" $4)}')\n\nLVM=$(if [ $(lsblk | grep lvm | wc -l) -eq 0 ]; then echo no; else echo yes; fi)\n\nTCP=$(grep TCP /proc/net/sockstat | awk '{print $3}')\n\nUSER_LOG=$(who | wc -l)\n\nIP_ADDR=$(hostname -I | awk '{print $1}')\n\nMAC_ADDR=$(ip link show | grep link/ether | awk '{print $2}')\n\nSUDO_LOG=$(cat /var/log/sudo/sudo.log | grep USER | wc -l)\n\nwall \"   # Architecture:    $ARCH\n   # Physical CPUs:   $PCPU\n   # Virtual CPUs:    $VCPU\n   # RAM usage:       $RAM_USED/$RAM_TOTAL ($RAM_PERC)\n   # Disk usage:      $DISK_USED/$DISK_TOTAL ($DISK_PERC)\n   # CPU load:        $CPUT_BOOT\n   # LVM use:         $LVM\n   # TCP connections: $TCP established\n   # Users logged:    $USER_LOG\n   # Network:         IP $IP_ADDR ($MAC_ADDR)\n   # Number of sudos: $SUDO_LOG cmd\"",
+      "fontSize": 20,
+      "fontFamily": 8,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "#!/bin/bash\nARCH=$(uname --all)\n\nPCPU=$(grep \"physical id\" /proc/cpuinfo | wc -l)\n\nVCPU=$(grep \"processor\" /proc/cpuinfo | wc -l)\n\nRAM_TOTAL=$(free -h | grep Mem | awk '{print $2}')\nRAM_USED=$(free -h | grep Mem | awk '{print $3}')\nRAM_PERC=$(free -k | grep Mem | awk '{printf(\"%.2f%%\", $3/$2*100)}')\n\nDISK_TOTAL=$(df -h --total | grep total | awk '{print $2}')\nDISK_USED=$(df -h --total | grep total | awk '{print $3}')\nDISK_PERC=$(df -k --total | grep total | awk '{print $5}')\n\nCPU_LOAD=$(top -bn1 | grep '^%Cpu' | xargs | awk '{printf(\"%.1f%%\"), $2 + $4}')\n\nLAST_BOOT=$(who -b | awk '{print($3 \" \" $4)}')\n\nLVM=$(if [ $(lsblk | grep lvm | wc -l) -eq 0 ]; then echo no; else echo yes; fi)\n\nTCP=$(grep TCP /proc/net/sockstat | awk '{print $3}')\n\nUSER_LOG=$(who | wc -l)\n\nIP_ADDR=$(hostname -I | awk '{print $1}')\n\nMAC_ADDR=$(ip link show | grep link/ether | awk '{print $2}')\n\nSUDO_LOG=$(cat /var/log/sudo/sudo.log | grep USER | wc -l)\n\nwall \"   # Architecture:    $ARCH\n   # Physical CPUs:   $PCPU\n   # Virtual CPUs:    $VCPU\n   # RAM usage:       $RAM_USED/$RAM_TOTAL ($RAM_PERC)\n   # Disk usage:      $DISK_USED/$DISK_TOTAL ($DISK_PERC)\n   # CPU load:        $CPUT_BOOT\n   # LVM use:         $LVM\n   # TCP connections: $TCP established\n   # Users logged:    $USER_LOG\n   # Network:         IP $IP_ADDR ($MAC_ADDR)\n   # Number of sudos: $SUDO_LOG cmd\"",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
       "id": "UDInJncG-JQVOUUjKTCBh",
       "type": "rectangle",
       "x": 316,
       "y": 144,
       "width": 511.50000000000006,
-      "height": 414.2142857142858,
+      "height": 484.2142857142857,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -25,11 +96,11 @@
         "type": 3
       },
       "seed": 1214664591,
-      "version": 226,
-      "versionNonce": 1396650996,
+      "version": 263,
+      "versionNonce": 1950000323,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1752243112412,
+      "updated": 1752501810308,
       "link": null,
       "locked": false
     },
@@ -76,7 +147,7 @@
       "x": 345.8674621582031,
       "y": 203,
       "width": 438.33953857421875,
-      "height": 325,
+      "height": 375,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -90,20 +161,20 @@
       "index": "a5",
       "roundness": null,
       "seed": 1874951439,
-      "version": 586,
-      "versionNonce": 52631796,
+      "version": 634,
+      "versionNonce": 842172643,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1752242708671,
+      "updated": 1752501796762,
       "link": null,
       "locked": false,
-      "text": "Hostname  = xwu42\n\nParticiones (16GB)\n*Partición 1:\n    * /boot: (500 MB)\n* Partición sin montar:\n    * /home: (2.6GB) ext4; mount in /home\n    * /root: (3GB) ext4; mount in /\n    * /srv: (1.2GB) /srv\n    * /swap: (1.2GB) swap area\n    * /tmp: (1.6GB) ext4; mount in /tmp\n    * /var: (1.6GB) ext4; mount in /var\n    * /var-log: (2GB) ext4; mount in /var/log",
+      "text": "Hostname  = xwu42\n\nParticiones (16GB)\n*Partición 1:\n    * /boot: (500 MB)\n* Partición sin montar:\n    * /home: (2.6GB) ext4; mount in /home\n    * /root: (3GB) ext4; mount in /\n    * /srv: (1.2GB) /srv\n    * /swap: (1.2GB) swap area\n    * /tmp: (1.6GB) ext4; mount in /tmp\n    * /var: (1.6GB) ext4; mount in /var\n    * /var-log: (2GB) ext4; mount in /var/log\n\nPara posteriormente ver las particiones:",
       "fontSize": 20,
       "fontFamily": 5,
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Hostname  = xwu42\n\nParticiones (16GB)\n*Partición 1:\n    * /boot: (500 MB)\n* Partición sin montar:\n    * /home: (2.6GB) ext4; mount in /home\n    * /root: (3GB) ext4; mount in /\n    * /srv: (1.2GB) /srv\n    * /swap: (1.2GB) swap area\n    * /tmp: (1.6GB) ext4; mount in /tmp\n    * /var: (1.6GB) ext4; mount in /var\n    * /var-log: (2GB) ext4; mount in /var/log",
+      "originalText": "Hostname  = xwu42\n\nParticiones (16GB)\n*Partición 1:\n    * /boot: (500 MB)\n* Partición sin montar:\n    * /home: (2.6GB) ext4; mount in /home\n    * /root: (3GB) ext4; mount in /\n    * /srv: (1.2GB) /srv\n    * /swap: (1.2GB) swap area\n    * /tmp: (1.6GB) ext4; mount in /tmp\n    * /var: (1.6GB) ext4; mount in /var\n    * /var-log: (2GB) ext4; mount in /var/log\n\nPara posteriormente ver las particiones:",
       "autoResize": true,
       "lineHeight": 1.25
     },
@@ -217,7 +288,7 @@
       "x": 858.654611741572,
       "y": -309.9075184668642,
       "width": 1831.9174532243694,
-      "height": 1634.3016785433304,
+      "height": 1760.5516785433304,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -233,11 +304,11 @@
         "type": 3
       },
       "seed": 146275407,
-      "version": 489,
-      "versionNonce": 153643475,
+      "version": 578,
+      "versionNonce": 1077517987,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1752141745483,
+      "updated": 1752501884184,
       "link": null,
       "locked": false
     },
@@ -935,7 +1006,7 @@
       "x": 909.6764126395295,
       "y": 1076.4379607949452,
       "width": 485.68605253564067,
-      "height": 202.8145065305022,
+      "height": 327.8145065305022,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -951,11 +1022,11 @@
         "type": 3
       },
       "seed": 235979105,
-      "version": 744,
-      "versionNonce": 1016051923,
+      "version": 817,
+      "versionNonce": 1787632781,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1752141741217,
+      "updated": 1752501882010,
       "link": null,
       "locked": false
     },
@@ -1461,10 +1532,10 @@
     {
       "id": "w4TAubNweCGrxfyyNlv1d",
       "type": "rectangle",
-      "x": 2735.456984412194,
+      "x": 2731.706984412194,
       "y": -243.51315605485757,
-      "width": 834.3474573146003,
-      "height": 1293.0080761146146,
+      "width": 1059.3474573146002,
+      "height": 1456.7580761146146,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -1480,18 +1551,18 @@
         "type": 3
       },
       "seed": 1713072481,
-      "version": 318,
-      "versionNonce": 569854141,
+      "version": 434,
+      "versionNonce": 1127501923,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1752141801686,
+      "updated": 1752502329203,
       "link": null,
       "locked": false
     },
     {
       "id": "ZaNdstdl5SVh0yaDe2l45",
       "type": "text",
-      "x": 3018.755560950895,
+      "x": 3150.005560950895,
       "y": -224.1172973684249,
       "width": 231.48004150390625,
       "height": 45,
@@ -1508,11 +1579,11 @@
       "index": "b0O",
       "roundness": null,
       "seed": 783787841,
-      "version": 231,
-      "versionNonce": 2095655197,
+      "version": 324,
+      "versionNonce": 184888589,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1752141801686,
+      "updated": 1752502334620,
       "link": null,
       "locked": false,
       "text": "Monitoring.sh",
@@ -1673,6 +1744,38 @@
       "lineHeight": 1.25
     },
     {
+      "id": "cl5kzKYUJYn8yAJ7efILB",
+      "type": "rectangle",
+      "x": 1483.319565029535,
+      "y": -13.560497556295928,
+      "width": 1101.160688781462,
+      "height": 564.5404081370624,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#a5d8ff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 50,
+      "groupIds": [
+        "9weglBT8XGaGc7038QVim"
+      ],
+      "frameId": null,
+      "index": "b0Z4",
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1218405816,
+      "version": 321,
+      "versionNonce": 959216291,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1752502116222,
+      "link": null,
+      "locked": false
+    },
+    {
       "id": "yjzx73iLs4p58HufhM13p",
       "type": "text",
       "x": 1507.7293871009992,
@@ -1710,38 +1813,6 @@
       "originalText": "Defaults  passwd_tries=3\n\n\nDefaults  badpass_message=\"Mensaje de error personalizado\"\n\n\nDefaults  logfile=\"/var/log/sudo/sudo.log\"\n\n\nDefaults  log_input,log_output\n\n\nDefaults  iolog_dir=\"/var/log/sudo\"\n\n\nDefaults  requiretty\n\n\nDefaults  secure_path=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin\"",
       "autoResize": false,
       "lineHeight": 1.25
-    },
-    {
-      "id": "cl5kzKYUJYn8yAJ7efILB",
-      "type": "rectangle",
-      "x": 1483.319565029535,
-      "y": -13.560497556295928,
-      "width": 1101.160688781462,
-      "height": 564.5404081370624,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [
-        "9weglBT8XGaGc7038QVim"
-      ],
-      "frameId": null,
-      "index": "b0ZV",
-      "roundness": {
-        "type": 3
-      },
-      "seed": 1218405816,
-      "version": 312,
-      "versionNonce": 579933772,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1752244399743,
-      "link": null,
-      "locked": false
     },
     {
       "id": "uxfjG2bxfKPe9DTz1WBeQ",
@@ -2008,8 +2079,8 @@
     {
       "id": "qXl4mZjAy5nMS2S5A8Vck",
       "type": "text",
-      "x": 958.5304919086395,
-      "y": 1135.41328072959,
+      "x": 947.0284502147158,
+      "y": 1134.78828072959,
       "width": 184.81982421875,
       "height": 125,
       "angle": 0,
@@ -2020,16 +2091,18 @@
       "strokeStyle": "solid",
       "roughness": 1,
       "opacity": 100,
-      "groupIds": [],
+      "groupIds": [
+        "ep8e3q_V0RaVw1DQyZQ8g"
+      ],
       "frameId": null,
-      "index": "b0r",
+      "index": "b0cV",
       "roundness": null,
       "seed": 1551191736,
-      "version": 216,
-      "versionNonce": 1309697459,
+      "version": 232,
+      "versionNonce": 1372295309,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1752141741217,
+      "updated": 1752501870164,
       "link": null,
       "locked": false,
       "text": "Archivos a cambiar:\n\n\n\nReboot",
@@ -2045,8 +2118,8 @@
     {
       "id": "ZuEmC4pPBM-73elxKpR--",
       "type": "text",
-      "x": 962.4851087260433,
-      "y": 1169.6866264804203,
+      "x": 950.9830670321196,
+      "y": 1169.0616264804203,
       "width": 142.9998016357422,
       "height": 50,
       "angle": 0,
@@ -2057,16 +2130,18 @@
       "strokeStyle": "solid",
       "roughness": 1,
       "opacity": 100,
-      "groupIds": [],
+      "groupIds": [
+        "ep8e3q_V0RaVw1DQyZQ8g"
+      ],
       "frameId": null,
-      "index": "b0s",
+      "index": "b0d",
       "roundness": null,
       "seed": 1928570040,
-      "version": 176,
-      "versionNonce": 1962882899,
+      "version": 192,
+      "versionNonce": 813954797,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1752141741217,
+      "updated": 1752501870164,
       "link": null,
       "locked": false,
       "text": "/etc/hostname\n/etc/hosts",
@@ -2150,7 +2225,7 @@
       "id": "V5AbdsMVhhDsaCTGQtnxE",
       "type": "rectangle",
       "x": 1448.1809579551125,
-      "y": 608.0488497436108,
+      "y": 626.7988497436108,
       "width": 1174.6489272400665,
       "height": 672.6299657518587,
       "angle": 0,
@@ -2170,11 +2245,11 @@
         "type": 3
       },
       "seed": 363209985,
-      "version": 1038,
-      "versionNonce": 368584723,
+      "version": 1083,
+      "versionNonce": 1578557581,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1752141728265,
+      "updated": 1752501974298,
       "link": null,
       "locked": false
     },
@@ -2182,7 +2257,7 @@
       "id": "sIOENYnGbFUHNPBB-DUCX",
       "type": "text",
       "x": 1876.470610370323,
-      "y": 630.8467299843842,
+      "y": 649.5967299843842,
       "width": 319.53729248046875,
       "height": 35,
       "angle": 0,
@@ -2200,11 +2275,11 @@
       "index": "b1HG",
       "roundness": null,
       "seed": 348503649,
-      "version": 946,
-      "versionNonce": 1132441011,
+      "version": 991,
+      "versionNonce": 920995565,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1752141728265,
+      "updated": 1752501974298,
       "link": null,
       "locked": false,
       "text": "Política de contraseñas",
@@ -2221,7 +2296,7 @@
       "id": "pVZKvxRim4PdbrdowkqPL",
       "type": "text",
       "x": 1511.7550094650337,
-      "y": 679.7038574333428,
+      "y": 698.4538574333428,
       "width": 282.75970458984375,
       "height": 25,
       "angle": 0,
@@ -2239,11 +2314,11 @@
       "index": "b1HO",
       "roundness": null,
       "seed": 2097709000,
-      "version": 529,
-      "versionNonce": 222658387,
+      "version": 574,
+      "versionNonce": 165142861,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1752141728265,
+      "updated": 1752501974298,
       "link": null,
       "locked": false,
       "text": "Periodo de expiración y aviso",
@@ -2260,7 +2335,7 @@
       "id": "5IzcbwW_sl4Hy0qunOJqs",
       "type": "text",
       "x": 1514.700267085996,
-      "y": 895.4639660044567,
+      "y": 914.2139660044567,
       "width": 362.99951171875,
       "height": 25,
       "angle": 0,
@@ -2278,11 +2353,11 @@
       "index": "b1HV",
       "roundness": null,
       "seed": 1137673656,
-      "version": 519,
-      "versionNonce": 1839209715,
+      "version": 564,
+      "versionNonce": 1816670125,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1752141728265,
+      "updated": 1752501974298,
       "link": null,
       "locked": false,
       "text": "sudo apt install libpam-pwquality",
@@ -2299,7 +2374,7 @@
       "id": "kbSaxfYjgvl2HqX1pEZB-",
       "type": "text",
       "x": 1514.700267085996,
-      "y": 972.7631126387025,
+      "y": 991.5131126387025,
       "width": 1051.9190324253007,
       "height": 200,
       "angle": 0,
@@ -2317,11 +2392,11 @@
       "index": "b1Hd",
       "roundness": null,
       "seed": 1230670280,
-      "version": 862,
-      "versionNonce": 1261560806,
+      "version": 907,
+      "versionNonce": 207598093,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1752250952984,
+      "updated": 1752501974298,
       "link": null,
       "locked": false,
       "text": "password [success=1 default=ignore] pam_succeed_if.so user != root\n\n\npassword requisite pam_pwquality.so difok=7\n\n\npassword requisite pam_pwquality.so retry=3 minlen=10 dcredit=-1 ucredit=-1 lcredit=-1\nmaxrepeat=3 usercheck=1 enforce_for_root",
@@ -2338,7 +2413,7 @@
       "id": "pCFwTWfJ2Bf2e97cwopoa",
       "type": "text",
       "x": 1511.7550094650337,
-      "y": 755.5112350269351,
+      "y": 774.2612350269351,
       "width": 186.99974060058594,
       "height": 75,
       "angle": 0,
@@ -2356,11 +2431,11 @@
       "index": "b1Hl",
       "roundness": null,
       "seed": 986932920,
-      "version": 432,
-      "versionNonce": 1801305139,
+      "version": 477,
+      "versionNonce": 387442797,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1752141728265,
+      "updated": 1752501974298,
       "link": null,
       "locked": false,
       "text": "PASS_MAX_DAYS 30 \nPASS_MIN_DAYS 2\nPASS_WARN_AGE 7",
@@ -2377,7 +2452,7 @@
       "id": "TgbAWLBQ3RzS1kOKCqLaL",
       "type": "text",
       "x": 1668.122156519295,
-      "y": 717.5632035229441,
+      "y": 736.3132035229441,
       "width": 164.99977111816406,
       "height": 25,
       "angle": 0,
@@ -2396,11 +2471,11 @@
       "index": "b1Ht",
       "roundness": null,
       "seed": 755091896,
-      "version": 452,
-      "versionNonce": 1532870099,
+      "version": 497,
+      "versionNonce": 1580880589,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1752141728265,
+      "updated": 1752501974298,
       "link": null,
       "locked": false,
       "text": "/etc/login.defs",
@@ -2417,7 +2492,7 @@
       "id": "ebcA9eMhjfdOCd62chtsv",
       "type": "text",
       "x": 1511.7550094650337,
-      "y": 718.3297895219266,
+      "y": 737.0797895219266,
       "width": 151.77984619140625,
       "height": 25,
       "angle": 0,
@@ -2436,11 +2511,11 @@
       "index": "b1I",
       "roundness": null,
       "seed": 256865976,
-      "version": 382,
-      "versionNonce": 2066516851,
+      "version": 427,
+      "versionNonce": 1046507821,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1752141728265,
+      "updated": 1752501974298,
       "link": null,
       "locked": false,
       "text": "Editar archivo: ",
@@ -2457,7 +2532,7 @@
       "id": "5GVQmMqIU1kdcvkNqEomS",
       "type": "text",
       "x": 1671.0674141402574,
-      "y": 932.7369624963546,
+      "y": 951.4869624963546,
       "width": 285.9996337890625,
       "height": 25,
       "angle": 0,
@@ -2476,11 +2551,11 @@
       "index": "b1I8",
       "roundness": null,
       "seed": 822180296,
-      "version": 696,
-      "versionNonce": 2131797267,
+      "version": 741,
+      "versionNonce": 1156825997,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1752141728265,
+      "updated": 1752501974298,
       "link": null,
       "locked": false,
       "text": "/etc/pam.d/common-password",
@@ -2497,7 +2572,7 @@
       "id": "ogT0jMJZysMmcwPdlYcd-",
       "type": "text",
       "x": 1514.700267085996,
-      "y": 933.5035484953366,
+      "y": 952.2535484953366,
       "width": 151.77984619140625,
       "height": 25,
       "angle": 0,
@@ -2516,11 +2591,11 @@
       "index": "b1IG",
       "roundness": null,
       "seed": 1698627784,
-      "version": 625,
-      "versionNonce": 1317046963,
+      "version": 670,
+      "versionNonce": 372099565,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1752141728265,
+      "updated": 1752501974298,
       "link": null,
       "locked": false,
       "text": "Editar archivo: ",
@@ -2537,7 +2612,7 @@
       "id": "eutxgS6F9BbeiKjRPiwtI",
       "type": "freedraw",
       "x": 1511.7550094650337,
-      "y": 692.3784083540777,
+      "y": 711.1284083540777,
       "width": 278.14138282404474,
       "height": 4.613719620303982,
       "angle": 0,
@@ -2555,11 +2630,11 @@
       "index": "b1IO",
       "roundness": null,
       "seed": 832545976,
-      "version": 297,
-      "versionNonce": 505592915,
+      "version": 342,
+      "versionNonce": 320341069,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1752141728265,
+      "updated": 1752501974298,
       "link": null,
       "locked": false,
       "points": [
@@ -2668,7 +2743,7 @@
       "id": "MDVCjihnkg0aHk5KKCOZo",
       "type": "text",
       "x": 1515.4145528002819,
-      "y": 856.1651158999334,
+      "y": 874.9151158999334,
       "width": 280.0997314453125,
       "height": 25,
       "angle": 0,
@@ -2687,11 +2762,11 @@
       "index": "b1IV",
       "roundness": null,
       "seed": 1009266120,
-      "version": 544,
-      "versionNonce": 1238219251,
+      "version": 589,
+      "versionNonce": 1066136237,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1752141728265,
+      "updated": 1752501974298,
       "link": null,
       "locked": false,
       "text": "Complejidad de la contraseña",
@@ -2708,7 +2783,7 @@
       "id": "mrcoKKoG_uQCGqRsTI7n6",
       "type": "freedraw",
       "x": 1515.4145528002819,
-      "y": 874.4232085880924,
+      "y": 893.1732085880924,
       "width": 277.4822800211441,
       "height": 0,
       "angle": 0,
@@ -2727,11 +2802,11 @@
       "index": "b1Id",
       "roundness": null,
       "seed": 155020728,
-      "version": 358,
-      "versionNonce": 1854407571,
+      "version": 403,
+      "versionNonce": 1748178189,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1752141728265,
+      "updated": 1752501974298,
       "link": null,
       "locked": false,
       "points": [
@@ -2860,7 +2935,7 @@
       "id": "9jRnJHwiawT0MvqB8qAKT",
       "type": "text",
       "x": 1514.700267085996,
-      "y": 1010.9773983529883,
+      "y": 1029.7273983529883,
       "width": 812.1593017578125,
       "height": 225,
       "angle": 0,
@@ -2878,11 +2953,11 @@
       "index": "b1Il",
       "roundness": null,
       "seed": 970379699,
-      "version": 906,
-      "versionNonce": 1378299494,
+      "version": 951,
+      "versionNonce": 143059821,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1752250934359,
+      "updated": 1752501974298,
       "link": null,
       "locked": false,
       "text": "Se ejecuta 1 línea de abajo en caso de que el usuario no sea root\n\n\nLa contraaseña debe tener al menos 7 caracteres distintos a la contraseña antigua\n\n\n\n*credit: máximo de >= 0 caracteres; mínimo <0 caracteres\nmaxrepeat: caracteres iguales consecutivos",
@@ -2931,6 +3006,1001 @@
       "originalText": "Es un sistema de control de acceso para Linux, que limita los permisos de las aplicaciones y procesos, protegiendo así de operaciones perniciosas, tanto externas como internas",
       "autoResize": false,
       "lineHeight": 1.25
+    },
+    {
+      "id": "tBQEDsKtivxxLtqs3TUzv",
+      "type": "text",
+      "x": 947.0284502147158,
+      "y": 1290.6690732762618,
+      "width": 107.45986938476562,
+      "height": 100,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [
+        "U5UdkI0XnJCiulYrl7tBA"
+      ],
+      "frameId": null,
+      "index": "b1M",
+      "roundness": null,
+      "seed": 1835483661,
+      "version": 410,
+      "versionNonce": 340001059,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1752501879068,
+      "link": null,
+      "locked": false,
+      "text": "Alternativa\n\n\nReboot",
+      "fontSize": 20,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Alternativa\n\n\nReboot",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "NjJCtFBON2UhCKeMFbnCX",
+      "type": "text",
+      "x": 949.7330670321196,
+      "y": 1329.317419027092,
+      "width": 417.99945068359375,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [
+        "U5UdkI0XnJCiulYrl7tBA"
+      ],
+      "frameId": null,
+      "index": "b1N",
+      "roundness": null,
+      "seed": 279804013,
+      "version": 431,
+      "versionNonce": 1121080973,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1752501879068,
+      "link": null,
+      "locked": false,
+      "text": "sudo hostnamectl set-hostname [nombre]",
+      "fontSize": 20,
+      "fontFamily": 8,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "sudo hostnamectl set-hostname [nombre]",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "OanZZ588_fPX8aKB_zHiR",
+      "type": "text",
+      "x": 345.8674621582031,
+      "y": 584.9012161334043,
+      "width": 54.99992370605469,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1O",
+      "roundness": null,
+      "seed": 195337101,
+      "version": 44,
+      "versionNonce": 1610061539,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1752501805609,
+      "link": null,
+      "locked": false,
+      "text": "lsblk",
+      "fontSize": 20,
+      "fontFamily": 8,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "lsblk",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "e_2-1FwIXOj79Th8bB8RJ",
+      "type": "freedraw",
+      "x": 949.4502670859956,
+      "y": 1308.7524066095948,
+      "width": 97.5,
+      "height": 2.5,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 50,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1R",
+      "roundness": null,
+      "seed": 966153027,
+      "version": 23,
+      "versionNonce": 209728653,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1752501902363,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          13.125,
+          0
+        ],
+        [
+          24.375,
+          0
+        ],
+        [
+          35,
+          -0.625
+        ],
+        [
+          50.625,
+          -0.625
+        ],
+        [
+          59.375,
+          -1.875
+        ],
+        [
+          68.75,
+          -1.875
+        ],
+        [
+          75,
+          -1.875
+        ],
+        [
+          78.125,
+          -2.5
+        ],
+        [
+          79.375,
+          -2.5
+        ],
+        [
+          80.625,
+          -2.5
+        ],
+        [
+          81.875,
+          -2.5
+        ],
+        [
+          83.75,
+          -2.5
+        ],
+        [
+          85.625,
+          -2.5
+        ],
+        [
+          90,
+          -2.5
+        ],
+        [
+          92.5,
+          -2.5
+        ],
+        [
+          94.375,
+          -2.5
+        ],
+        [
+          96.25,
+          -2.5
+        ],
+        [
+          96.875,
+          -2.5
+        ],
+        [
+          97.5,
+          -2.5
+        ],
+        [
+          97.5,
+          -2.5
+        ]
+      ],
+      "pressures": [],
+      "simulatePressure": true,
+      "lastCommittedPoint": [
+        97.5,
+        -2.5
+      ]
+    },
+    {
+      "id": "vv0FUACBDp_ZWAnGMbP-1",
+      "type": "freedraw",
+      "x": 350.9780448637737,
+      "y": 267.84962883181686,
+      "width": 96.11111111111109,
+      "height": 0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 50,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1U",
+      "roundness": null,
+      "seed": 994507139,
+      "version": 20,
+      "versionNonce": 159351235,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1752501917059,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0.5555555555555429,
+          0
+        ],
+        [
+          7.777777777777828,
+          0
+        ],
+        [
+          17.77777777777783,
+          0
+        ],
+        [
+          27.22222222222217,
+          0
+        ],
+        [
+          41.111111111111086,
+          0
+        ],
+        [
+          44.44444444444446,
+          0
+        ],
+        [
+          57.22222222222217,
+          0
+        ],
+        [
+          63.33333333333337,
+          0
+        ],
+        [
+          66.66666666666663,
+          0
+        ],
+        [
+          70.55555555555554,
+          0
+        ],
+        [
+          75,
+          0
+        ],
+        [
+          80.55555555555566,
+          0
+        ],
+        [
+          86.66666666666674,
+          0
+        ],
+        [
+          91.66666666666674,
+          0
+        ],
+        [
+          94.44444444444434,
+          0
+        ],
+        [
+          95.55555555555566,
+          0
+        ],
+        [
+          96.11111111111109,
+          0
+        ],
+        [
+          96.11111111111109,
+          0
+        ]
+      ],
+      "pressures": [],
+      "simulatePressure": true,
+      "lastCommittedPoint": [
+        96.11111111111109,
+        0
+      ]
+    },
+    {
+      "id": "6ZY9Q0Igd7wjT2KS1b6zO",
+      "type": "freedraw",
+      "x": 1101.533600419329,
+      "y": -56.59481561262754,
+      "width": 116.11111111111109,
+      "height": 1.1111111111110858,
+      "angle": 0,
+      "strokeColor": "#f08c00",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 50,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1W",
+      "roundness": null,
+      "seed": 609264195,
+      "version": 27,
+      "versionNonce": 1942795853,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1752501930380,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          1.6666666666667425,
+          0
+        ],
+        [
+          9.44444444444457,
+          0
+        ],
+        [
+          20.555555555555657,
+          0
+        ],
+        [
+          33.888888888888914,
+          0
+        ],
+        [
+          44.44444444444457,
+          0
+        ],
+        [
+          65,
+          0
+        ],
+        [
+          68.88888888888891,
+          0
+        ],
+        [
+          79.44444444444457,
+          0
+        ],
+        [
+          83.33333333333326,
+          0
+        ],
+        [
+          87.77777777777783,
+          0
+        ],
+        [
+          89.44444444444457,
+          0
+        ],
+        [
+          92.22222222222217,
+          0
+        ],
+        [
+          96.11111111111109,
+          0
+        ],
+        [
+          98.88888888888891,
+          0
+        ],
+        [
+          102.22222222222217,
+          0
+        ],
+        [
+          105.55555555555566,
+          0
+        ],
+        [
+          107.77777777777783,
+          0
+        ],
+        [
+          108.88888888888891,
+          0
+        ],
+        [
+          110,
+          0
+        ],
+        [
+          110.55555555555566,
+          0
+        ],
+        [
+          112.22222222222217,
+          1.1111111111110858
+        ],
+        [
+          113.88888888888891,
+          1.1111111111110858
+        ],
+        [
+          115.55555555555566,
+          1.1111111111110858
+        ],
+        [
+          116.11111111111109,
+          1.1111111111110858
+        ],
+        [
+          116.11111111111109,
+          1.1111111111110858
+        ]
+      ],
+      "pressures": [],
+      "simulatePressure": true,
+      "lastCommittedPoint": [
+        116.11111111111109,
+        1.1111111111110858
+      ]
+    },
+    {
+      "id": "87qCLBMDTkpL5fV7WrKpy",
+      "type": "freedraw",
+      "x": 948.7558226415514,
+      "y": 20.071851054039087,
+      "width": 224.9999999999999,
+      "height": 1.6666666666666856,
+      "angle": 0,
+      "strokeColor": "#f08c00",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 50,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1X",
+      "roundness": null,
+      "seed": 837634211,
+      "version": 53,
+      "versionNonce": 855150797,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1752501938549,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          1.1111111111110858,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          11.111111111111086,
+          0
+        ],
+        [
+          23.333333333333258,
+          0
+        ],
+        [
+          36.66666666666663,
+          0
+        ],
+        [
+          50,
+          0
+        ],
+        [
+          60,
+          0
+        ],
+        [
+          68.8888888888888,
+          0
+        ],
+        [
+          74.44444444444446,
+          0
+        ],
+        [
+          78.8888888888888,
+          0
+        ],
+        [
+          83.8888888888888,
+          0
+        ],
+        [
+          88.8888888888888,
+          0
+        ],
+        [
+          95.55555555555554,
+          0
+        ],
+        [
+          104.44444444444446,
+          0
+        ],
+        [
+          117.22222222222229,
+          0
+        ],
+        [
+          124.44444444444446,
+          0
+        ],
+        [
+          127.77777777777771,
+          0
+        ],
+        [
+          132.77777777777771,
+          0
+        ],
+        [
+          137.22222222222229,
+          0
+        ],
+        [
+          143.8888888888888,
+          0
+        ],
+        [
+          150.55555555555554,
+          0
+        ],
+        [
+          156.1111111111112,
+          0
+        ],
+        [
+          161.66666666666663,
+          0
+        ],
+        [
+          165.0000000000001,
+          0
+        ],
+        [
+          168.33333333333337,
+          0
+        ],
+        [
+          171.66666666666663,
+          0
+        ],
+        [
+          176.1111111111112,
+          0
+        ],
+        [
+          182.77777777777771,
+          1.1111111111111427
+        ],
+        [
+          186.1111111111112,
+          1.1111111111111427
+        ],
+        [
+          189.44444444444446,
+          1.1111111111111427
+        ],
+        [
+          192.22222222222229,
+          1.1111111111111427
+        ],
+        [
+          194.44444444444446,
+          1.1111111111111427
+        ],
+        [
+          197.22222222222229,
+          1.1111111111111427
+        ],
+        [
+          199.9999999999999,
+          1.6666666666666856
+        ],
+        [
+          202.22222222222229,
+          1.6666666666666856
+        ],
+        [
+          203.8888888888888,
+          1.6666666666666856
+        ],
+        [
+          205.55555555555554,
+          1.6666666666666856
+        ],
+        [
+          207.22222222222229,
+          1.6666666666666856
+        ],
+        [
+          208.8888888888888,
+          1.6666666666666856
+        ],
+        [
+          209.9999999999999,
+          1.6666666666666856
+        ],
+        [
+          210.55555555555554,
+          1.6666666666666856
+        ],
+        [
+          212.22222222222229,
+          1.6666666666666856
+        ],
+        [
+          212.77777777777771,
+          1.6666666666666856
+        ],
+        [
+          213.33333333333337,
+          1.6666666666666856
+        ],
+        [
+          213.8888888888888,
+          1.6666666666666856
+        ],
+        [
+          216.66666666666663,
+          1.6666666666666856
+        ],
+        [
+          221.66666666666663,
+          1.6666666666666856
+        ],
+        [
+          223.33333333333337,
+          1.6666666666666856
+        ],
+        [
+          224.44444444444446,
+          1.6666666666666856
+        ],
+        [
+          224.9999999999999,
+          1.6666666666666856
+        ],
+        [
+          224.9999999999999,
+          1.6666666666666856
+        ]
+      ],
+      "pressures": [],
+      "simulatePressure": true,
+      "lastCommittedPoint": [
+        224.9999999999999,
+        1.6666666666666856
+      ]
+    },
+    {
+      "id": "XhwpMBGe-dBWzfLTLeoww",
+      "type": "text",
+      "x": 2803.4362683082177,
+      "y": 1024.025947054039,
+      "width": 77.01991271972656,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#a5d8ff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1b",
+      "roundness": null,
+      "seed": 1079410413,
+      "version": 172,
+      "versionNonce": 1614114659,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1752502325735,
+      "link": null,
+      "locked": false,
+      "text": "Crontab",
+      "fontSize": 20,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Crontab",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "NBpSXiVVqiYsVhOsW3FXn",
+      "type": "text",
+      "x": 2803.4362683082177,
+      "y": 1065.275947054039,
+      "width": 384.99945068359375,
+      "height": 100,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#a5d8ff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1c",
+      "roundness": null,
+      "seed": 1232328163,
+      "version": 277,
+      "versionNonce": 1798802179,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1752502325736,
+      "link": null,
+      "locked": false,
+      "text": "crontab -u root -e\n\n\n*/10 * * * * sh /root/monitoring.sh",
+      "fontSize": 20,
+      "fontFamily": 8,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "crontab -u root -e\n\n\n*/10 * * * * sh /root/monitoring.sh",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "m91-BTischK_j3AQk9gNF",
+      "type": "text",
+      "x": 2803.991823863774,
+      "y": 1099.7203914984834,
+      "width": 330.69970703125,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#a5d8ff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1d",
+      "roundness": null,
+      "seed": 197612643,
+      "version": 238,
+      "versionNonce": 1924477603,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1752502325736,
+      "link": null,
+      "locked": false,
+      "text": "Y añadimos esto en la última línea:",
+      "fontSize": 20,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Y añadimos esto en la última línea:",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "L6XBkdWMIKbSNQIJUAnrs",
+      "type": "text",
+      "x": 2805.0058226415513,
+      "y": -159.8725933904053,
+      "width": 263.9996337890625,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#a5d8ff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1e",
+      "roundness": null,
+      "seed": 1181277251,
+      "version": 123,
+      "versionNonce": 327951811,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1752502318768,
+      "link": null,
+      "locked": false,
+      "text": "nano /root/monitoring.sh",
+      "fontSize": 20,
+      "fontFamily": 8,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "nano /root/monitoring.sh",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "vJnXXEbH_8_7ZoVG8jsa6",
+      "type": "freedraw",
+      "x": 2808.1308226415513,
+      "y": 1040.3774066095948,
+      "width": 61.25,
+      "height": 0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "#a5d8ff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 50,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1j",
+      "roundness": null,
+      "seed": 1804105453,
+      "version": 20,
+      "versionNonce": 989012653,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1752502352846,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0.625,
+          0
+        ],
+        [
+          5.625,
+          0
+        ],
+        [
+          11.25,
+          0
+        ],
+        [
+          18.75,
+          0
+        ],
+        [
+          29.375,
+          0
+        ],
+        [
+          40,
+          0
+        ],
+        [
+          45.625,
+          0
+        ],
+        [
+          47.5,
+          0
+        ],
+        [
+          50.625,
+          0
+        ],
+        [
+          52.5,
+          0
+        ],
+        [
+          55,
+          0
+        ],
+        [
+          56.875,
+          0
+        ],
+        [
+          58.125,
+          0
+        ],
+        [
+          58.75,
+          0
+        ],
+        [
+          59.375,
+          0
+        ],
+        [
+          60,
+          0
+        ],
+        [
+          61.25,
+          0
+        ],
+        [
+          61.25,
+          0
+        ]
+      ],
+      "pressures": [],
+      "simulatePressure": true,
+      "lastCommittedPoint": [
+        61.25,
+        0
+      ]
     }
   ],
   "appState": {
