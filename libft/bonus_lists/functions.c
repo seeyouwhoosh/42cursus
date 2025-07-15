@@ -81,11 +81,56 @@ t_list	*ft_lstlast(t_list *lst)
 	return (lst);
 }
 
-#include <stdio.h>
-
-int	main(void)
+/* Añade el nodo ’new’ al final de la lista ’lst’.*/
+void	ft_lstadd_back(t_list **lst, t_list *new)
 {
-	return (0);
+	t_list	*ptr;
+
+	if (!lst || !new)
+		return ;
+	if (!(*lst))
+	{
+		*lst = new;
+		return ;
+	}
+	ptr = ft_lstlast(*lst);
+	ptr->next = new;
+}
+
+/* Toma como parámetro un nodo ’lst’ y libera la memoria del contenido utilizando la función ’del’ dada como parámetro, además de liberar el nodo. La memoria de ’next’ no debe liberarse.*/
+void	ft_lstdelone(t_list *lst, void (*del)(void*))
+{
+	if (!lst | !del)
+		return ;
+	del(lst->content);
+	free(lst);
+}
+/* Elimina y libera el nodo ’lst’ dado y todos los consecutivos de ese nodo, utilizando la función ’del’ y free(3). Al final, el puntero a la lista debe ser NULL*/
+void ft_lstclear(t_list **lst, void (*del)(void*))
+{
+	t_list	*ptr;
+
+	if (!lst || !del)
+		return ;
+
+	while (*lst)
+	{
+		ptr = (*lst)->next;
+		ft_lstdelone(*lst, del);
+		*lst = ptr;
+	}
+	*lst = NULL;
+}
+/* Itera la lista ’lst’ y aplica la función ’f’ en el contenido de cada nodo.*/
+void ft_lstiter(t_list *lst, void (*f)(void *))
+{
+	;
+}
+
+/* Itera la lista ’lst’ y aplica la función ’f’ al contenido de cada nodo. Crea una lista resultante de la aplicación correcta y sucesiva de la función ’f’ sobre cada nodo. La función ’del’ se utiliza para eliminar el contenido de un nodo, si hace falta.*/
+t_list *ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
+{
+	;
 }
 
 
@@ -99,4 +144,8 @@ I will have 4 points.
 I still need one. It would be good if I could trade it with someone. There was a guy, called Santiago, not sure if he's still here. Guess not, today was his last day before being absorbed.
 
 I need to correct someone, but there is a problem, as people who started with the second milestone aren't going to finish so soon and people who need corrections are can't be corrected by me, as my level is too low.
+
+I can only remain expectant until... well, I guess I will have to ask in Slack (?)
+
+Another problem is that people just ask whoever they already know.
 */
