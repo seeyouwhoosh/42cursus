@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_list.h                                          :+:      :+:    :+:   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xwu <xwu@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/26 11:57:02 by xwu               #+#    #+#             */
-/*   Updated: 2025/06/26 12:20:00 by xwu              ###   ########.fr       */
+/*   Created: 2025/07/16 18:44:44 by xwu               #+#    #+#             */
+/*   Updated: 2025/07/16 18:51:09 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_LIST_H
-# define FT_LIST_H
+#include "libft.h"
 
-typedef struct s_list
+int	ft_lstsize(t_list *lst)
 {
-	void			*content;
-	struct s_list	*next;
-}					t_list;
+	size_t	i;
 
-t_list	*ft_lstnew(void *content);
-
-
-
-#endif
+	if (!lst)
+		return (0);
+	i = 1;
+	while (lst->next)
+	{
+		i++;
+		lst = lst->next;
+	}
+	return (i);
+}

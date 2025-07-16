@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_list.h"
+#include "libft.h"
 #include <stddef.h>
 #include <stdlib.h>
 
@@ -106,7 +106,7 @@ void	ft_lstdelone(t_list *lst, void (*del)(void*))
 	free(lst);
 }
 /* Elimina y libera el nodo ’lst’ dado y todos los consecutivos de ese nodo, utilizando la función ’del’ y free(3). Al final, el puntero a la lista debe ser NULL*/
-void ft_lstclear(t_list **lst, void (*del)(void*))
+void	ft_lstclear(t_list **lst, void (*del)(void*))
 {
 	t_list	*ptr;
 
@@ -122,17 +122,42 @@ void ft_lstclear(t_list **lst, void (*del)(void*))
 	*lst = NULL;
 }
 /* Itera la lista ’lst’ y aplica la función ’f’ en el contenido de cada nodo.*/
-void ft_lstiter(t_list *lst, void (*f)(void *))
+void	ft_lstiter(t_list *lst, void (*f)(void *))
 {
-	;
+	if (!lst || !f)
+		return ;
+	while (lst)
+	{
+		f(lst->content);
+		lst = lst->next;
+	}
 }
 
 /* Itera la lista ’lst’ y aplica la función ’f’ al contenido de cada nodo. Crea una lista resultante de la aplicación correcta y sucesiva de la función ’f’ sobre cada nodo. La función ’del’ se utiliza para eliminar el contenido de un nodo, si hace falta.*/
-t_list *ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
+t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
-	;
-}
+	t_list	*newlst;
+	t_list	*ltemp;
+	void	*lcontent;
 
+	if (!lst || !f)
+		return (NULL);
+	newlst = NULL;
+	while (lst)
+	{
+		lcontent = f(lst->content);
+		ltemp = ft_lstnew(lcontent);
+		if (!ltemp)
+		{
+			del(lcontent);
+			ft_lstclear(&newlst, del);
+			return (NULL);
+		}
+		ft_lstadd_back(&newlst, ltemp);
+		lst = lst->content;
+	}
+	return (newlst);
+}
 
 /*
 I'm pretty sure that my projects are correct. 
