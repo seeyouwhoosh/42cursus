@@ -27,7 +27,7 @@ size_t	ft_strlen(const char *s)
 	return (length);
 }
 
-void	print_list(t_list *lst)
+void	print_list1(t_list *lst)
 {
 	while (lst)
 	{
@@ -35,6 +35,17 @@ void	print_list(t_list *lst)
 		lst = lst->next;
 	}
 	printf("NULL\n");
+}
+
+void	print_list(t_list *lst)
+{
+	printf("[");
+	while (lst)
+	{
+		printf("%s, ", (char *)lst->content);
+		lst = lst->next;
+	}
+	printf("NULL]\n");
 }
 
 void	del_content(void *content)
