@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functions.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xwu <xwu@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 12:02:32 by xwu               #+#    #+#             */
-/*   Updated: 2025/06/26 12:25:34 by xwu              ###   ########.fr       */
+/*   Updated: 2025/07/17 17:41:02 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,24 +153,136 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 			ft_lstclear(&newlst, del);
 			return (NULL);
 		}
-		ft_lstadd_back(&newlst, ltemp);
+		if (!newlst)
+			newlst = ft_lstnew(lcontent);
+		else
+			ft_lstadd_back(&newlst, ltemp);
 		lst = lst->content;
 	}
 	return (newlst);
 }
 
-/*
-I'm pretty sure that my projects are correct. 
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/16 18:57:49 by xwu               #+#    #+#             */
+/*   Updated: 2025/07/17 17:34:44 by xwu              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-I need 5 points in total
-I have 2.
-I will gain 2 when I let Alberto correct my b2br.
-I will have 4 points. 
-I still need one. It would be good if I could trade it with someone. There was a guy, called Santiago, not sure if he's still here. Guess not, today was his last day before being absorbed.
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "libft.h" // o el archivo donde estén tus funciones
 
-I need to correct someone, but there is a problem, as people who started with the second milestone aren't going to finish so soon and people who need corrections are can't be corrected by me, as my level is too low.
+size_t	ft_strlen(const char *s)
+{
+	size_t	length;
 
-I can only remain expectant until... well, I guess I will have to ask in Slack (?)
+	length = 0;
+	while (s[length] != '\0')
+	{
+		length++;
+	}
+	return (length);
+}
 
-Another problem is that people just ask whoever they already know.
-*/
+void	print_list(t_list *lst)
+{
+	while (lst)
+	{
+		printf("[%s] -> ", (char *)lst->content);
+		lst = lst->next;
+	}
+	printf("NULL\n");
+}
+
+void	del_content(void *content)
+{
+	free(content);
+}
+
+char	*ft_strdup(const char *s)
+{
+	char	*ptr;
+	size_t	abs_len;
+
+	abs_len = ft_strlen(s) + 1;
+	ptr = malloc(abs_len);
+	if (!ptr)
+		return (NULL);
+	while (abs_len)
+	{
+		abs_len--;
+		ptr[abs_len] = s[abs_len];
+	}
+	return (ptr);
+}
+
+void	*duplicate_content(void *content)
+{
+	return strdup((char *)content);
+}
+
+void	to_upper(void *content)
+{
+	char *str = (char *)content;
+	for (int i = 0; str[i]; i++)
+		if (str[i] >= 'a' && str[i] <= 'z')
+			str[i] -= 32;
+}
+
+int	main(void)
+{
+	// Crear nodos
+	t_list *a = ft_lstnew(strdup("uno"));
+	t_list *b = ft_lstnew(strdup("dos"));
+	t_list *c = ft_lstnew(strdup("tres"));
+
+	// Conectarlos manualmente
+	ft_lstadd_back(&a, b);
+	ft_lstadd_back(&a, c);
+
+	printf("Lista original:\n");
+	print_list(a);
+
+	// Test ft_lstsize
+	printf("Tamaño: %d\n", ft_lstsize(a));
+
+	// Test ft_lstlast
+	t_list *last = ft_lstlast(a);
+	printf("Último nodo: %s\n", (char *)last->content);
+
+	// Test ft_lstadd_front
+	t_list *head = ft_lstnew(strdup("cero"));
+	ft_lstadd_front(&a, head);
+	printf("Después de añadir al frente:\n");
+	print_list(a);
+
+	// Test ft_lstiter
+	ft_lstiter(a, to_upper);
+	printf("Después de ft_lstiter (to_upper):\n");
+	print_list(a);
+
+	// Test ft_lstmap
+	printf("Copia con ft_lstmap:\n");
+	t_list *copy = ft_lstmap(a, duplicate_content, del_content);
+	print_list(copy);
+
+	// Test ft_lstdelone (elimina un nodo suelto)
+	t_list *tmp = ft_lstnew(strdup("borrar"));
+	printf("Nodo suelto antes de borrar: %s\n", (char *)tmp->content);
+	ft_lstdelone(tmp, del_content);
+	printf("Nodo suelto borrado.\n");
+
+	// Test ft_lstclear
+	ft_lstclear(&a, del_content);
+	ft_lstclear(&copy, del_content);
+	printf("Listas liberadas.\n");
+
+	return 0;
+}

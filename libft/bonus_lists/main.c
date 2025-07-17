@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 18:57:49 by xwu               #+#    #+#             */
-/*   Updated: 2025/07/16 18:58:03 by xwu              ###   ########.fr       */
+/*   Updated: 2025/07/17 17:34:44 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,18 @@
 #include <stdlib.h>
 #include <string.h>
 #include "libft.h" // o el archivo donde estén tus funciones
+
+size_t	ft_strlen(const char *s)
+{
+	size_t	length;
+
+	length = 0;
+	while (s[length] != '\0')
+	{
+		length++;
+	}
+	return (length);
+}
 
 void	print_list(t_list *lst)
 {
@@ -28,6 +40,23 @@ void	print_list(t_list *lst)
 void	del_content(void *content)
 {
 	free(content);
+}
+
+char	*ft_strdup(const char *s)
+{
+	char	*ptr;
+	size_t	abs_len;
+
+	abs_len = ft_strlen(s) + 1;
+	ptr = malloc(abs_len);
+	if (!ptr)
+		return (NULL);
+	while (abs_len)
+	{
+		abs_len--;
+		ptr[abs_len] = s[abs_len];
+	}
+	return (ptr);
 }
 
 void	*duplicate_content(void *content)
@@ -76,8 +105,8 @@ int	main(void)
 	print_list(a);
 
 	// Test ft_lstmap
-	t_list *copy = ft_lstmap(a, duplicate_content, del_content);
 	printf("Copia con ft_lstmap:\n");
+	t_list *copy = ft_lstmap(a, duplicate_content, del_content);
 	print_list(copy);
 
 	// Test ft_lstdelone (elimina un nodo suelto)

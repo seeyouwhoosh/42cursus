@@ -11,7 +11,7 @@ SOURCES = \
 OBJECTS = $(SOURCES:.c=.o)
 BOBJECTS = $(BSOURCES:.c=.o)
 
-CC = cc
+CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 
 all: $(NAME)
@@ -33,4 +33,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all bonus clean fclean re
+.PHONY: all bonus clean fclean re bonus
