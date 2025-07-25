@@ -1,35 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.c                                        :+:      :+:    :+:   */
+/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/22 19:24:20 by xwu               #+#    #+#             */
-/*   Updated: 2025/07/22 19:24:40 by xwu              ###   ########.fr       */
+/*   Created: 2025/04/17 11:24:41 by xwu               #+#    #+#             */
+/*   Updated: 2025/04/19 20:08:28 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include "libft.h"
 
-void	error_message(void)
+void	ft_putendl_fd(char *s, int fd)
 {
-	return (write(2, "Error\n", 6));
-}
-
-int	main(int ac, char **av)
-{
-	int	n;
-
-	if (ac < 1)
-		return (error_message(), 1);
-	while (**av)
-	{
-		n = ft_atoi(**av);
-		if (n < 0)
-			return (error_message(), 1); // +liberal lista
-		// añadir valor a lista
-		(*av)++;
-	}
-	return (0);
+	ft_putstr_fd(s, fd);
+	ft_putchar_fd('\n', fd);
+	return ;
 }
