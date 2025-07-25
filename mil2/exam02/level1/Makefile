@@ -3,7 +3,7 @@
 
 CC = cc
 
-NAMES = first_word
+NAMES = first_word fizzbuzz	ft_putstr ft_strcpy
 SOURCES = $(NAMES:=.c)
 OBJECTS = $(SOURCES:.c=.o)
 
