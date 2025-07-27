@@ -42,7 +42,7 @@ rrr : rra and rrb at the same time.
 * Cada una de las funciones operaciones que nos piden, con su nota de impresión para saber que se ha realizado.
 
 # Lista de tareas
-- [ ] Terminar de crear las listas del input (parseo)
+- [x] Terminar de crear las listas del input (parseo)
 - [ ] Crear la función para comprobar que no hay ningún número ilegal en la lista
 - [ ] Crear una función que compruebe si la lista está en orden (creciente, creo) o no. 
 - [ ] Crear las funciones de las operaciones

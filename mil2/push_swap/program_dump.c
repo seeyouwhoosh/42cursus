@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 18:26:27 by xwu               #+#    #+#             */
-/*   Updated: 2025/07/27 02:21:19 by xwu              ###   ########.fr       */
+/*   Updated: 2025/07/27 11:51:56 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,29 +63,7 @@ int	is_int(char *s)
 	return (1);
 }
 
-void	ft_lstprint(t_list *lst, char format)
-{
-	short	comma;
 
-	comma = 0;
-	ft_printf("[");
-	while (lst)
-	{
-		if (comma)
-			ft_printf(", ");
-		if (format == 'd')
-			ft_printf("%d", *(int *)(lst->content));
-		else if (format == 'c')
-			ft_printf("\'%c\'", *(char *)(lst->content));
-		else if (format == 's')
-			ft_printf("\"%s\"", *(char *)(lst->content));
-		else if (format == 'f')
-			ft_printf("%f", *(float *)(lst->content));
-		lst = lst->next;
-		comma = 1;
-	}
-	ft_printf("]");
-}
 
 int	main(int ac, char **av)
 {
