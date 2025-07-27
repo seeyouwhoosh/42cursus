@@ -12,16 +12,16 @@ FT_PRINTF = $(FT_PRINTF_DIR)/printf.a
 
 NAME = push_swap
 CC = cc
-CFLAGS = -Wall -Werror -Wextra
+# CFLAGS = -Wall -Werror -Wextra
 OBJECTS = $(SOURCES:.c=.o)
 
-all: $(LIBFT) $(NAME)
+all: $(LIBFT) $(FT_PRINTF) $(NAME)
 
 $(FT_PRINTF):
 	make -C $(FT_PRINTF_DIR)
 
 $(LIBFT):
-	make -C $(LIBFT_DIR)
+	make bonus -C $(LIBFT_DIR)
 
 $(NAME): $(OBJECTS) $(LIBFT)
 	$(CC) $(CFLAGS) $(OBJECTS) -L$(LIBFT_DIR) -lft -L$(FT_PRINTF_DIR) -lftprintf -o $(NAME)

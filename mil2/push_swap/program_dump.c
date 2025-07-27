@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 18:26:27 by xwu               #+#    #+#             */
-/*   Updated: 2025/07/22 20:14:58 by xwu              ###   ########.fr       */
+/*   Updated: 2025/07/27 02:07:35 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,30 +63,52 @@ int	is_int(char *s)
 	return (1);
 }
 
+void	ft_lstprint(t_list *lst, char format)
+{
+	short	comma;
+
+	comma = 0;
+	ft_printf("[");
+	while (lst)
+	{
+		if (comma)
+			ft_printf(", ");
+		if (format == 'd')
+			ft_printf("%d", *(int *)(lst->content));
+		else if (format == 'c')
+			ft_printf("\'%c\'", *(char *)(lst->content));
+		else if (format == 's')
+			ft_printf("\"%s\"", *(char *)(lst->content));
+		else if (format == 'f')
+			ft_printf("%f", *(float *)(lst->content));
+		lst = lst->next;
+		comma = 1;
+	}
+	ft_printf("]");
+}
+
 int	main(int ac, char **av)
 {
-	int		n;
+	int		*n;
 	int		i;
 	t_list	*lst;
+	t_list	*new;
+
+	lst = NULL;
 
 	i = 1;
 	if (ac < 2)
 		return (error_message(), 1);
 	while (i < ac)
 	{
-		if (is_int(av[i]))
-		{
-			ft_lstclear(&lst, del);
-			return (error_message(), 1);
-		
-		}
-		n = ft_atoi(av[i]);
-						/* +liberar lista */
-		/* añadir valor a lista */
-		/* */
+		n = malloc(sizeof(int));
+		if (!is_int(av[i]) || !n)
+			return (ft_lstclear(&lst, del), error_message(), 1);
+		*n = ft_atoi(av[i]);
+		new = ft_lstnew(n);
+		ft_lstadd_back(&lst, new);
 		i++;
 	}
-	sort()
-
-	return (0);
+	ft_lstprint(lst, 'd');
+	return (free(n), free(new), 0);
 }

@@ -27,12 +27,10 @@ rrb (reverse rotate b): Shift down all elements of stack b by 1. The last elemen
 rrr : rra and rrb at the same time.
 
 # Algoritmos mencionados
-turco
-butterfly
-
-quicksort
-
-radix
+1. turco
+2. butterfly
+3. quicksort
+4. radix [no]
 
 # Funciones que necesito, para empezar
 * Uno que me parsee los argumentos:
@@ -41,3 +39,12 @@ radix
   3. Meter los números en listas
 * Que compruebe que no hay ningún número ilegal (que a_i perteneciente al conjunto A sea distinto de a_j para todo i distinto de j)
 * Que compruebe si está en orden o no.
+* Cada una de las funciones operaciones que nos piden, con su nota de impresión para saber que se ha realizado.
+
+# Lista de tareas
+- [ ] Terminar de crear las listas del input (parseo)
+- [ ] Crear la función para comprobar que no hay ningún número ilegal en la lista
+- [ ] Crear una función que compruebe si la lista está en orden (creciente, creo) o no. 
+- [ ] Crear las funciones de las operaciones
+- [ ] Investigar los algoritmos recomendados y mirar qué se pide realmente, cómo implementarlo con las funciones que tenemos, ó si es necesario hacer por casos, por ejemplo, si solo hay dos números, tres, cuatro, and so on.
+- [ ] Proseguir.

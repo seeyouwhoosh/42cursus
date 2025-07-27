@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 18:47:50 by xwu               #+#    #+#             */
-/*   Updated: 2025/07/16 18:51:27 by xwu              ###   ########.fr       */
+/*   Updated: 2025/07/27 01:41:48 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	ft_lstclear(t_list **lst, void (*del)(void*))
 	{
 		ptr = (*lst)->next;
 		ft_lstdelone(*lst, del);
+		free(*lst);
 		*lst = ptr;
 	}
 	*lst = NULL;
