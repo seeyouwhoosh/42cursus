@@ -43,8 +43,8 @@ rrr : rra and rrb at the same time.
 
 # Lista de tareas
 - [x] Terminar de crear las listas del input (parseo)
-- [ ] Crear la función para comprobar que no hay ningún número ilegal en la lista
-- [ ] Crear una función que compruebe si la lista está en orden (creciente, creo) o no. 
+- [x] Crear la función para comprobar que no hay ningún número ilegal en la lista
+- [x] Crear una función que compruebe si la lista está en orden (creciente, creo) o no. 
 - [ ] Crear las funciones de las operaciones
 - [ ] Investigar los algoritmos recomendados y mirar qué se pide realmente, cómo implementarlo con las funciones que tenemos, ó si es necesario hacer por casos, por ejemplo, si solo hay dos números, tres, cuatro, and so on.
 - [ ] Proseguir.
