@@ -41,10 +41,17 @@ rrr : rra and rrb at the same time.
 * Que compruebe si está en orden o no.
 * Cada una de las funciones operaciones que nos piden, con su nota de impresión para saber que se ha realizado.
 
-# Lista de tareas
+# Lista de tareas iniciales
 - [x] Terminar de crear las listas del input (parseo)
 - [x] Crear la función para comprobar que no hay ningún número ilegal en la lista
 - [x] Crear una función que compruebe si la lista está en orden (creciente, creo) o no. 
 - [x] Crear las funciones de las operaciones *Solo las individuales, though
 - [ ] Investigar los algoritmos recomendados y mirar qué se pide realmente, cómo implementarlo con las funciones que tenemos, ó si es necesario hacer por casos, por ejemplo, si solo hay dos números, tres, cuatro, and so on.
 - [ ] Proseguir.
+
+# Just realized that... there is actually no need for linked lists, f* you, everyone's advice. Voy a tener que hacer algunas otra vez
+- [ ] Rehacer el programa para arrays, porque es mucho más eficiente para cuando son muchos números.
+
+# Links
+* https://github.com/SimonCROS/push_swap_tester/tree/v2
+* https://push-swap42-visualizer.vercel.app/
