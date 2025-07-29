@@ -14,82 +14,11 @@
 #include "libft.h"
 #include "ft_printf.h"
 #include "ft_math.h"
+#include "ft_lists.h"
 
 void	error_message(void)
 {
 	write(2, "Error\n", 6);
-}
-int		ft_lstrepsint(t_list *lst)
-{
-	int		n;
-	t_list	*marker;
-
-	marker = lst->next;
-
-	while (marker)
-	{
-		n = *(int *)(lst->content);
-		lst = lst->next;
-		while (lst)
-		{
-			if (n == *(int *)lst->content)
-				return (1);
-			lst = lst->next;
-		}
-		lst = marker;
-		marker = marker->next;
-	}
-	return (0);
-}
-int		ft_lstsortedsint(t_list *lst)
-{
-	int		n;
-	t_list	*marker;
-
-	marker = lst->next;
-
-	while (marker)
-	{
-		n = *(int *)(lst->content);
-		lst = lst->next;
-		while (lst)
-		{
-			if (n > *(int *)lst->content)
-				return (0);
-			lst = lst->next;
-		}
-		lst = marker;
-		marker = marker->next;
-	}
-	return (1);
-}
-
-void	ft_lstprint(t_list *lst, char format)
-{
-	short	comma;
-
-	comma = 0;
-	ft_printf("[");
-	while (lst)
-	{
-		if (comma)
-			ft_printf(", ");
-		if (format == 'd')
-			ft_printf("%d", *(int *)(lst->content));
-		else if (format == 'c')
-			ft_printf("\'%c\'", *(char *)(lst->content));
-		else if (format == 's')
-			ft_printf("\"%s\"", *(char *)(lst->content));
-		else if (format == 'f')
-			ft_printf("%f", *(float *)(lst->content));
-		else if (format == 'x')
-			ft_printf("%x", *(float *)(lst->content));
-		else if (format == 'u')
-			ft_printf("%u", *(float *)(lst->content));
-		lst = lst->next;
-		comma = 1;
-	}
-	ft_printf("]");
 }
 
 int	main(int ac, char **av)
@@ -115,18 +44,25 @@ int	main(int ac, char **av)
 		ft_lstadd_back(&lsta, new);
 		i++;
 	}
-	if (ft_lstrepsint(lsta))
+	if (lstrepsint(lsta))
 		return (error_message(), 1);
-		
+
 	/* Printing lists*/
-	ft_printf("a: ");
-	ft_lstprint(lsta, 'd');
-	ft_printf("\nb: ");
-	ft_lstprint(lstb, 'd');
-	ft_printf("\nIs it sorted? %d\n", ft_lstsortedsint(lsta));
+	ft_printf("\na: "), lstprint(lsta, 'd'),ft_printf("\nb: "),lstprint(lstb, 'd');
+	lstswap(lsta);
+	ft_printf("\n\na: "), lstprint(lsta, 'd'),ft_printf("\nb: "),lstprint(lstb, 'd');
+	lstpush(&lstb, &lsta);
+	ft_printf("\n\na: "), lstprint(lsta, 'd'),ft_printf("\nb: "),lstprint(lstb, 'd');
+	lstrotate(&lsta);
+	ft_printf("\n\na: "), lstprint(lsta, 'd'),ft_printf("\nb: "),lstprint(lstb, 'd');
+	lstrrotate(&lsta);
+	ft_printf("\n\na: "), lstprint(lsta, 'd'),ft_printf("\nb: "),lstprint(lstb, 'd');
+
+	ft_printf("\n\nIs it sorted? %d\n", lstsortedsint(lsta));
 
 	/* Frees */
 	ft_lstclear(&lsta, del);
+	ft_lstclear(&lstb, del);
 
 	return (0);
 }

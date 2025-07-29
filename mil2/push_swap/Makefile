@@ -2,7 +2,7 @@
 .PHONY: all clean fclean re
 
 
-SOURCES = program_dump.c ft_math.c
+SOURCES = program_dump.c ft_math.c ft_lists.c lsts_sort_ops.c
 
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a

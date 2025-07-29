@@ -12,16 +12,16 @@ sa (swap a): Swap the first 2 elements at the top of stack a. Do nothing if ther
 sb (swap b): Swap the first 2 elements at the top of stack b. Do nothing if there is only one element or none.
 ss : sa and sb at the same time.
 
-1. Push: Coger el primer elemento de B y ponerlo en A
+2. Push: Coger el primer elemento de B y ponerlo en A
 pa (push a): Take the first element at the top of b and put it at the top of a. Do nothing if b is empty.
 pb (push b): Take the first element at the top of a and put it at the top of b. Do nothing if a is empty.
 
-1. Rotate: Rotar todos los elementos, el primero se vuelve el último
+3. Rotate: Rotar todos los elementos, el primero se vuelve el último
 ra (rotate a): Shift up all elements of stack a by 1. The first element becomes the last one.
 rb (rotate b): Shift up all elements of stack b by 1. The first element becomes the last one.
 rr : ra and rb at the same time.
 
-1. Rotar todos los elementos pero al revés, el último elemento se vuelve el primero
+4. Rotar todos los elementos pero al revés, el último elemento se vuelve el primero
 rra (reverse rotate a): Shift down all elements of stack a by 1. The last element becomes the first one.
 rrb (reverse rotate b): Shift down all elements of stack b by 1. The last element becomes the first one.
 rrr : rra and rrb at the same time.
@@ -45,6 +45,6 @@ rrr : rra and rrb at the same time.
 - [x] Terminar de crear las listas del input (parseo)
 - [x] Crear la función para comprobar que no hay ningún número ilegal en la lista
 - [x] Crear una función que compruebe si la lista está en orden (creciente, creo) o no. 
-- [ ] Crear las funciones de las operaciones
+- [x] Crear las funciones de las operaciones *Solo las individuales, though
 - [ ] Investigar los algoritmos recomendados y mirar qué se pide realmente, cómo implementarlo con las funciones que tenemos, ó si es necesario hacer por casos, por ejemplo, si solo hay dos números, tres, cuatro, and so on.
 - [ ] Proseguir.
