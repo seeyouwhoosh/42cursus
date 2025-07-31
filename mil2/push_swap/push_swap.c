@@ -1,24 +1,27 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   program_dump.c                                     :+:      :+:    :+:   */
+/*   push_swap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 18:26:27 by xwu               #+#    #+#             */
-/*   Updated: 2025/07/27 12:16:43 by xwu              ###   ########.fr       */
+/*   Updated: 2025/07/31 13:52:13 by xwu              ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include <unistd.h>
-#include "libft.h"
-#include "ft_printf.h"
-#include "ft_math.h"
-#include "ft_lists.h"
+#include "push_swap.h"
 
 void	error_message(void)
 {
 	write(2, "Error\n", 6);
+}
+
+void	ft_sort(t_list *a, t_list *b)
+{
+	if (lstsortedsint(a))
+		return ;
 }
 
 int	main(int ac, char **av)
@@ -27,7 +30,6 @@ int	main(int ac, char **av)
 	int		i;
 	t_list	*lsta;
 	t_list	*lstb;
-	t_list	*new;
 
 	lsta = NULL;
 	lstb = NULL;
@@ -40,29 +42,14 @@ int	main(int ac, char **av)
 		if (!n || !is_int(av[i]))
 			return (ft_lstclear(&lsta, del), error_message(), 1);
 		*n = ft_atoi(av[i]);
-		new = ft_lstnew(n);
-		ft_lstadd_back(&lsta, new);
+		ft_lstadd_back(&lsta, ft_lstnew(n));
 		i++;
 	}
 	if (lstrepsint(lsta))
 		return (error_message(), 1);
-
-	/* Printing lists*/
-	ft_printf("\na: "), lstprint(lsta, 'd'),ft_printf("\nb: "),lstprint(lstb, 'd');
-	lstswap(lsta);
-	ft_printf("\n\na: "), lstprint(lsta, 'd'),ft_printf("\nb: "),lstprint(lstb, 'd');
-	lstpush(&lstb, &lsta);
-	ft_printf("\n\na: "), lstprint(lsta, 'd'),ft_printf("\nb: "),lstprint(lstb, 'd');
-	lstrotate(&lsta);
-	ft_printf("\n\na: "), lstprint(lsta, 'd'),ft_printf("\nb: "),lstprint(lstb, 'd');
-	lstrrotate(&lsta);
-	ft_printf("\n\na: "), lstprint(lsta, 'd'),ft_printf("\nb: "),lstprint(lstb, 'd');
-
-	ft_printf("\n\nIs it sorted? %d\n", lstsortedsint(lsta));
-
-	/* Frees */
+	/* push_swap sort function insert here */
 	ft_lstclear(&lsta, del);
 	ft_lstclear(&lstb, del);
-
 	return (0);
 }
+

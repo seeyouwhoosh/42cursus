@@ -1,7 +1,8 @@
 .POSIX:
 .PHONY: all clean fclean re
 
-SOURCES = program.c ft_math.c
+
+SOURCES = program_dump.c ft_math.c
 
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a

@@ -10,6 +10,9 @@
         "stdio.h": "c",
         "string.h": "c",
         "stdlib.h": "c",
-        "printf.h": "c"
+        "printf.h": "c",
+        "ft_math.h": "c",
+        "ft_lists.h": "c",
+        "push_swap.h": "c"
     }
 }

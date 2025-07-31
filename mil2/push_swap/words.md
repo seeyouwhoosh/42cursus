@@ -49,9 +49,18 @@ rrr : rra and rrb at the same time.
 - [ ] Investigar los algoritmos recomendados y mirar qué se pide realmente, cómo implementarlo con las funciones que tenemos, ó si es necesario hacer por casos, por ejemplo, si solo hay dos números, tres, cuatro, and so on.
 - [ ] Proseguir.
 
-# Just realized that... there is actually no need for linked lists, f* you, everyone's advice. Voy a tener que hacer algunas otra vez
-- [ ] Rehacer el programa para arrays, porque es mucho más eficiente para cuando son muchos números.
-
 # Links
 * https://github.com/SimonCROS/push_swap_tester/tree/v2
 * https://push-swap42-visualizer.vercel.app/
+
+
+# Funcionamiento del algoritmo turco:
+1. Ok, para empezar, necesitamos pushear los dos primeros elementos de A a B. Que los consideramos el máximo y el mínimo (ordenados en orden decreciente, aunque en este paso no os importa) con los que compararemos el resto de números de A
+2. El algoritmo recorre el resto de la lista A, en busca de un número que requiera menos operaciones a realizar
+   1. Necesitaríamos una funcion que nos calcule la cantidad de operaciones a realizar y compararla con cuál es la más barata, seleccionaríamos el nodo con operaciones estrictamente menos costosas (si el número tiene n operaciones, mirar máximo las siguientes n - 2 números)
+   2. Explicación mejor:
+      1. This involves finding suitable targets in 'B' for each element in 'A'.
+      2. The target is as close as possible to but smaller than the 'A' element. If no smaller element is found in stack 'B', the largest value in 'B' is selected as the target.
+      3. Move the 'A' element and its corresponding target in 'B' to the top of their respective stacks, choosing the pair that requires the fewest operations to reach the top (the 'cheapest' pair).
+      4. Push the 'A' element onto its target in stack 'B'.
+3. Cuando queden 3 elementos en el A, podemos ordenar ya el A de manera fácil

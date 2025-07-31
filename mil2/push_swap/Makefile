@@ -1,14 +1,15 @@
 .POSIX:
 .PHONY: all clean fclean re
 
-
-SOURCES = program_dump.c ft_math.c ft_lists.c lsts_sort_ops.c
-
+SOURCES = push_swap.c ft_math.c ft_lists.c sort_ops_a.c sort_ops_b.c sort_ops_both.c
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 FT_PRINTF_DIR = printf
 FT_PRINTF = $(FT_PRINTF_DIR)/printf.a
+
+test: $(OBJECTS) $(LIBFT) $(FT_PRINTF) ft_math.o ft_lists.o sort_ops_a.o
+	$(CC) $(CFLAGS) ft_math.o ft_lists.o sort_ops_a.o sort_ops_b.o sort_ops_both.o testfunctions.c -Ilibft -Iprintf -L$(LIBFT_DIR) -lft -L$(FT_PRINTF_DIR) -lftprintf -o $@
 
 NAME = push_swap
 CC = cc

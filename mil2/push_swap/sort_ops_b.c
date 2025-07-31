@@ -1,19 +1,19 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sorting_op.c                                       :+:      :+:    :+:   */
+/*   sort_ops_b.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/22 18:26:27 by xwu               #+#    #+#             */
-/*   Updated: 2025/07/27 12:16:43 by xwu              ###   ########.fr       */
+/*   Created: 2025/07/31 13:26:49 by xwu               #+#    #+#             */
+/*   Updated: 2025/07/31 13:38:57 by xwu              ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
-#include "ft_lists.h"
+#include "push_swap.h"
 
 /* Swap: intercambiar los primeros dos elementos de la lista */
-void	lstswap(t_list *lst)
+void	ft_sb(t_list *lst)
 {
 	int		*first;
 	int		*second;
@@ -24,10 +24,11 @@ void	lstswap(t_list *lst)
 	second = lst->next->content;
 	lst->content = second;
 	lst->next->content = first;
+	write(1, "sb\n", 3);
 }
 
 /* Push: Coger el primer elemento de B y ponerlo en A (push to A)*/
-void	lstpush(t_list **a, t_list **b)
+void	ft_pb(t_list **a, t_list **b)
 {
 	t_list	*ptr;
 
@@ -37,10 +38,11 @@ void	lstpush(t_list **a, t_list **b)
 	*b = (*b)->next;
 	ptr->next = NULL;
 	ft_lstadd_front(a, ptr);
+	write(1, "pb\n", 3);
 }
 
 /* Rotate: Rotar todos los elementos, el primero se vuelve el último */
-void	lstrotate(t_list **lst)
+void	ft_rb(t_list **lst)
 {
 	t_list	*start;
 
@@ -50,16 +52,17 @@ void	lstrotate(t_list **lst)
 	ft_lstadd_back(lst, start);
 	*lst = (start)->next;
 	start->next = NULL;
+	write(1, "rb\n", 3);
 }
 
 /* Rotar todos los elementos pero al revés, el último elemento se vuelve el
 primero */
-void	lstrrotate(t_list **lst)
+void	ft_rrb(t_list **lst)
 {
 	t_list	*end;
 	t_list	*ptr;
 
-	if (!lst || !(*lst) || !(*lst)->content)
+	if (!lst || !(*lst) || !(*lst)->content || !(*lst)->next)
 		return ;
 	ptr = *lst;
 	end = ft_lstlast(*lst);
@@ -67,4 +70,6 @@ void	lstrrotate(t_list **lst)
 		ptr = ptr->next;
 	ft_lstadd_front(lst, end);
 	ptr->next = NULL;
+	write(1, "rrb\n", 3);
 }
+

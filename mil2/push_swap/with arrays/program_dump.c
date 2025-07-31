@@ -20,46 +20,68 @@ void	error_message(void)
 	write(2, "Error\n", 6);
 }
 
-int	main(int ac, char **av)
+void	pilesfree(int **lst)
 {
-	int		*n;
-	int		i;
-	t_list	*lsta;
-	t_list	*lstb;
-	t_list	*new;
+	if (lst[0])
+		free(lst[0]);
+	if (lst[1])
+		free(lst[1]);
+}
 
-	lsta = NULL;
-	lstb = NULL;
-	i = 1;
-	if (ac < 2)
-		return (0);
-	while (i < ac)
+int	intreps(int *lst, size_t size)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < size - 1)
 	{
-		n = malloc(sizeof(int));
-		if (!n || !is_int(av[i]))
-			return (ft_lstclear(&lsta, del), error_message(), 1);
-		*n = ft_atoi(av[i]);
-		new = ft_lstnew(n);
-		ft_lstadd_back(&lsta, new);
+		j = i + 1;
+		while (j < size - 2)
+		{
+			if (lst[i] == lst[j])
+				return (1);
+			j++;
+		}
 		i++;
 	}
-	if (lstrepsint(lsta))
-		return (error_message(), 1);
+	return (0);
+}
 
-	/* Printing lists*/
-	ft_printf("\na: "), lstprint(lsta, 'd'),ft_printf("\nb: "),lstprint(lstb, 'd');
-	lstswap(lsta);
-	ft_printf("\n\na: "), lstprint(lsta, 'd'),ft_printf("\nb: "),lstprint(lstb, 'd');
-	lstpush(&lstb, &lsta);
-	ft_printf("\n\na: "), lstprint(lsta, 'd'),ft_printf("\nb: "),lstprint(lstb, 'd');
-	lstrotate(&lsta);
-	ft_printf("\n\na: "), lstprint(lsta, 'd'),ft_printf("\nb: "),lstprint(lstb, 'd');
-	lstrrotate(&lsta);
-	ft_printf("\n\na: "), lstprint(lsta, 'd'),ft_printf("\nb: "),lstprint(lstb, 'd');
+void	intsprint(int *lst, size_t size)
+{
+	int	i;
 
-	ft_printf("\n\nIs it sorted? %d\n", lstsortedsint(lsta));
+	i = -1;
+	while (++i < (size - 1))
+		ft_printf("%d\n", lst[size]);
+}
 
-	/* Frees */
+int	main(int ac, char **av)
+{
+	int		*lst[2];
+	int		i;
+	int		j;
 
+	i = 0;
+	j = 0;
+	if (ac < 2)
+		return (0);
+	lst[0] = malloc(sizeof(int) * (ac - 1));
+	lst[1] = malloc(sizeof(int) * (ac - 1));
+	if (!lst[0] || !lst[1])
+		return (pilesfree(lst), 1);
+	while (++i < ac)
+	{
+		if (!is_int(av[i]))
+			return (pilesfree(lst), error_message(), 1);
+		lst[0][j] = ft_atoi(av[i]);
+		j++;
+	}
+	if (intreps(lst[0], ac - 1))
+		return (pilesfree(lst), error_message(), 1);
+
+	intsprint(lst[0], ac - 1);
+	pilesfree(lst);
 	return (0);
 }
