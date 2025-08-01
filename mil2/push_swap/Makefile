@@ -8,7 +8,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 FT_PRINTF_DIR = printf
 FT_PRINTF = $(FT_PRINTF_DIR)/printf.a
 
-test: $(OBJECTS) $(LIBFT) $(FT_PRINTF) ft_math.o ft_lists.o sort_ops_a.o
+test: $(OBJECTS) $(LIBFT) $(FT_PRINTF) ft_math.o ft_lists.o sort_ops_a.o sort_ops_b.o sort_ops_both.o 
 	$(CC) $(CFLAGS) ft_math.o ft_lists.o sort_ops_a.o sort_ops_b.o sort_ops_both.o testfunctions.c -Ilibft -Iprintf -L$(LIBFT_DIR) -lft -L$(FT_PRINTF_DIR) -lftprintf -o $@
 
 NAME = push_swap
@@ -38,6 +38,6 @@ clean:
 fclean: clean
 	make -C $(LIBFT_DIR) fclean
 	make -C $(FT_PRINTF_DIR) fclean
-	rm -f $(NAME)
+	rm -f $(NAME) test
 
 re: fclean all

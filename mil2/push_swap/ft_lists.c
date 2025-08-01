@@ -77,9 +77,9 @@ void	lstprint(t_list *lst, char format)
 		else if (format == 'f')
 			ft_printf("%f", *(float *)(lst->content));
 		else if (format == 'x')
-			ft_printf("%x", *(float *)(lst->content));
+			ft_printf("%x", *(unsigned int *)(lst->content));
 		else if (format == 'u')
-			ft_printf("%u", *(float *)(lst->content));
+			ft_printf("%u", *(unsigned int *)(lst->content));
 		lst = lst->next;
 		comma = 1;
 	}
