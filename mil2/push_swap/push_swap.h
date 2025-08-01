@@ -23,6 +23,11 @@ int		lstsortedsint(t_list *lst);
 
 void	lstprint(t_list *lst, char format);
 
+int		ft_minint(t_list *lst);
+
+int		ft_maxint(t_list *lst);
+
+
 /* OPERATIONS */
 
 void	ft_sa(t_list *lst);

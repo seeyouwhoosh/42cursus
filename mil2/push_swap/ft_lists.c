@@ -85,3 +85,37 @@ void	lstprint(t_list *lst, char format)
 	}
 	ft_printf("]");
 }
+
+int	ft_minint(t_list *lst)
+{
+	int	i;
+
+	if (!lst)
+		return (0);
+	i = *(int *)lst->content;
+	lst = lst->next;
+	while (lst)
+	{
+		if (*(int *)lst->content < i)
+			i = *(int *)lst->content;
+		lst = lst->next;
+	}
+	return (i);
+}
+
+int	ft_maxint(t_list *lst)
+{
+	int	i;
+
+	if (!lst)
+		return (0);
+	i = *(int *)lst->content;
+	lst = lst->next;
+	while (lst)
+	{
+		if (*(int *)lst->content > i)
+			i = *(int *)lst->content;
+		lst = lst->next;
+	}
+	return (i);
+}
