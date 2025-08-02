@@ -17,6 +17,7 @@ void	error_message(void)
 {
 	write(2, "Error\n", 6);
 }
+
 void	ft_sort_three(t_list **a)
 {
 	int	one;
@@ -26,7 +27,7 @@ void	ft_sort_three(t_list **a)
 	one = *(int *)((*a)->content);
 	two = *(int *)((*a)->next->content);
 	three = *(int *)((*a)->next->next->content);
-	if (one > two && two > three && one > three) 
+	if (one > two && two > three && one > three)
 	{
 		ft_sa(*a);
 		ft_rra(a);
@@ -44,6 +45,79 @@ void	ft_sort_three(t_list **a)
 	}
 }
 
+int	ft_index(t_list *l, int n)
+{
+	t_list	*tmp;
+	int		i;
+
+	i = 0;
+	tmp = l;
+	while (tmp)
+	{
+		if (n == *(int *)tmp->content)
+			return (i);
+		tmp = tmp->next;
+		i++;
+	}
+	return (-1);
+}
+
+int	cost_to_top(t_list *l, int index)
+{
+	int	size;
+
+	size = ft_lstsize(l);
+	if (index <= size / 2)
+		return (index);
+	else
+		return (-(size - index));
+}
+
+int	target_pos(t_list *b, int n)
+{
+	int		i;
+	t_list	*tmp;
+	int		size;
+
+	size = ft_lstsize(b);
+	tmp = b;
+	i = 0;
+	while (tmp)
+	{
+		if (n < *(int *)tmp->content && n < *(int *)ft_lstlast(b)->content)
+		{
+
+		}
+		i++;
+		tmp = tmp->next;
+	}
+	if (i <= size / 2)
+		return (i);
+	else
+		return (-(size - i));
+}
+
+int	op_cost(t_list *a, t_list *b, int n)
+{
+	int	index_a;
+	int	cost_a;
+	int	target_pos_b;
+	int	cost_b;
+
+	index_a = ft_index(a, n);
+	if (index_a == -1)
+		return (-1);
+	cost_a = cost_to_top(a, index_a);
+	target_pos_b = target_pos(b, n);
+	if (target_pos_b == -1)
+		return (-1);
+	cost_b = cost_to_top(b, target_pos_b);
+	if ((cost_a > 0 && cost_b > 0) || (cost_a < 0 && cost_b < 0))
+		return (ft_max(ft_abs(cost_a), ft_abs(cost_b)));
+	else
+		return (ft_abs(cost_a) + ft_abs(cost_b));
+}
+
 void	ft_sort(t_list **a, t_list **b)
 {
 	if (lstsortedsint(*a))
@@ -52,19 +126,13 @@ void	ft_sort(t_list **a, t_list **b)
 		return (ft_sa(*a));
 	else if (ft_lstsize(*a) == 3)
 		return (ft_sort_three(a));
-	else if (ft_lstsize(*a) > 3)
-	{
+	if (ft_lstsize(*a) > 3 && !lstsortedsint(*a))
 		ft_pb(b, a);
+	if (ft_lstsize(*a) > 3 && !lstsortedsint(*a))
 		ft_pb(b, a);
-		// ft_turk_sort(a, b);
-	}
+	if (ft_lstsize(*a) > 3 && !lstsortedsint(*a))
+		;// turk_algorithm
 }
-
-int	op_cost(t_list *a, t_list *b)
-{
-	; /* Creo que para esto se va a necesitar un archivo entero... */
-}
-
 
 int	main(int ac, char **av)
 {

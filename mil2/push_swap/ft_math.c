@@ -12,12 +12,20 @@
 
 #include "push_swap.h"
 
-int	abs(int x)
+int	ft_abs(int x)
 {
 	return (x * ((x > 0) - (x < 0)));
 }
 
-int	power(int base, int exp)
+int	ft_max(int a, int b)
+{
+	if (a > b)
+		return (a);
+	else
+		return (b);
+}
+
+int	ft_power(int base, int exp)
 {
 	int	n;
 

@@ -64,3 +64,42 @@ rrr : rra and rrb at the same time.
       3. Move the 'A' element and its corresponding target in 'B' to the top of their respective stacks, choosing the pair that requires the fewest operations to reach the top (the 'cheapest' pair).
       4. Push the 'A' element onto its target in stack 'B'.
 3. Cuando queden 3 elementos en el A, podemos ordenar ya el A de manera fácil
+
+
+
+
+int target_pos(t_list *b, int n)
+{
+	int pos = 0;
+	int best_pos = 0;
+	int size = ft_lstsize(b);
+	int max = get_max(b);
+	int min = get_min(b);
+	t_list *tmp = b;
+
+	if (n > max || n < min)
+	{
+		// Insertar después del valor máximo (o antes del mínimo)
+		while (*(int *)tmp->content != max)
+		{
+			tmp = tmp->next;
+			pos++;
+		}
+		best_pos = (pos + 1) % size;
+	}
+	else
+	{
+		// Insertar justo antes del primer valor mayor que n
+		while (tmp)
+		{
+			if (*(int *)tmp->content > n)
+				break;
+			pos++;
+			tmp = tmp->next;
+		}
+		best_pos = pos;
+	}
+
+	// Convertir en coste con signo (positivo = rotate, negativo = reverse rotate)
+	return (best_pos <= size / 2) ? best_pos : -(size - best_pos);
+}
