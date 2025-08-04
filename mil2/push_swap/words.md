@@ -66,8 +66,7 @@ rrr : rra and rrb at the same time.
 3. Cuando queden 3 elementos en el A, podemos ordenar ya el A de manera fácil
 
 
-
-
+```c
 int target_pos(t_list *b, int n)
 {
 	int pos = 0;
@@ -103,3 +102,4 @@ int target_pos(t_list *b, int n)
 	// Convertir en coste con signo (positivo = rotate, negativo = reverse rotate)
 	return (best_pos <= size / 2) ? best_pos : -(size - best_pos);
 }
+```c

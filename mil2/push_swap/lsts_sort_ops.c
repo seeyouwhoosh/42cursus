@@ -1,18 +1,17 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lsts_sort_ops.c                                    :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/22 18:26:27 by xwu               #+#    #+#             */
-/*   Updated: 2025/07/31 13:26:22 by xwu              ###   ########.fr       */
+/*   Created: 2025/04/16 19:15:12 by xwu               #+#    #+#             */
+/*   Updated: 2025/04/19 20:47:48 by xwu              ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "push_swap.h"
 
-/* Swap: intercambiar los primeros dos elementos de la lista */
 void	lstswap(t_list *lst)
 {
 	int		*first;
@@ -26,7 +25,6 @@ void	lstswap(t_list *lst)
 	lst->next->content = first;
 }
 
-/* Push: Coger el primer elemento de B y ponerlo en A (push to A)*/
 void	lstpush(t_list **a, t_list **b)
 {
 	t_list	*ptr;
@@ -39,7 +37,6 @@ void	lstpush(t_list **a, t_list **b)
 	ft_lstadd_front(a, ptr);
 }
 
-/* Rotate: Rotar todos los elementos, el primero se vuelve el último */
 void	lstrotate(t_list **lst)
 {
 	t_list	*start;
@@ -52,8 +49,6 @@ void	lstrotate(t_list **lst)
 	start->next = NULL;
 }
 
-/* Rotar todos los elementos pero al revés, el último elemento se vuelve el
-primero */
 void	lstrrotate(t_list **lst)
 {
 	t_list	*end;

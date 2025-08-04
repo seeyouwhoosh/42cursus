@@ -1,18 +1,17 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sort_ops_b.c                                       :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/31 13:26:49 by xwu               #+#    #+#             */
-/*   Updated: 2025/07/31 13:38:57 by xwu              ###   ########.fr       */
+/*   Created: 2025/04/16 19:15:12 by xwu               #+#    #+#             */
+/*   Updated: 2025/04/19 20:47:48 by xwu              ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "push_swap.h"
 
-/* Swap: intercambiar los primeros dos elementos de la lista */
 void	ft_sb(t_list *lst)
 {
 	int		*first;
@@ -27,7 +26,6 @@ void	ft_sb(t_list *lst)
 	write(1, "sb\n", 3);
 }
 
-/* Push: Coger el primer elemento de B y ponerlo en A (push to A)*/
 void	ft_pb(t_list **a, t_list **b)
 {
 	t_list	*ptr;
@@ -41,7 +39,6 @@ void	ft_pb(t_list **a, t_list **b)
 	write(1, "pb\n", 3);
 }
 
-/* Rotate: Rotar todos los elementos, el primero se vuelve el último */
 void	ft_rb(t_list **lst)
 {
 	t_list	*start;
@@ -55,8 +52,6 @@ void	ft_rb(t_list **lst)
 	write(1, "rb\n", 3);
 }
 
-/* Rotar todos los elementos pero al revés, el último elemento se vuelve el
-primero */
 void	ft_rrb(t_list **lst)
 {
 	t_list	*end;
@@ -72,4 +67,3 @@ void	ft_rrb(t_list **lst)
 	ptr->next = NULL;
 	write(1, "rrb\n", 3);
 }
-

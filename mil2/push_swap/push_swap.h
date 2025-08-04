@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.h                                        :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/31 12:49:34 by xwu               #+#    #+#             */
-/*   Updated: 2025/07/31 13:43:17 by xwu              ###   ########.fr       */
+/*   Created: 2025/04/16 19:15:12 by xwu               #+#    #+#             */
+/*   Updated: 2025/04/19 20:47:48 by xwu              ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
@@ -31,7 +31,6 @@ int		ft_minint(t_list *lst);
 
 /* Get the maximum in the linked list */
 int		ft_maxint(t_list *lst);
-
 
 /* OPERATIONS */
 
@@ -60,6 +59,15 @@ void	ft_rrr(t_list **a, t_list **b);
 /* Calculates the minimum steps to the top of the stack,
 if it's negative, use reverse rotate */
 int		cost_to_top(t_list *l, int n);
+
+/* Calculates the total cost of moving from one stack to another */
+int		op_cost(t_list *a, t_list *b, int n);
+
+/* Calculates the minimun steps to the target position in the stack orderly */
+int		target_pos(t_list *b, int n);
+
+/* Get the index in which the int n is in */
+int		ft_index(t_list *l, int n);
 
 /* MATHEMATICAL FUNCTIONS */
 
