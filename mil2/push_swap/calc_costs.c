@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   calc_costs.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 19:15:12 by xwu               #+#    #+#             */
-/*   Updated: 2025/04/19 20:47:48 by xwu              ###   ########.fr       */
+/*   Updated: 2025/08/06 22:47:05 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ int	cost_to_top(t_list *l, int index)
 		return (-(size - index));
 }
 
-int	target_pos(t_list *b, int n)
+
+int	target_pos1(t_list *b, int n)
 {
 	int		i;
 	t_list	*tmp;
@@ -53,13 +54,36 @@ int	target_pos(t_list *b, int n)
 
 	tmp = b;
 	i = 0;
-
-	now = *(int *)tmp->content;
-	next = *(int *)tmp->next->content;
-	while (tmp)
+	while (tmp && tmp->next)
 	{
-		if ()
+		now = *(int *)tmp->content;
+		next = *(int *)tmp->next->content;
+		if (n < next)
+			break ;
+		if (*(int *)ft_lstlast(b)->content < n && n < now)
+			break ;
+
+
+		i++;
+		tmp = tmp->next;
+
 	}
+	if (i <= ft_lstsize(b) / 2)
+		return (i);
+	else
+		return (ft_lstsize(b) - i);
+}
+/*  || (now > n && n > *(int *)ft_lstlast(b)->content) */
+
+
+int	target_pos(t_list *b, int n)
+{
+	int		i;
+	t_list	*tmp;
+
+
+	tmp = b;
+	i = 0;
 	if (n > ft_maxint(b) || n < ft_minint(b))
 	{
 		while (*(int *)tmp->content != ft_maxint(b))
@@ -70,7 +94,7 @@ int	target_pos(t_list *b, int n)
 	}
 	else
 	{
-		while (*(int *)tmp->content > n)
+		while (tmp && tmp->next && *(int *)tmp->content > n && !(*(int *)tmp->content < n && *(int *)tmp->next->content > n))
 		{
 			i++;
 			tmp = tmp->next;
@@ -79,7 +103,7 @@ int	target_pos(t_list *b, int n)
 	if (i <= ft_lstsize(b) / 2)
 		return (i);
 	else
-		return (-(ft_lstsize(b) - i));
+		return (ft_lstsize(b) - i);
 }
 
 int	op_cost(t_list *a, t_list *b, int n)
