@@ -29,3 +29,11 @@ void	ft_rrr(t_list **a, t_list **b)
 	ft_rra(a);
 	ft_rrb(b);
 }
+
+void	rotate_ab(t_list **a, int cost_a, t_list **b, int cost_b)
+{
+	if (cost_a > 0 && cost_b > 0)
+		ft_rr(a, b);
+	else if (cost_a < 0)
+		ft_rr(a, b);
+}

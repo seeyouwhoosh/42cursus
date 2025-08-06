@@ -12,7 +12,6 @@
 
 #include "push_swap.h"
 
-/* Swap: intercambiar los primeros dos elementos de la lista */
 void	ft_sa(t_list *lst)
 {
 	int		*first;
@@ -27,7 +26,6 @@ void	ft_sa(t_list *lst)
 	write(1, "sa\n", 3);
 }
 
-/* Push: Coger el primer elemento de B y ponerlo en A (push to A)*/
 void	ft_pa(t_list **a, t_list **b)
 {
 	t_list	*ptr;
@@ -41,7 +39,6 @@ void	ft_pa(t_list **a, t_list **b)
 	write(1, "pa\n", 3);
 }
 
-/* Rotate: Rotar todos los elementos, el primero se vuelve el último */
 void	ft_ra(t_list **lst)
 {
 	t_list	*start;
@@ -55,8 +52,6 @@ void	ft_ra(t_list **lst)
 	write(1, "ra\n", 3);
 }
 
-/* Rotar todos los elementos pero al revés, el último elemento se vuelve el
-primero */
 void	ft_rra(t_list **lst)
 {
 	t_list	*end;
@@ -71,4 +66,12 @@ void	ft_rra(t_list **lst)
 	ft_lstadd_front(lst, end);
 	ptr->next = NULL;
 	write(1, "rra\n", 4);
+}
+
+void	rotate_a(t_list **a, int cost_a)
+{
+	if (cost_a > 0)
+		ft_ra(a);
+	else if (cost_a < 0)
+		ft_rra(a);
 }

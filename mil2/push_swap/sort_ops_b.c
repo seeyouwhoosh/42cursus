@@ -67,3 +67,11 @@ void	ft_rrb(t_list **lst)
 	ptr->next = NULL;
 	write(1, "rrb\n", 3);
 }
+
+void	rotate_b(t_list **b, int cost_b)
+{
+	if (cost_b > 0)
+		ft_rb(b);
+	else if (cost_b < 0)
+		ft_rrb(b);
+}

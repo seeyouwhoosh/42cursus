@@ -1,7 +1,7 @@
 .POSIX:
 .PHONY: all clean fclean re
 
-SOURCES = push_swap.c ft_math.c ft_lists.c sort_ops_a.c sort_ops_b.c sort_ops_both.c
+SOURCES = push_swap.c ft_math.c ft_lists.c sort_ops_a.c sort_ops_b.c sort_ops_both.c calc_costs.c
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
@@ -13,10 +13,11 @@ test: $(OBJECTS) $(LIBFT) $(FT_PRINTF) ft_math.o ft_lists.o sort_ops_a.o sort_op
 
 NAME = push_swap
 CC = cc
-# CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -ggdb # -Wall -Werror -Wextra
 OBJECTS = $(SOURCES:.c=.o)
 
 all: $(LIBFT) $(FT_PRINTF) $(NAME)
+: 
 
 $(FT_PRINTF):
 	make -C $(FT_PRINTF_DIR)

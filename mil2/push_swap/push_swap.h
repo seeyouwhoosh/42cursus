@@ -42,6 +42,8 @@ void	ft_ra(t_list **lst);
 
 void	ft_rra(t_list **lst);
 
+void	rotate_a(t_list **a, int cost_a);
+
 void	ft_sb(t_list *lst);
 
 void	ft_pb(t_list **a, t_list **b);
@@ -50,11 +52,15 @@ void	ft_rb(t_list **lst);
 
 void	ft_rrb(t_list **lst);
 
+void	rotate_b(t_list **b, int cost_b);
+
 void	ft_ss(t_list *a, t_list *b);
 
 void	ft_rr(t_list **a, t_list **b);
 
 void	ft_rrr(t_list **a, t_list **b);
+
+void	rotate_ab(t_list **a, int cost_a, t_list **b, int cost_b);
 
 /* Calculates the minimum steps to the top of the stack,
 if it's negative, use reverse rotate */
@@ -74,6 +80,8 @@ int		ft_index(t_list *l, int n);
 int		ft_abs(int x);
 
 int		ft_max(int a, int b);
+
+int		ft_min(int a, int b);
 
 int		ft_power(int base, int exp);
 
