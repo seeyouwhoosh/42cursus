@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:32:16 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/08 15:42:27 by xwu              ###   ########.fr       */
+/*   Updated: 2025/08/08 17:15:43 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ void	push_to_b(t_list **a, t_list **b)
 		efficient_move_des(a, b, pa);
 		ft_pb(b, a);
 	}
-	ft_sort_three(a);
 }
 
 void	back_to_a(t_list **a, t_list **b)
