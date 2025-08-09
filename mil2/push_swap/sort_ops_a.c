@@ -14,57 +14,25 @@
 
 void	ft_sa(t_list *lst)
 {
-	int		*first;
-	int		*second;
-
-	if (!lst || !lst->next || !lst->content || !lst->next->content)
-		return ;
-	first = lst->content;
-	second = lst->next->content;
-	lst->content = second;
-	lst->next->content = first;
+	lstswap(lst);
 	write(1, "sa\n", 3);
 }
 
 void	ft_pa(t_list **a, t_list **b)
 {
-	t_list	*ptr;
-
-	if (!b || !(*b))
-		return ;
-	ptr = *b;
-	*b = (*b)->next;
-	ptr->next = NULL;
-	ft_lstadd_front(a, ptr);
+	lstpush(a, b);
 	write(1, "pa\n", 3);
 }
 
 void	ft_ra(t_list **lst)
 {
-	t_list	*start;
-
-	if (!lst || !(*lst) || !(*lst)->content)
-		return ;
-	start = *lst;
-	ft_lstadd_back(lst, start);
-	*lst = (start)->next;
-	start->next = NULL;
+	lstrotate(lst);
 	write(1, "ra\n", 3);
 }
 
 void	ft_rra(t_list **lst)
 {
-	t_list	*end;
-	t_list	*ptr;
-
-	if (!lst || !(*lst) || !(*lst)->content || !(*lst)->next)
-		return ;
-	ptr = *lst;
-	end = ft_lstlast(*lst);
-	while (ptr->next->next)
-		ptr = ptr->next;
-	ft_lstadd_front(lst, end);
-	ptr->next = NULL;
+	lstrrotate(lst);
 	write(1, "rra\n", 4);
 }
 

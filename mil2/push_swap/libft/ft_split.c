@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-static size_t	ft_strwords(const char *s, char c)
+size_t	ft_strwords(const char *s, char c)
 {
 	size_t	i;
 	size_t	count;
@@ -85,7 +85,7 @@ char	**ft_split(char const *s, char c)
 	return (result[ls] = NULL, result);
 }
 
-void	ft_putstrstr(char **s, size_t quantity)
+void	ft_putstrstr(char **s, size_t quantity, char sep)
 {
 	size_t	i;
 
@@ -94,7 +94,7 @@ void	ft_putstrstr(char **s, size_t quantity)
 	{
 		ft_putstr_fd(s[i], 1);
 		if (quantity != i)
-			ft_putchar_fd('\n', 1);
+			ft_putchar_fd(sep, 1);
 		i++;
 	}
 }

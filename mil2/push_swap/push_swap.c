@@ -10,13 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
 #include "push_swap.h"
-
-void	error_message(void)
-{
-	write(2, "Error\n", 6);
-}
 
 void	ft_sort_three(t_list **a)
 {
@@ -67,9 +61,8 @@ void	ft_sort(t_list **a, t_list **b)
 		rotate_a(a, cost_to_top(*a, ft_index(*a, ft_minint(*a))));
 }
 
-int	main2(int ac, char **av)
+int	main(int ac, char **av)
 {
-	int		*n;
 	int		i;
 	t_list	*lsta;
 	t_list	*lstb;
@@ -79,94 +72,11 @@ int	main2(int ac, char **av)
 	i = 0;
 	if (ac < 2)
 		return (0);
-	parsing(ac, av, lsta);
-	if (lstrepsint(lsta))
+	parsing(ac, av, &lsta);
+	if (!lsta || lstrepsint(lsta))
 		return (ft_lstclear(&lsta, del), error_message(), 1);
 	ft_sort(&lsta, &lstb);
 	ft_lstclear(&lsta, del);
 	ft_lstclear(&lstb, del);
 	return (0);
 }
-
-void	parsing(int ac, char **av, t_list *lsta)
-{
-	char	*joined;
-	int		i;
-	char	*tmp;
-	int		*n;
-
-	joined = ft_strdup("");
-	i = 0;
-	while (++i < ac)
-	{
-		tmp = joined;
-		joined = ft_strjoin(joined, av[i]);
-		joined = ft_strjoin(joined, " ");
-		free(tmp);
-	}
-	av = ft_split(joined, ' ');
-	free(joined);
-	while (av[i])
-	{
-		n = malloc(sizeof(int));
-		if (!n || !is_int(av[i]))
-			return (ft_lstclear(&lsta, del), error_message(), 1);
-		*n = ft_atoi(av[i]);
-		ft_lstadd_back(&lsta, ft_lstnew(n));
-		i++;
-	}
-}
-
-
-
-#include <stdlib.h>
-#include <string.h>
-
-
-int	main(int ac, char **av)
-{
-	t_list	*lsta = NULL;
-	t_list	*lstb = NULL;
-	char	**args;
-	int		i = 0;
-	int		*n;
-
-	if (ac < 2)
-		return (1);
-
-	// Unir todos los argumentos y luego hacer split
-	char *joined = ft_strdup("");
-	for (int j = 1; j < ac; j++)
-	{
-		char *tmp = joined;
-		joined = strjoin_and_free(joined, " ");
-		joined = strjoin_and_free(joined, av[j]);
-		free(tmp);
-	}
-	args = ft_split(joined, ' ');
-	free(joined);
-
-	while (args[i])
-	{
-		if (!is_int(args[i]))
-			return (ft_lstclear(&lsta, del), free_split(args), error_message(), 1);
-		n = malloc(sizeof(int));
-		if (!n)
-			return (ft_lstclear(&lsta, del), free_split(args), error_message(), 1);
-		*n = ft_atoi(args[i]);
-		ft_lstadd_back(&lsta, ft_lstnew(n));
-		i++;
-	}
-
-	free_split(args);
-
-	if (lstrepsint(lsta))
-		return (ft_lstclear(&lsta, del), error_message(), 1);
-
-	ft_sort(&lsta, &lstb);
-	ft_lstclear(&lsta, del);
-	ft_lstclear(&lstb, del);
-	return (0);
-
-}
-

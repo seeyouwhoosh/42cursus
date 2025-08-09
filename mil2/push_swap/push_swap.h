@@ -14,6 +14,27 @@
 # define PUSH_SWAP_H
 # include "libft.h"
 # include "ft_printf.h"
+# define BUFFER_SIZE 8
+
+
+/* PRACTICAL FUNCTIONS */
+
+/* Join all strings given into one single string, separated by
+a space character */
+char	*joined_args(int ac, char **av);
+
+void	error_message(void);
+
+/* MATHEMATICAL FUNCTIONS */
+
+int		ft_abs(int x);
+
+int		ft_max(int a, int b);
+
+int		ft_min(int a, int b);
+
+int		is_int(char *s);
+
 
 /* LIST FUNCTIONS THAT ARE NOT INCLUDED IN THE LIBFT */
 
@@ -32,7 +53,18 @@ int		ft_minint(t_list *lst);
 /* Get the maximum in the linked list */
 int		ft_maxint(t_list *lst);
 
-/* OPERATIONS */
+
+/* GENERIC OPERATIONS WITH LINKED LISTS */
+
+void	lstswap(t_list *lst);
+
+void	lstpush(t_list **a, t_list **b);
+
+void	lstrotate(t_list **lst);
+
+void	lstrrotate(t_list **lst);
+
+/* OPERATIONS WITH LINKED LISTS*/
 
 void	ft_sa(t_list *lst);
 
@@ -62,29 +94,35 @@ void	ft_rrr(t_list **a, t_list **b);
 
 void	rotate_ab(t_list **a, int cost_a, t_list **b, int cost_b);
 
-/* Calculates the minimum steps to the top of the stack,
-if it's negative, use reverse rotate */
+
+/* SPECIFIC OPERATIONS FOR LINKED LISTS WITH LISTS */
+
+/* Calculates the minimum steps to the top of the stack based on
+number received. If it's negative, use reverse rotate */
 int		cost_to_top(t_list *l, int n);
 
-/* Calculates the total cost of moving from one stack to another */
+/* Calculates the total cost of moving from one stack to another
+based on number inserted and order wanted */
 int		op_cost(t_list *a, t_list *b, int n, short ascending);
 
-/* Finds the node with the lowest operational cost to move from a to b
-according to the ascending or descending order specified */
+/* Finds the node with the lowest operational cost to move from a
+to b according to the ascending or descending order specified */
 t_list	*best_node(t_list *a, t_list *b, short ascending);
 
-/* Calculates the minimun steps to the target position in the stack in
-descending order */
+/* Calculates the minimun steps to the target position in the
+stack in descending order */
 int		target_pos_des(t_list *b, int n);
 
-/* Calculates the minimun steps to the target position in the stack in
-ascending order */
+/* Calculates the minimun steps to the target position in the
+stack in ascending order */
 int		target_pos_asc(t_list *b, int n);
 
-/* Does the rotations to move the node pa from a to b in a descending order*/
+/* Does the rotations to move the node pa from a to b in a
+descending order*/
 void	efficient_move_des(t_list **a, t_list **b, t_list *pa);
 
-/* Does the rotations to move the node pa from a to b in an ascending order*/
+/* Does the rotations to move the node pa from a to b in an 
+ascending order*/
 void	efficient_move_asc(t_list **a, t_list **b, t_list *pa);
 
 /* Get the index in which the int n is in */
@@ -99,14 +137,11 @@ void	back_to_a(t_list **a, t_list **b);
 
 void	ft_sort_three(t_list **a);
 
-/* MATHEMATICAL FUNCTIONS */
+/* Sorting algorithm using the turk algorithm */
+void	ft_sort(t_list **a, t_list **b);
 
-int		ft_abs(int x);
-
-int		ft_max(int a, int b);
-
-int		ft_min(int a, int b);
-
-int		is_int(char *s);
+/* Turn the arguments given, in all posible formats into linked
+lists of ints */
+void	parsing(int ac, char **av, t_list **lsta);
 
 #endif

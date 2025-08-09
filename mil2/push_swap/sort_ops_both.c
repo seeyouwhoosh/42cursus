@@ -14,64 +14,22 @@
 
 void	ft_ss(t_list *a, t_list *b)
 {
-	int		*first;
-	int		*second;
-
-	if (!a || !a->next || !a->content || !a->next->content)
-		return ;
-	first = a->content;
-	second = a->next->content;
-	a->content = second;
-	a->next->content = first;
-	if (!b || !b->next || !b->content || !b->next->content)
-		return ;
-	first = b->content;
-	second = b->next->content;
-	b->content = second;
-	b->next->content = first;
+	lstswap(a);
+	lstswap(b);
 	write(1, "ss\n", 3);
 }
 
 void	ft_rr(t_list **a, t_list **b)
 {
-	t_list	*start;
-
-	if (!a || !(*a) || !(*a)->content)
-		return ;
-	start = *a;
-	ft_lstadd_back(a, start);
-	*a = (start)->next;
-	start->next = NULL;
-	if (!b || !(*b) || !(*b)->content)
-		return ;
-	start = *b;
-	ft_lstadd_back(b, start);
-	*b = (start)->next;
-	start->next = NULL;
+	lstrotate(a);
+	lstrotate(b);
 	write(1, "rr\n", 3);
 }
 
 void	ft_rrr(t_list **a, t_list **b)
 {
-	t_list	*end;
-	t_list	*ptr;
-
-	if (!a || !(*a) || !(*a)->content || !(*a)->next)
-		return ;
-	ptr = *a;
-	end = ft_lstlast(*a);
-	while (ptr->next->next)
-		ptr = ptr->next;
-	ft_lstadd_front(a, end);
-	ptr->next = NULL;
-	if (!b || !(*b) || !(*b)->content || !(*b)->next)
-		return ;
-	ptr = *b;
-	end = ft_lstlast(*b);
-	while (ptr->next->next)
-		ptr = ptr->next;
-	ft_lstadd_front(b, end);
-	ptr->next = NULL;
+	lstrrotate(a);
+	lstrrotate(b);
 	write(1, "rrr\n", 4);
 }
 
