@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 19:15:12 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/08 15:42:05 by xwu              ###   ########.fr       */
+/*   Updated: 2025/08/10 00:06:55 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,11 @@ int	ft_index(t_list *l, int n)
 {
 	t_list	*tmp;
 	int		i;
-	int		nb;
 
 	i = 0;
 	tmp = l;
 	while (tmp)
 	{
-		nb = *(int *)tmp->content;
 		if (n == *(int *)tmp->content)
 			return (i);
 		tmp = tmp->next;

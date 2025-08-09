@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 19:15:12 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/09 01:44:26 by xwu              ###   ########.fr       */
+/*   Updated: 2025/08/10 00:07:18 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,11 @@ void	ft_sort(t_list **a, t_list **b)
 
 int	main(int ac, char **av)
 {
-	int		i;
 	t_list	*lsta;
 	t_list	*lstb;
 
 	lsta = NULL;
 	lstb = NULL;
-	i = 0;
 	if (ac < 2)
 		return (0);
 	parsing(ac, av, &lsta);
