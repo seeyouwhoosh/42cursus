@@ -12,12 +12,32 @@
 
 #include "push_swap.h"
 
+int	is_valid(char *line)
+{
+	if (!ft_strcmp(line, "sa\n") || !ft_strcmp(line, "sb\n"))
+		return (1);
+	else if (!ft_strcmp(line, "pa\n") || !ft_strcmp(line, "pb\n"))
+		return (1);
+	else if (!ft_strcmp(line, "ra\n") || !ft_strcmp(line, "rb\n"))
+		return (1);
+	else if (!ft_strcmp(line, "rr\n") || !ft_strcmp(line, "rra\n"))
+		return (1);
+	else if (!ft_strcmp(line, "rrb\n") || !ft_strcmp(line, "rrr\n"))
+		return (1);
+	else if (!ft_strcmp(line, "ss\n"))
+		return (1);
+	else
+		return (0);
+}
+
 char	*read_stdin(void)
 {
 	char	*line;
 	char	*steps;
 	int		n_read;
 	char	*tmp;
+	char	**splits;
+	char	**;
 
 	line = malloc(BUFFER_SIZE + 1);
 	if (!line)
@@ -27,6 +47,13 @@ char	*read_stdin(void)
 	while (n_read > 0)
 	{
 		line[n_read] = '\0';
+		splits = ft_split(line, '\n');
+		while (*splits++)
+		{
+			*splits = ft_strjoin(*splits, "\n")
+			if (!is_valid(*splits))
+				return (free(line), free(steps), NULL);
+		}
 		tmp = steps;
 		steps = ft_strjoin(steps, line);
 		free(tmp);
@@ -34,6 +61,42 @@ char	*read_stdin(void)
 	}
 	free(line);
 	return (steps);
+}
+
+void	read_stdin2(char **steps)
+{
+	char	*line;
+	int		n_read;
+	char	*tmp;
+	char	**splits;
+	char	*temp;
+	char	*start;
+	line = malloc(BUFFER_SIZE + 1);
+	if (!line)
+		return (NULL);
+	*steps = NULL;
+	n_read = read(0, line, BUFFER_SIZE);
+	while (n_read > 0)
+	{
+		line[n_read] = '\0';
+		splits = ft_split(line, '\n');
+		start = splits;
+		while (*splits)
+		{
+			tmp = *splits;
+			*splits = ft_strjoin(tmp, "\n");
+			if (!is_valid(*splits))
+				return (free(line), ft_freesplit(start, ft_strwords(line, '\n')));
+			temp = *steps;
+			*steps = ft_strjoin(*steps, tmp);
+			free(tmp);
+			free(temp);
+			splits++;
+		}
+		ft_freesplit(start, ft_strwords(line, '\n'));
+		n_read = read(0, line, BUFFER_SIZE);
+	}
+	free(line);
 }
 
 void	rotate_both(t_list **lsta, t_list **lstb, short reverse)
@@ -73,6 +136,11 @@ int	execute_move(char *move, t_list **lsta, t_list **lstb)
 		lstrotate(lstb);
 	else if (!ft_strncmp(move, "rrb", len))
 		lstrrotate(lstb);
+	else if (!ft_strncmp(move, "ss", len))
+	{
+		lstswap(*lsta);
+		lstswap(*lstb);
+	}
 	else if (!ft_strncmp(move, "rr", len))
 		rotate_both(lsta, lstb, 0);
 	else if (!ft_strncmp(move, "rrr", len))
@@ -107,7 +175,11 @@ int	main(int ac, char **av)
 	if (!lsta)
 		return (error_message(), 1);
 	steps = read_stdin();
+	ft_printf("READ STEPS: %s", steps);
+	if (!steps)
+		return (ft_lstclear(&lsta, del), error_message(), 1);
 	av = ft_split(steps, '\n');
+	ft_putstrstr(av, ft_strwords(steps, '\n'),'+');
 	if (make_moves(av, &lsta, &lstb))
 	{
 		if (lstsortedsint(lsta) && lstb == NULL)
@@ -117,7 +189,6 @@ int	main(int ac, char **av)
 	}
 	else
 		error_message();
-	ft_freesplit(av, ft_strwords(steps, '\n'));
-	ft_lstclear(&lsta, del);
-	return (free(steps), 0);
+	return (ft_freesplit(av, ft_strwords(steps, '\n')), \
+ft_lstclear(&lsta, del), free(steps), 0);
 }

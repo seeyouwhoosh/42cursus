@@ -28,12 +28,15 @@ char	*joined_args(int ac, char **av)
 	i = 0;
 	while (++i < ac)
 	{
-		tmp = joined;
-		joined = ft_strjoin(joined, av[i]);
-		free(tmp);
-		tmp = joined;
-		joined = ft_strjoin(joined, " ");
-		free(tmp);
+		if (av[i][0])
+		{
+			tmp = joined;
+			joined = ft_strjoin(joined, av[i]);
+			free(tmp);
+			tmp = joined;
+			joined = ft_strjoin(joined, " ");
+			free(tmp);
+		}
 	}
 	return (joined);
 }
@@ -47,7 +50,7 @@ void	parsing(int ac, char **av, t_list **lsta)
 	joined = joined_args(ac, av);
 	av = ft_split(joined, ' ');
 	if (!av[0])
-		return(ft_freesplit(av, 0), free(joined));
+		return (ft_freesplit(av, 0), free(joined));
 	j = -1;
 	while (av[++j])
 	{
