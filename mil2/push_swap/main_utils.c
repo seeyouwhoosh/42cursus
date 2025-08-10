@@ -2,12 +2,10 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main_utils.c                                       :+:      :+:    :+:   */
-/*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 19:15:12 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/10 01:57:10 by xwu              ###   ########.fr       */
 /*   Updated: 2025/08/10 01:57:10 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -58,18 +56,12 @@ void	parsing(int ac, char **av, t_list **lsta)
 	{
 		if (!is_int(av[j]))
 			break ;
-		if (!is_int(av[j]))
-			break ;
 		n = malloc(sizeof(int));
-		if (!n)
-			break ;
 		if (!n)
 			break ;
 		*n = ft_atoi(av[j]);
 		ft_lstadd_back(lsta, ft_lstnew(n));
 	}
-	if (av[j] || (lstrepsint(*lsta) && *lsta))
-		ft_lstclear(lsta, del);
 	if (av[j] || (lstrepsint(*lsta) && *lsta))
 		ft_lstclear(lsta, del);
 	ft_freesplit(av, ft_strwords(joined, ' '));

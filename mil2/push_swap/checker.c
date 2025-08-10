@@ -47,6 +47,8 @@ char	*read_stdin(void)
 	while (n_read > 0)
 	{
 		line[n_read] = '\0';
+		if (!is_valid(line))
+			return (free(line), NULL);
 		tmp = steps;
 		steps = ft_strjoin(steps, line);
 		free(tmp);
@@ -93,6 +95,11 @@ int	execute_move(char *move, t_list **lsta, t_list **lstb)
 		lstrotate(lstb);
 	else if (!ft_strncmp(move, "rrb", len))
 		lstrrotate(lstb);
+		else if (!ft_strncmp(move, "ss", len))
+	{
+		lstswap(*lsta);
+		lstswap(*lstb);
+	}
 	else if (!ft_strncmp(move, "rr", len))
 		rotate_both(lsta, lstb, 0);
 	else if (!ft_strncmp(move, "rrr", len))
@@ -120,14 +127,15 @@ int	main(int ac, char **av)
 	char	*steps;
 
 	if (ac < 2)
-		return (error_message(), 1);
+		return (0);
 	lsta = NULL;
 	lstb = NULL;
 	parsing(ac, av, &lsta);
 	if (!lsta || lstrepsint(lsta))
 		return (ft_lstclear(&lsta, del), error_message(), 1);
-
 	steps = read_stdin();
+	if (!steps)
+		return (ft_lstclear(&lsta, del), error_message(), 1);
 	av = ft_split(steps, '\n');
 	if (make_moves(av, &lsta, &lstb))
 	{
