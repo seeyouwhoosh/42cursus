@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 19:15:12 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/08 15:27:02 by xwu              ###   ########.fr       */
+/*   Updated: 2025/08/10 01:05:48 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,22 +39,24 @@ int	is_int(char *s)
 	int	i;
 	int	sign;
 
-	sign = 0;
+	if (!s || !*s)
+		return (0);
+	sign = (s[0] == '-');
 	i = ft_strlen(s);
 	conv = ft_atoi(s);
-	if (s[0] == '-')
+	if (conv == -2147483648)
+		return (sign && !ft_strncmp(s, "-2147483648", 11));
+	if ((sign && conv >= 0) || (!sign && conv < 0))
+		return (0);
+	if (conv < 0)
+		conv = -conv;	
+	while (i-- > sign)
 	{
-		if (conv > 0)
-			return (0);
-		sign = 1;
-	}
-	conv = abs(conv);
-	while (i > sign)
-	{
-		if ((s[i - 1] - '0') != (conv % 10))
-			return (0);
+		if (s[i] < '0' || s[i] > '9')
+			return 0;
+		if ((s[i] - '0') != (conv % 10))
+			return 0;
 		conv /= 10;
-		i--;
 	}
 	return (1);
 }

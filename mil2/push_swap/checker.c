@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.h                                        :+:      :+:    :+:   */
+/*   checker.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 19:15:12 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/08 15:44:27 by xwu              ###   ########.fr       */
+/*   Updated: 2025/08/10 02:32:22 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,45 +35,61 @@ char	*read_stdin(void)
 	free(line);
 	return (steps);
 }
+
+void	rotate_both(t_list **lsta, t_list **lstb, short reverse)
+{
+	if (reverse)
+	{
+		lstrrotate(lstb);
+		lstrrotate(lsta);
+	}
+	else
+	{
+		lstrotate(lstb);
+		lstrotate(lsta);
+	}
+}
+
+int	execute_move(char *move, t_list **lsta, t_list **lstb)
+{
+	size_t	len;
+
+	len = ft_strlen(move);
+	if (len == 0)
+		return (0);
+	if (!ft_strncmp(move, "sa", len))
+		lstswap(*lsta);
+	else if (!ft_strncmp(move, "pa", len))
+		lstpush(lsta, lstb);
+	else if (!ft_strncmp(move, "ra", len))
+		lstrotate(lsta);
+	else if (!ft_strncmp(move, "rra", len))
+		lstrrotate(lsta);
+	else if (!ft_strncmp(move, "sb", len))
+		lstswap(*lstb);
+	else if (!ft_strncmp(move, "pb", len))
+		lstpush(lstb, lsta);
+	else if (!ft_strncmp(move, "rb", len))
+		lstrotate(lstb);
+	else if (!ft_strncmp(move, "rrb", len))
+		lstrrotate(lstb);
+	else if (!ft_strncmp(move, "rr", len))
+		rotate_both(lsta, lstb, 0);
+	else if (!ft_strncmp(move, "rrr", len))
+		rotate_both(lsta, lstb, 1);
+	else
+		return (0);
+	return (1);
+}
+
 int	make_moves(char **av, t_list **lsta, t_list **lstb)
 {
-	int		i;
-	size_t	strlen;
+	int	i;
 
 	i = -1;
 	while (av[++i])
-	{
-		strlen = ft_strlen(av[i]);
-
-		if (!ft_strncmp(av[i], "sa", strlen))
-			lstswap(*lsta);
-		else if (!ft_strncmp(av[i], "pa", strlen))
-			lstpush(lsta, lstb);
-		else if (!ft_strncmp(av[i], "ra", strlen))
-			lstrotate(lsta);
-		else if (!ft_strncmp(av[i], "rra", strlen))
-			lstrrotate(lsta);
-		else if (!ft_strncmp(av[i], "sb", strlen))
-			lstswap(*lstb);
-		else if (!ft_strncmp(av[i], "pb", strlen))
-			lstpush(lstb, lsta);
-		else if (!ft_strncmp(av[i], "rb", strlen))
-			lstrotate(lstb);
-		else if (!ft_strncmp(av[i], "rrb", strlen))
-			lstrrotate(lstb);
-		else if (!ft_strncmp(av[i], "rr", strlen))
-		{
-			lstrotate(lsta);
-			lstrotate(lstb);
-		}
-		else if (!ft_strncmp(av[i], "rrr", strlen))
-		{
-			lstrrotate(lstb);
-			lstrrotate(lsta);
-		}
-		else
-			return (error_message(), 0);
-	}
+		if (!execute_move(av[i], lsta, lstb))
+			return (0);
 	return (1);
 }
 
@@ -84,16 +100,14 @@ int	main(int ac, char **av)
 	char	*steps;
 
 	if (ac < 2)
-		return (error_message(), 1);
+		return (0);
 	lsta = NULL;
 	lstb = NULL;
 	parsing(ac, av, &lsta);
-	if (!lsta || lstrepsint(lsta))
-		return (ft_lstclear(&lsta, del), error_message(), 1);
-
+	if (!lsta)
+		return (error_message(), 1);
 	steps = read_stdin();
 	av = ft_split(steps, '\n');
-
 	if (make_moves(av, &lsta, &lstb))
 	{
 		if (lstsortedsint(lsta) && lstb == NULL)
@@ -101,14 +115,9 @@ int	main(int ac, char **av)
 		else
 			ft_printf("KO\n");
 	}
-	/* DELETE */
-	ft_printf("All stuff\n");
-	ft_putstrstr(av, ft_strwords(steps, '\n'), ' ');
-	lstprint(lsta, 'd');
-
-	/* Demás feres*/
+	else
+		error_message();
 	ft_freesplit(av, ft_strwords(steps, '\n'));
-	free(steps);
 	ft_lstclear(&lsta, del);
-	return (0);
+	return (free(steps), 0);
 }

@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 19:15:12 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/10 00:07:18 by xwu              ###   ########.fr       */
+/*   Updated: 2025/08/10 01:28:57 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ int	main(int ac, char **av)
 	if (ac < 2)
 		return (0);
 	parsing(ac, av, &lsta);
-	if (!lsta || lstrepsint(lsta))
-		return (ft_lstclear(&lsta, del), error_message(), 1);
+	if (!lsta)
+		return (error_message(), 1);
 	ft_sort(&lsta, &lstb);
 	ft_lstclear(&lsta, del);
 	ft_lstclear(&lstb, del);
