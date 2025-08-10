@@ -2,10 +2,12 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   checker.c                                          :+:      :+:    :+:   */
+/*   checker.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 19:15:12 by xwu               #+#    #+#             */
+/*   Updated: 2025/08/10 02:32:22 by xwu              ###   ########.fr       */
 /*   Updated: 2025/08/10 02:32:22 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -45,13 +47,6 @@ char	*read_stdin(void)
 	while (n_read > 0)
 	{
 		line[n_read] = '\0';
-		splits = ft_split(line, '\n');
-		while (*splits++)
-		{
-			*splits = ft_strjoin(*splits, "\n")
-			if (!is_valid(*splits))
-				return (free(line), free(steps), NULL);
-		}
 		tmp = steps;
 		steps = ft_strjoin(steps, line);
 		free(tmp);
@@ -60,6 +55,53 @@ char	*read_stdin(void)
 	free(line);
 	return (steps);
 }
+
+void	rotate_both(t_list **lsta, t_list **lstb, short reverse)
+{
+	if (reverse)
+	{
+		lstrrotate(lstb);
+		lstrrotate(lsta);
+	}
+	else
+	{
+		lstrotate(lstb);
+		lstrotate(lsta);
+	}
+}
+
+int	execute_move(char *move, t_list **lsta, t_list **lstb)
+{
+	size_t	len;
+
+	len = ft_strlen(move);
+	if (len == 0)
+		return (0);
+	if (!ft_strncmp(move, "sa", len))
+		lstswap(*lsta);
+	else if (!ft_strncmp(move, "pa", len))
+		lstpush(lsta, lstb);
+	else if (!ft_strncmp(move, "ra", len))
+		lstrotate(lsta);
+	else if (!ft_strncmp(move, "rra", len))
+		lstrrotate(lsta);
+	else if (!ft_strncmp(move, "sb", len))
+		lstswap(*lstb);
+	else if (!ft_strncmp(move, "pb", len))
+		lstpush(lstb, lsta);
+	else if (!ft_strncmp(move, "rb", len))
+		lstrotate(lstb);
+	else if (!ft_strncmp(move, "rrb", len))
+		lstrrotate(lstb);
+	else if (!ft_strncmp(move, "rr", len))
+		rotate_both(lsta, lstb, 0);
+	else if (!ft_strncmp(move, "rrr", len))
+		rotate_both(lsta, lstb, 1);
+	else
+		return (0);
+	return (1);
+}
+
 int	make_moves(char **av, t_list **lsta, t_list **lstb)
 {
 	int	i;
@@ -78,12 +120,13 @@ int	main(int ac, char **av)
 	char	*steps;
 
 	if (ac < 2)
-		return (0);
+		return (error_message(), 1);
 	lsta = NULL;
 	lstb = NULL;
 	parsing(ac, av, &lsta);
-	if (!lsta)
-		return (error_message(), 1);
+	if (!lsta || lstrepsint(lsta))
+		return (ft_lstclear(&lsta, del), error_message(), 1);
+
 	steps = read_stdin();
 	av = ft_split(steps, '\n');
 	if (make_moves(av, &lsta, &lstb))
