@@ -36,8 +36,6 @@ char	*read_stdin(void)
 	char	*steps;
 	int		n_read;
 	char	*tmp;
-	char	**splits;
-	char	**;
 
 	line = malloc(BUFFER_SIZE + 1);
 	if (!line)
@@ -62,94 +60,6 @@ char	*read_stdin(void)
 	free(line);
 	return (steps);
 }
-
-void	read_stdin2(char **steps)
-{
-	char	*line;
-	int		n_read;
-	char	*tmp;
-	char	**splits;
-	char	*temp;
-	char	*start;
-	line = malloc(BUFFER_SIZE + 1);
-	if (!line)
-		return (NULL);
-	*steps = NULL;
-	n_read = read(0, line, BUFFER_SIZE);
-	while (n_read > 0)
-	{
-		line[n_read] = '\0';
-		splits = ft_split(line, '\n');
-		start = splits;
-		while (*splits)
-		{
-			tmp = *splits;
-			*splits = ft_strjoin(tmp, "\n");
-			if (!is_valid(*splits))
-				return (free(line), ft_freesplit(start, ft_strwords(line, '\n')));
-			temp = *steps;
-			*steps = ft_strjoin(*steps, tmp);
-			free(tmp);
-			free(temp);
-			splits++;
-		}
-		ft_freesplit(start, ft_strwords(line, '\n'));
-		n_read = read(0, line, BUFFER_SIZE);
-	}
-	free(line);
-}
-
-void	rotate_both(t_list **lsta, t_list **lstb, short reverse)
-{
-	if (reverse)
-	{
-		lstrrotate(lstb);
-		lstrrotate(lsta);
-	}
-	else
-	{
-		lstrotate(lstb);
-		lstrotate(lsta);
-	}
-}
-
-int	execute_move(char *move, t_list **lsta, t_list **lstb)
-{
-	size_t	len;
-
-	len = ft_strlen(move);
-	if (len == 0)
-		return (0);
-	if (!ft_strncmp(move, "sa", len))
-		lstswap(*lsta);
-	else if (!ft_strncmp(move, "pa", len))
-		lstpush(lsta, lstb);
-	else if (!ft_strncmp(move, "ra", len))
-		lstrotate(lsta);
-	else if (!ft_strncmp(move, "rra", len))
-		lstrrotate(lsta);
-	else if (!ft_strncmp(move, "sb", len))
-		lstswap(*lstb);
-	else if (!ft_strncmp(move, "pb", len))
-		lstpush(lstb, lsta);
-	else if (!ft_strncmp(move, "rb", len))
-		lstrotate(lstb);
-	else if (!ft_strncmp(move, "rrb", len))
-		lstrrotate(lstb);
-	else if (!ft_strncmp(move, "ss", len))
-	{
-		lstswap(*lsta);
-		lstswap(*lstb);
-	}
-	else if (!ft_strncmp(move, "rr", len))
-		rotate_both(lsta, lstb, 0);
-	else if (!ft_strncmp(move, "rrr", len))
-		rotate_both(lsta, lstb, 1);
-	else
-		return (0);
-	return (1);
-}
-
 int	make_moves(char **av, t_list **lsta, t_list **lstb)
 {
 	int	i;
@@ -175,11 +85,7 @@ int	main(int ac, char **av)
 	if (!lsta)
 		return (error_message(), 1);
 	steps = read_stdin();
-	ft_printf("READ STEPS: %s", steps);
-	if (!steps)
-		return (ft_lstclear(&lsta, del), error_message(), 1);
 	av = ft_split(steps, '\n');
-	ft_putstrstr(av, ft_strwords(steps, '\n'),'+');
 	if (make_moves(av, &lsta, &lstb))
 	{
 		if (lstsortedsint(lsta) && lstb == NULL)
