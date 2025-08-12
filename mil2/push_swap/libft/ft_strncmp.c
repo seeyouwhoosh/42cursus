@@ -36,7 +36,6 @@ int	ft_strcmp(const char *s1, const char *s2)
 	n = ft_strlen(s1);
 	if (ft_strlen(s2) > n)
 		n = ft_strlen(s2);
-
 	index = 0;
 	while (n > index)
 	{

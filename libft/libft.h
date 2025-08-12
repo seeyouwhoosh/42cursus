@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 11:57:02 by xwu               #+#    #+#             */
-/*   Updated: 2025/07/27 11:50:29 by xwu              ###   ########.fr       */
+/*   Updated: 2025/07/27 12:08:09 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,12 +124,17 @@ void	ft_lstiter(t_list *lst, void (*f)(void *));
 
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
-/* Extra function of lists not included in the subjects */
-
+/* Extra functions of lists not included in the subject */
 void	del(void *content);
 
-void	ft_lstprint(t_list *lst, char format);
+void	ft_freesplit(char **words, size_t ls);
 
+/* Find number of words based on the separator c */
+size_t	ft_strwords(const char *s, char c);
 
+/* Dedicated putstr for split */
+void	ft_putstrstr(char **s, size_t quantity, char sep);
+
+int		ft_strcmp(const char *s1, const char *s2);
 
 #endif

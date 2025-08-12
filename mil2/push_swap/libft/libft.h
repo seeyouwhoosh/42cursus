@@ -135,6 +135,6 @@ size_t	ft_strwords(const char *s, char c);
 /* Dedicated putstr for split */
 void	ft_putstrstr(char **s, size_t quantity, char sep);
 
-int	ft_strcmp(const char *s1, const char *s2);
+int		ft_strcmp(const char *s1, const char *s2);
 
 #endif

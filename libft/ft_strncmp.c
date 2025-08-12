@@ -27,3 +27,23 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	}
 	return (0);
 }
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	size_t	index;
+	size_t	n;
+
+	n = ft_strlen(s1);
+	if (ft_strlen(s2) > n)
+		n = ft_strlen(s2);
+	index = 0;
+	while (n > index)
+	{
+		if (s1[index] != s2[index])
+		{
+			return (s1[index] - s2[index]);
+		}
+		index++;
+	}
+	return (0);
+}
