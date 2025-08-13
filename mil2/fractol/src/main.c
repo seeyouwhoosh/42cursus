@@ -1,31 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:46:16 by xwu               #+#    #+#             */
-/*   Updated: 2025/07/22 18:35:22 by xwu              ###   ########.fr       */
+/*   Updated: 2025/08/13 01:48:31 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
-# include <stdarg.h>
+#include "fractol.h"
 
-int		ft_redirect(char id, va_list args);
+int	main(void)
+{
+	void	*mlx;
+	void	*mlx_win;
+	t_data	*img;
 
-int		ft_printf(const char *s, ...);
+	mlx = mlx_init();
 
-int		ft_putchar(char c);
+	mlx_win = mlx_new_window(mlx, 1920, 1080, "test window");
 
-int		ft_putstr(char *s);
+	img->img = mlx_new_image(mlx, 1920, 1080);
+	img->addr = mlx_get_data_addr(img->img, &img->bits_per_pixel, &img->line_length, img->endian);
+	if (!img->addr)
+		return (1);
 
-int		ft_putnbr(int n);
-
-int		ft_putubnr(unsigned int n);
-
-int		ft_puthex(unsigned long n, int upper);
-
-#endif
+	mlx_loop(mlx);
+	return (0);
+}
