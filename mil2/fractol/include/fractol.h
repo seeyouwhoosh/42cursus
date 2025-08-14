@@ -13,6 +13,8 @@
 #ifndef FRACTOL_H
 # define FRACTOL_H
 # include "mlx.h"
+# define WIDTH 1920
+# define HEIGHT 1080
 
 typedef struct s_data
 {
@@ -23,5 +25,9 @@ typedef struct s_data
 	int		endian;
 }				t_data;
 
+
+/* A better mlx_pixel_put, which tries to push the pixel to the graphical
+framework directly, whereas this one stores the pixel in memory*/
+void	mmlx_pixel_put(t_data *data, int x, int y, int color);
 
 #endif

@@ -10,16 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fractol.h"
-
-/* A better mlx_pixel_put, which tries to push the pixel to the graphical framework directly, whereas this one stores the pixel in memory*/
-void	mmlx_pixel_put(t_data *data, int x, int y, int color)
+void	gradient_test(void)
 {
-	char	*dst;
-
-	dst = data->addr + (y * line_length + x * (bits_per_pixel / 8));
-	*(unsigned int *)dst = color;
+	for (int j = 0; j < HEIGHT; j++)
+	{
+		int green = 255 - (j * 30 / HEIGHT);
+		int blue = 201 + (j * 44 / HEIGHT);
+		int color = 186 << 16 | (green << 8) | blue;
+		for (int i = 0; i < WIDTH; i++)
+			mmlx_pixel_put(&img, i, j, color);
+	}
 }
+
+#include "fractol.h"
 
 int	main(void)
 {
@@ -28,15 +31,13 @@ int	main(void)
 	t_data	img;
 
 	mlx = mlx_init();
-
-	mlx_win = mlx_new_window(mlx, 1920, 1080, "test window");
-
-	img.img = mlx_new_image(mlx, 1920, 1080);
+	mlx_win = mlx_new_window(mlx, WIDTH, HEIGHT, "Window");
+	img.img = mlx_new_image(mlx, WIDTH, HEIGHT);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
 	if (!img.addr)
 		return (1);
-	mlx_pixel_put(mlx, mlx_win, 0, 0, 123);
 
+	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
 	mlx_loop(mlx);
 	return (0);
 }

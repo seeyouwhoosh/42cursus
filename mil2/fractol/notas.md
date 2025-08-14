@@ -37,3 +37,17 @@ void	mmlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 ```
+
+# Colores
+Usamos el formato TRGB tal que así: `0xTTRRGGBB`
+
+|	T	|	R	|	G	|	B	|
+|_ _ _ _|_ _ _ _|_ _ _ _|_ _ _ _|
+
+Cada int usa 4 bytes, 32 bits. En hexadecimal, se dividen en 4 trozos, con 8 bits en cada trozo. Entonces, mediante bitwise operators, se puede manipular como:
+```c
+int	get_trgb(int t, int r, int g, int b)
+{
+	return (t << 24 | r << 16 | g << 8 | b);
+}
+```
