@@ -16,3 +16,14 @@ int	get_trgb(int t, int r, int g, int b)
 {
 	return (t << 24 | r << 16 | g << 8 | b);
 }
+void	gradient_test(t_data *img)
+{
+	for (int j = 0; j < HEIGHT; j++)
+	{
+		int green = 255 - (j * 30 / HEIGHT);
+		int blue = 201 + (j * 44 / HEIGHT);
+		int color = 186 << 16 | (green << 8) | blue;
+		for (int i = 0; i < WIDTH; i++)
+			mmlx_pixel_put(img, i, j, color);
+	}
+}
