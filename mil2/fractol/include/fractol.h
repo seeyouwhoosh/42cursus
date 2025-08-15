@@ -1,20 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   fractol.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:46:16 by xwu               #+#    #+#             */
-/*   Updated: 2025/07/22 18:35:22 by xwu              ###   ########.fr       */
+/*   Updated: 2025/08/15 18:35:22 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FRACTOL_H
 # define FRACTOL_H
 # include "mlx.h"
-# define WIDTH 1920
-# define HEIGHT 1080
+# include <X11/keysym.h>
+# ifndef WIDTH
+#  define WIDTH 1920
+# endif // WIDTH
+# ifndef HEIGHT
+#  define HEIGHT 1080
+# endif // HEIGHT
 
 typedef struct s_data
 {
@@ -25,6 +30,11 @@ typedef struct s_data
 	int		endian;
 }				t_data;
 
+typedef struct s_point
+{
+	int	x;
+	int	y;
+}		t_point;
 
 /* A better mlx_pixel_put, which tries to push the pixel to the graphical
 framework directly, whereas this one stores the pixel in memory*/
