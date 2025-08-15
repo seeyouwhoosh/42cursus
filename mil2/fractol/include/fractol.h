@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:46:16 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/15 19:16:57 by xwu              ###   ########.fr       */
+/*   Updated: 2025/08/15 20:32:40 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 # include <X11/keysym.h>
 # include <stdlib.h>
 # ifndef WIDTH
-#  define WIDTH 1920
+#  define WIDTH 800
 # endif // WIDTH
 # ifndef HEIGHT
-#  define HEIGHT 1080
+#  define HEIGHT 600
 # endif // HEIGHT
 
 

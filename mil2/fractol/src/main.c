@@ -6,11 +6,12 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:46:16 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/15 19:14:35 by xwu              ###   ########.fr       */
+/*   Updated: 2025/08/15 20:43:55 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
+#include <stdio.h>
 
 void	gradient_test(t_data *img)
 {
@@ -24,6 +25,27 @@ void	gradient_test(t_data *img)
 	}
 }
 
+void	draw_circle(t_data *img, int radius, t_point *center)
+{
+	int color = 0xFF0000;
+	t_point	c;
+	if (!center)
+	{
+		c.x = WIDTH / 2;
+		c.y = HEIGHT / 2;
+		center = &c;
+	}
+	for (int j = -radius; j <= radius; j++)
+	{
+		for (int i = -radius; i <= radius; i++)
+		{
+			if (i * i + j * j <= radius * radius)
+				mmlx_pixel_put(img, center->x + i, center->y + j, color);
+		}
+	}
+}
+
+
 int	main(void)
 {
 	t_ins	ins;
@@ -36,7 +58,7 @@ int	main(void)
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
 	if (!img.addr)
 		return (1);
-	gradient_test(&img);
+	draw_circle(&img, 50, NULL);
 	mlx_put_image_to_window(ins.mlx, ins.win, img.img, 0, 0);
 
 	mlx_key_hook(ins.win, key_hook, &ins);
