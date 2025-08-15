@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:46:16 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/15 18:34:43 by xwu              ###   ########.fr       */
+/*   Updated: 2025/08/15 19:14:35 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,21 @@ void	gradient_test(t_data *img)
 
 int	main(void)
 {
-	void	*mlx;
-	void	*mlx_win;
+	t_ins	ins;
 	t_data	img;
 
-	mlx = mlx_init();
-	mlx_win = mlx_new_window(mlx, WIDTH, HEIGHT, "Window");
-	img.img = mlx_new_image(mlx, WIDTH, HEIGHT);
+	ins.mlx = mlx_init();
+	ins.win = mlx_new_window(ins.mlx, WIDTH, HEIGHT, "Window");
+
+	img.img = mlx_new_image(ins.mlx, WIDTH, HEIGHT);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
 	if (!img.addr)
 		return (1);
 	gradient_test(&img);
-	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
-	mlx_loop(mlx);
+	mlx_put_image_to_window(ins.mlx, ins.win, img.img, 0, 0);
+
+	mlx_key_hook(ins.win, key_hook, &ins);
+	mlx_hook(ins.win, ON_DESTROY, 0, destroy_win, NULL);
+	mlx_loop(ins.mlx);
 	return (0);
 }
