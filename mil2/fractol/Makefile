@@ -37,7 +37,7 @@ INCLUDES	= -I$(INCLUDE_DIR) \
 
 # Sources
 SRC_DIR		= src
-SOURCES		= main.c put_pixel.c colors.c
+SOURCES		= main.c put_pixel.c interactions.c
 
 # Objects
 OBJ_DIR		= obj
