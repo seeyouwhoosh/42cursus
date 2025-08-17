@@ -50,10 +50,12 @@ framework directly, whereas this one stores the pixel in memory*/
 void	mmlx_pixel_put(t_data *data, int x, int y, int color);
 
 
-/* 	EVENT MANAGEMENT FUNCTIONS */
-int	key_hook(int keycode, t_ins *par);
+/* EVENT MANAGEMENT FUNCTIONS */
+int		key_hook(int keycode, t_ins *par);
 
-int destroy_win(t_ins *par);
+int		destroy_win(t_ins *par);
 
+/* Test functions I need to delete later */
+void	gradient_test(t_data *img);
 
 #endif
