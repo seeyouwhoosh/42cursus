@@ -36,7 +36,6 @@ void	mmlx_pixel_put(t_data *data, int x, int y, int color)
 	dst = data->addr + (y * line_length + x * (bits_per_pixel / 8));
 	*(unsigned int *)dst = color;
 }
-```
 
 # Colores
 Usamos el formato TRGB tal que así: `0xTTRRGGBB`
@@ -126,8 +125,6 @@ int		mlx_loop_hook(void *mlx_ptr, int (*f)(), void *param);
 ```
 
 # Screen to Math
-Sea W y H las medidas de la pantalla.
-
 ```c
 min_re = -1;
 max_re = 1;
@@ -143,3 +140,5 @@ rg_im = max_im - min_im;
 real_part = min_real + x * rg_re / WIDTH;
 imag_part = min_imag + y * rg_im / HEIGHT;
 ```
+
+# ZOOM
