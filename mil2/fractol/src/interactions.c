@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 18:35:55 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/18 14:03:21 by xwu              ###   ########.fr       */
+/*   Updated: 2025/08/18 17:55:29 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,14 @@ void zoom(int keycode, t_data *data)
 {
 	if (keycode == XK_plus)
 	{
-		data->min_re *= 1.05;
-		data->max_re *= 1.05;
+		data->min_re *= 1.005;
+		data->max_re *= 1.005;
 	}
 	else if (keycode == XK_minus)
 	{
-		data->min_re *= 0.95;
-		data->max_re *= 0.95;
+		data->min_re *= 0.995;
+		data->max_re *= 0.995;
 	}
-	graph_data_update(data);
 }
 
 void move(int keycode, t_data *data)
