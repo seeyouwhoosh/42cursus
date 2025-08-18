@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:46:16 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/18 18:33:02 by xwu              ###   ########.fr       */
+/*   Updated: 2025/08/19 01:39:15 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,20 +33,6 @@ enum
 	ON_DESTROY = 17
 };
 
-typedef struct s_ins
-{
-	void	*mlx;
-	void	*win;
-}			t_ins;
-
-typedef struct s_point
-{
-	int		x;
-	int		y;
-	double	re;
-	double	im;
-}		t_point;
-
 typedef struct s_data
 {
 	void	*img;
@@ -54,29 +40,48 @@ typedef struct s_data
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
-	double	min_re;
-	double	max_re;
-	double	min_im;
-	double	max_im;
-}				t_data;
+}			t_data;
+
+typedef struct s_fractal
+{
+	double			offset_y;
+	double			offset_x;
+	double			zoom;
+	unsigned int	max_iter;
+	double			re;
+	double			im;
+	double			z_re;
+	double			z_im;
+}					t_fractal;
+
+typedef struct s_ins
+{
+	void		*mlx;
+	void		*win;
+	t_data		img;
+	t_fractal	f;
+}				t_ins;
 
 /* A better mlx_pixel_put, which tries to push the pixel to the graphical
 framework directly, whereas this one stores the pixel in memory*/
 void	mmlx_pixel_put(t_data *data, int x, int y, int color);
 
-/* Initialize image zoom and by consequence, the positioning (in the (0,0) of the real numbers)*/
-void	graph_data_init(t_data *img);
+/* Fractals */
 
-void	graph_data_update(t_data *img);
+void fractal_init(t_fractal *f);
+
+void	draw_mandelbrot(t_data *img, t_fractal *f, double px, double py);
+
+void	mandelbrot(t_data *img, t_fractal *f);
+
 
 /* EVENT MANAGEMENT FUNCTIONS */
-int		key_hook(int keycode, t_data *data);
+int		key_hook(int keycode, t_ins *ins);
+
+void	move(int keycode, t_fractal *f);
+
+void zoom(int keycode, t_fractal *f);
 
 int		destroy_win(t_ins *par);
-
-/* Test functions I need to delete later */
-void	gradient_test(t_data *img);
-
-void	pixel_to_math(t_point *p);
 
 #endif
