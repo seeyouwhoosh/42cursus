@@ -20,6 +20,10 @@ LIBFT_DIR	= include/libft
 LIBFT		= $(LIBFT_DIR)/libft.a
 LINKER		= -L$(LIBFT_DIR) -lft
 
+PRINTF_DIR	= include/printf
+PRINTF		= $(PRINTF_DIR)/libftprintf.a
+LINKER		+= -L$(PRINTF_DIR) -lftprintf
+
 MLX_DIR 	= include/minilibx
 MLX 		= $(MLX_DIR)/libmlx.a
 
@@ -33,6 +37,7 @@ endif
 INCLUDE_DIR	= include
 INCLUDES	= -I$(INCLUDE_DIR) \
 			  -I$(LIBFT_DIR) \
+			  -I$(PRINTF_DIR) \
 			  -I$(MLX_DIR)
 
 # Sources
@@ -45,12 +50,17 @@ OBJ			= $(SOURCES:.c=.o)
 OBJECTS		= $(addprefix $(OBJ_DIR)/, $(SOURCES:.c=.o))
 
 
-all: $(LIBFT) $(MLX) $(OBJECTS) $(NAME)
+all: $(LIBFT) $(PRINTF) $(MLX) $(OBJECTS) $(NAME)
 
 $(LIBFT):
 	@echo "$(BBLUE)$(NAME)$(NC): Creating $(GREEN)libft$(NC)..."
 	@$(MAKE) $(LIBFT_DIR) bonus
 	@echo "$(BBLUE)$(NAME)$(NC): $(GREEN)libft$(NC) created"
+
+$(PRINTF):
+	@echo "$(BBLUE)$(NAME)$(NC): Creating $(GREEN)printf$(NC)..."
+	@$(MAKE) $(PRINTF_DIR)
+	@echo "$(BBLUE)$(NAME)$(NC): $(GREEN)printf$(NC) created"
 
 $(MLX):
 	@echo "$(BBLUE)$(NAME)$(NC): Creating $(GREEN)minilibx$(NC)..."
@@ -61,7 +71,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@ 
 
-$(NAME): $(LIBFT) $(MLX) $(OBJECTS)
+$(NAME): $(LIBFT) $(PRINTF) $(MLX) $(OBJECTS)
 	@echo "$(BBLUE)$(NAME)$(NC): Creating $(GREEN)$@$(NC)..."
 	@$(CC) $(CFLAGS) -o $@ $(OBJECTS) $(LINKER)
 	@echo "$(BBLUE)$(NAME)$(NC): $(GREEN)$(NAME)$(NC) created"
@@ -69,12 +79,14 @@ $(NAME): $(LIBFT) $(MLX) $(OBJECTS)
 
 clean:
 	@$(MAKE) $(LIBFT_DIR) clean
+	@$(MAKE) $(PRINTF_DIR) clean
 	@$(MAKE) $(MLX_DIR) clean
 	@$(RM) $(OBJ_DIR)
 	@echo "$(BBLUE)$(NAME)$(NC): Objects cleaned"
 
 fclean: clean
 	@$(MAKE) $(LIBFT_DIR) fclean
+	@$(MAKE) $(PRINTF_DIR) fclean
 	@$(RM) $(NAME)
 	@echo "$(BBLUE)$(NAME)$(NC): Fully cleaned"
 

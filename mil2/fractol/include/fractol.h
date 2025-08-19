@@ -12,6 +12,7 @@
 
 #ifndef FRACTOL_H
 # define FRACTOL_H
+# include "libft.h"
 # include "mlx.h"
 # include <X11/keysym.h>
 # include <stdlib.h>

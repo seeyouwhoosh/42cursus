@@ -53,7 +53,7 @@ void	fractal_init(t_fractal *f)
 {
 	f->offset_y = 0;
 	f->offset_x = -0.5;
-	f->zoom = 200;
+	f->zoom = 400;
 	f->max_iter = 40;
 	f->z_re = 0;
 	f->z_im = 0;
