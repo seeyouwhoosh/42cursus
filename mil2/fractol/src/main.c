@@ -6,13 +6,12 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:46:16 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/19 13:00:41 by xwu              ###   ########.fr       */
+/*   Updated: 2025/08/19 14:02:41 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 #include <stdio.h>
-#include <math.h>
 
 int	main(void)
 {
@@ -33,39 +32,8 @@ int	main(void)
 
 	// Close window and loop
 	mlx_key_hook(ins.win, key_hook, &ins);
+	mlx_mouse_hook(ins.win, mouse_hook, &ins);
 	mlx_hook(ins.win, ON_DESTROY, 0, destroy_win, NULL);
 	mlx_loop(ins.mlx);
 	return (0);
-}
-
-void move(int keycode, t_fractal *f)
-{
-	if (keycode == XK_w)
-		f->offset_y -= 10 / f->zoom;
-	if (keycode == XK_a)
-		f->offset_x -= 10 / f->zoom;
-	if (keycode == XK_s)
-		f->offset_y += 10 / f->zoom;
-	if (keycode == XK_d)
-		f->offset_x += 10 / f->zoom;
-	if (keycode == XK_space)
-	{
-		f->offset_y = 0;
-		f->offset_x = -0.5;
-		f->zoom = 200;
-	}
-}
-
-void zoom(int keycode, t_fractal *f)
-{
-	if (keycode == XK_plus)
-	{
-		f->zoom *= 1.04;
-		f->max_iter += (unsigned int) log10(f->zoom) / 4;
-	}
-	else if (keycode == XK_minus)
-	{
-		f->zoom /= 1.04;
-		f->max_iter -= (unsigned int) log10(f->zoom) / 4;
-	}
 }

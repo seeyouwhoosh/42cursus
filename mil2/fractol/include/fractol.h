@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:46:16 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/19 01:39:15 by xwu              ###   ########.fr       */
+/*   Updated: 2025/08/19 15:18:52 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include "mlx.h"
 # include <X11/keysym.h>
 # include <stdlib.h>
+# include <math.h>
 # ifndef WIDTH
 #  define WIDTH 800
 # endif // WIDTH
@@ -68,19 +69,20 @@ void	mmlx_pixel_put(t_data *data, int x, int y, int color);
 
 /* Fractals */
 
-void fractal_init(t_fractal *f);
-
-void	draw_mandelbrot(t_data *img, t_fractal *f, double px, double py);
+void	fractal_init(t_fractal *f);
 
 void	mandelbrot(t_data *img, t_fractal *f);
 
+void	draw_mandelbrot(t_data *img, t_fractal *f, double px, double py);
 
 /* EVENT MANAGEMENT FUNCTIONS */
 int		key_hook(int keycode, t_ins *ins);
 
 void	move(int keycode, t_fractal *f);
 
-void zoom(int keycode, t_fractal *f);
+void	zoom(int keycode, t_fractal *f);
+
+int		mouse_hook(int keycode, int x, int y, t_ins *ins);
 
 int		destroy_win(t_ins *par);
 

@@ -44,3 +44,48 @@ int	key_hook(int keycode, t_ins *ins)
 	mlx_put_image_to_window(ins->mlx, ins->win, ins->img.img, 0, 0);
 	return (0);
 }
+
+void move(int keycode, t_fractal *f)
+{
+	if (keycode == XK_w)
+		f->offset_y -= 10 / f->zoom;
+	if (keycode == XK_a)
+		f->offset_x -= 10 / f->zoom;
+	if (keycode == XK_s)
+		f->offset_y += 10 / f->zoom;
+	if (keycode == XK_d)
+		f->offset_x += 10 / f->zoom;
+	if (keycode == XK_space)
+	{
+		f->offset_y = 0;
+		f->offset_x = -0.5;
+		f->zoom = 200;
+	}
+}
+
+void zoom(int keycode, t_fractal *f)
+{
+	if (keycode == XK_plus)
+		f->zoom *= 1.04;
+	else if (keycode == XK_minus)
+		f->zoom /= 1.04;
+	f->max_iter = 40 + (unsigned int) (log10(f->zoom) * 6);
+}
+
+int	mouse_hook(int keycode, int x, int y, t_ins *ins)
+{
+	double	m_re;
+	double	m_im;
+
+	m_re = (x - WIDTH/2.0) / ins->f.zoom + ins->f.offset_x;
+	m_im = (y - HEIGHT/2.0) / ins->f.zoom + ins->f.offset_y;
+	if (keycode == ON_MOUSEUP)
+		ins->f.zoom /= 1.04;
+	if (keycode == ON_MOUSEDOWN)
+		ins->f.zoom *= 1.04;
+	ins->f.max_iter = 40 + (unsigned int)( log10(ins->f.zoom) * 6);
+	ins->f.offset_x = m_re - (x - WIDTH/2.0) / ins->f.zoom;
+	ins->f.offset_y = m_im - (y - HEIGHT/2.0) / ins->f.zoom;
+	mandelbrot(&ins->img, &ins->f);
+	mlx_put_image_to_window(ins->mlx, ins->win, ins->img.img, 0, 0);
+}

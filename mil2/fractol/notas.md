@@ -123,22 +123,3 @@ int		mlx_key_hook(void *win_ptr, int (*f)(), void *param);
 /* Hook into the loop */
 int		mlx_loop_hook(void *mlx_ptr, int (*f)(), void *param);
 ```
-
-# Screen to Math
-```c
-min_re = -1;
-max_re = 1;
-
-scr_ratio = HEIGHT/WIDTH;
-rg_re = max_re - min_re;
-
-min_im = -rg_re * scr_ratio;
-max_im = rg_re * scr_ratio;
-
-rg_im = max_im - min_im;
-
-real_part = min_real + x * rg_re / WIDTH;
-imag_part = min_imag + y * rg_im / HEIGHT;
-```
-
-# ZOOM
