@@ -1,6 +1,7 @@
 {
 	"files.associations": {
 		"fractol.h": "c",
-		"keysym.h": "c"
+		"keysym.h": "c",
+		"unistd.h": "c"
 	}
 }

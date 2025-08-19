@@ -29,12 +29,12 @@ void	mandelbrot(t_data *img, t_fractal *f)
 void	draw_mandelbrot(t_data *img, t_fractal *f, double px, double py)
 {
 	unsigned int	iter;
-	double	tmp;
-	
+	double			tmp;
+
 	f->z_re = 0;
 	f->z_im = 0;
-	f->re = (px - WIDTH/2.0) / f->zoom + f->offset_x;
-	f->im = (py - HEIGHT/2.0) / f->zoom + f->offset_y;
+	f->re = (px - WIDTH / 2.0) / f->zoom + f->offset_x;
+	f->im = (py - HEIGHT / 2.0) / f->zoom + f->offset_y;
 	iter = 0;
 	while (iter < f->max_iter && (f->z_re * f->z_re + f->z_im * f->z_im) < 4)
 	{
@@ -49,7 +49,7 @@ void	draw_mandelbrot(t_data *img, t_fractal *f, double px, double py)
 		mmlx_pixel_put(img, px, py, 0x00000000 | iter * 6);
 }
 
-void fractal_init(t_fractal *f)
+void	fractal_init(t_fractal *f)
 {
 	f->offset_y = 0;
 	f->offset_x = -0.5;

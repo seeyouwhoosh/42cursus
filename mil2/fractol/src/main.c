@@ -15,11 +15,11 @@
 
 int	main(void)
 {
-	t_ins		ins;
+	t_ins	ins;
 
 	// Inicializing window
 	ins.mlx = mlx_init();
-	ins.win = mlx_new_window(ins.mlx, WIDTH, HEIGHT, "Window");
+	ins.win = mlx_new_window(ins.mlx, WIDTH, HEIGHT, "fract-ol");
 
 	// Inicializing image
 	ins.img.img = mlx_new_image(ins.mlx, WIDTH, HEIGHT);
@@ -33,7 +33,7 @@ int	main(void)
 	// Close window and loop
 	mlx_key_hook(ins.win, key_hook, &ins);
 	mlx_mouse_hook(ins.win, mouse_hook, &ins);
-	mlx_hook(ins.win, ON_DESTROY, 0, destroy_win, NULL);
+	mlx_hook(ins.win, ON_DESTROY, 0, destroy_win, &ins);
 	mlx_loop(ins.mlx);
 	return (0);
 }

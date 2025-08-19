@@ -37,7 +37,7 @@ INCLUDES	= -I$(INCLUDE_DIR) \
 
 # Sources
 SRC_DIR		= src
-SOURCES		= main.c utils.c mandelbrot.c
+SOURCES		= main.c utils.c mandelbrot.c interactions.c
 
 # Objects
 OBJ_DIR		= obj
