@@ -39,6 +39,7 @@ int	main(int ac, char **av)
 	// Inicializing window
 	ins.mlx = mlx_init();
 	ins.win = mlx_new_window(ins.mlx, WIDTH, HEIGHT, "fract-ol");
+	mlx_do_key_autorepeaton(ins.mlx);
 
 	// Inicializing image
 	ins.img.img = mlx_new_image(ins.mlx, WIDTH, HEIGHT);
