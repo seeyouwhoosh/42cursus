@@ -45,6 +45,14 @@ void	draw_circle(t_data *img, int radius, t_point *center)
 	}
 }
 
+typedef struct s_point
+{
+	int		x;
+	int		y;
+	double	re;
+	double	im;
+}		t_point;
+
 void	cuadratic(t_data *img)
 {
 	t_point	p;

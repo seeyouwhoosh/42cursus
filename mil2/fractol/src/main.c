@@ -6,12 +6,13 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:46:16 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/19 01:43:32 by xwu              ###   ########.fr       */
+/*   Updated: 2025/08/19 13:00:41 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 #include <stdio.h>
+#include <math.h>
 
 int	main(void)
 {
@@ -36,22 +37,35 @@ int	main(void)
 	mlx_loop(ins.mlx);
 	return (0);
 }
+
 void move(int keycode, t_fractal *f)
 {
 	if (keycode == XK_w)
-		f->offset_y -= 0.1;
+		f->offset_y -= 10 / f->zoom;
 	if (keycode == XK_a)
-		f->offset_x -= 0.1;
+		f->offset_x -= 10 / f->zoom;
 	if (keycode == XK_s)
-		f->offset_y += 0.1;
+		f->offset_y += 10 / f->zoom;
 	if (keycode == XK_d)
-		f->offset_x += 0.1;
+		f->offset_x += 10 / f->zoom;
+	if (keycode == XK_space)
+	{
+		f->offset_y = 0;
+		f->offset_x = -0.5;
+		f->zoom = 200;
+	}
 }
 
 void zoom(int keycode, t_fractal *f)
 {
 	if (keycode == XK_plus)
-		f->zoom *= 1.05;
+	{
+		f->zoom *= 1.04;
+		f->max_iter += (unsigned int) log10(f->zoom) / 4;
+	}
 	else if (keycode == XK_minus)
-		f->zoom /= 1.05;
+	{
+		f->zoom /= 1.04;
+		f->max_iter -= (unsigned int) log10(f->zoom) / 4;
+	}
 }
