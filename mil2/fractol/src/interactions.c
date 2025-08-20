@@ -33,7 +33,7 @@ int	key_hook(int keycode, t_ins *ins)
 		move(keycode, &ins->f);
 	if (keycode == XK_plus || keycode == XK_minus)
 		zoom(keycode, &ins->f);
-	mandelbrot(&ins->img, &ins->f);
+	fractal(&ins->img, &ins->f);
 	mlx_put_image_to_window(ins->mlx, ins->win, ins->img.img, 0, 0);
 	return (0);
 }
@@ -73,7 +73,7 @@ int	mouse_hook(int keycode, int x, int y, t_ins *ins)
 	ins->f.max_iter = 40 + (unsigned int)(log10(ins->f.zoom) * 6);
 	ins->f.offset_x = m_re - (x - WIDTH / 2.0) / ins->f.zoom;
 	ins->f.offset_y = m_im - (y - HEIGHT / 2.0) / ins->f.zoom;
-	mandelbrot(&ins->img, &ins->f);
+	fractal(&ins->img, &ins->f);
 	mlx_put_image_to_window(ins->mlx, ins->win, ins->img.img, 0, 0);
 	return (0);
 }
