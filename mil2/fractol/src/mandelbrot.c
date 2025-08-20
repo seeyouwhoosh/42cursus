@@ -31,6 +31,8 @@ void	draw_mandelbrot(t_data *img, t_fractal *f, double px, double py)
 	unsigned int	iter;
 	double			tmp;
 
+	f->z_re = 0;
+	f->z_im = 0;
 	f->re = (px - WIDTH / 2.0) / f->zoom + f->offset_x;
 	f->im = (py - HEIGHT / 2.0) / f->zoom + f->offset_y;
 	iter = 0;
@@ -44,7 +46,7 @@ void	draw_mandelbrot(t_data *img, t_fractal *f, double px, double py)
 	if (iter == f->max_iter)
 		mmlx_pixel_put(img, px, py, 0x00000000);
 	else
-		mmlx_pixel_put(img, px, py, 0x00000000 | iter * 6);
+		mmlx_pixel_put(img, px, py, psychedelic_color(iter, f->max_iter));
 }
 
 void	draw_julia(t_data *img, t_fractal *f, double px, double py)
@@ -65,8 +67,9 @@ void	draw_julia(t_data *img, t_fractal *f, double px, double py)
 	if (iter == f->max_iter)
 		mmlx_pixel_put(img, px, py, 0x00000000);
 	else
-		mmlx_pixel_put(img, px, py, 0x00000000 | iter * 6);
+		mmlx_pixel_put(img, px, py, psychedelic_color(iter, f->max_iter));
 }
+
 
 void	fractal_init(t_fractal *f)
 {

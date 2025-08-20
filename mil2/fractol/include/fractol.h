@@ -55,7 +55,7 @@ typedef struct s_fractal
 	double			im;
 	double			z_re;
 	double			z_im;
-	void			(*draw_fractal)(t_data *, t_fractal *, double, double);
+	void			(*draw_fractal)(t_data *, struct s_fractal *, double, double);
 }					t_fractal;
 
 typedef struct s_ins
@@ -68,8 +68,8 @@ typedef struct s_ins
 
 /* PROGRAM UTILITIES */
 
-/* Manages parameters received, updates needed function in t_fractal structure. If not
-valid parameters received, display message */
+/* Manages parameters received, updates needed function in t_fractal structure.
+If not valid parameters received, display message */
 void	manage_args(int ac, char **av, t_ins *ins);
 
 /* A better mlx_pixel_put, which tries to push the pixel to the graphical
@@ -86,6 +86,8 @@ void	fractal(t_data *img, t_fractal *f);
 void	draw_mandelbrot(t_data *img, t_fractal *f, double px, double py);
 
 void	draw_julia(t_data *img, t_fractal *f, double px, double py);
+
+int		psychedelic_color(unsigned int iter, unsigned int max_iter);
 
 /* EVENT MANAGEMENT FUNCTIONS */
 

@@ -77,3 +77,20 @@ int	mouse_hook(int keycode, int x, int y, t_ins *ins)
 	mlx_put_image_to_window(ins->mlx, ins->win, ins->img.img, 0, 0);
 	return (0);
 }
+
+int	psychedelic_color(unsigned int iter, unsigned int max_iter)
+{
+	unsigned int	r;
+	unsigned int	g;
+	unsigned int	b;
+	double			t;
+
+	t = (double)iter / (double)max_iter;
+	r = (unsigned int)(sin((t + 0.000) * M_PI * 2) * 127 + 128);
+	g = (unsigned int)(sin((t + 0.000) * M_PI * 2) * 127 + 128);
+	b = (unsigned int)(sin((t + 0.000) * M_PI * 2) * 127 + 128);
+	r = (r + 255) / 2;
+	g = (g + 255) / 2;
+	b = (b + 255) / 2;
+	return ((r << 16) | (g << 8) | b);
+}
