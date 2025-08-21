@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   interactions.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 18:04:58 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/18 18:04:58 by xwu              ###   ########.fr       */
+/*   Updated: 2025/08/21 16:26:41 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,35 +28,69 @@ int	key_hook(int keycode, t_ins *ins)
 		write(1, "Program exited successfully\n", 29);
 		exit (0);
 	}
-	if (keycode == XK_w || keycode == XK_a
-		|| keycode == XK_s || keycode == XK_d)
-		move(keycode, &ins->f);
-	if (keycode == XK_plus || keycode == XK_minus)
-		zoom(keycode, &ins->f);
-	fractal(&ins->img, &ins->f);
-	mlx_put_image_to_window(ins->mlx, ins->win, ins->img.img, 0, 0);
 	return (0);
 }
 
-void	move(int keycode, t_fractal *f)
+int	key_press(int keycode, t_ins *ins)
 {
-	if (keycode == XK_w)
-		f->offset_y -= 10 / f->zoom;
-	if (keycode == XK_a)
-		f->offset_x -= 10 / f->zoom;
-	if (keycode == XK_s)
-		f->offset_y += 10 / f->zoom;
-	if (keycode == XK_d)
-		f->offset_x += 10 / f->zoom;
+	if (keycode == XK_Escape)
+		destroy_win(ins);
+	if (keycode == XK_Left || keycode == XK_a || keycode == XK_A)
+		ins->key_left = 1;
+	if (keycode == XK_Right || keycode == XK_d || keycode == XK_D)
+		ins->key_right = 1;
+	if (keycode == XK_Up || keycode == XK_w || keycode == XK_W)
+		ins->key_up = 1;
+	if (keycode == XK_Down || keycode == XK_s || keycode == XK_S)
+		ins->key_down = 1;
+	if (keycode == XK_plus)
+		ins->zoom_in = 1;
+	if (keycode == XK_minus)
+		ins->zoom_out = 1;
+	return (0);
 }
 
-void	zoom(int keycode, t_fractal *f)
+int	key_release(int keycode, t_ins *ins)
 {
+	if (keycode == XK_Left || keycode == XK_a || keycode == XK_A)
+		ins->key_left = 0;
+	if (keycode == XK_Right || keycode == XK_d || keycode == XK_D)
+		ins->key_right = 0;
+	if (keycode == XK_Up || keycode == XK_w || keycode == XK_W)
+		ins->key_up = 0;
+	if (keycode == XK_Down || keycode == XK_s || keycode == XK_S)
+		ins->key_down = 0;
 	if (keycode == XK_plus)
-		f->zoom *= 1.04;
-	else if (keycode == XK_minus)
-		f->zoom /= 1.04;
-	f->max_iter = 40 + (unsigned int)(log10(f->zoom) * 6);
+		ins->zoom_in = 0;
+	if (keycode == XK_minus)
+		ins->zoom_out = 0;
+	return (0);
+}
+
+int	loop_hook(t_ins *ins)
+{
+	double	speed;
+
+	speed = 10 / ins->f.zoom;
+	if (ins->key_up)
+		ins->f.offset_y -= speed;
+	if (ins->key_left)
+		ins->f.offset_x -= speed;
+	if (ins->key_down)
+		ins->f.offset_y += speed;
+	if (ins->key_right)
+		ins->f.offset_x += speed;
+		if (ins->zoom_in)
+		ins->f.zoom *= 1.04;
+	if (ins->zoom_out)
+		ins->f.zoom /= 1.04;
+	ins->f.max_iter = 40 + (int)(log10(ins->f.zoom) * 10);
+	if (ins->key_left || ins->key_right || ins->key_up || ins->key_down || ins->zoom_in || ins->zoom_out)
+	{
+		fractal(&ins->img, &ins->f);
+		mlx_put_image_to_window(ins->mlx, ins->win, ins->img.img, 0, 0);
+	}
+	return (0);
 }
 
 int	mouse_hook(int keycode, int x, int y, t_ins *ins)
@@ -70,27 +104,10 @@ int	mouse_hook(int keycode, int x, int y, t_ins *ins)
 		ins->f.zoom /= 1.04;
 	if (keycode == ON_MOUSEDOWN)
 		ins->f.zoom *= 1.04;
-	ins->f.max_iter = 40 + (unsigned int)(log10(ins->f.zoom) * 6);
+	ins->f.max_iter = 40 + (unsigned int)(log10(ins->f.zoom) * 10);
 	ins->f.offset_x = m_re - (x - WIDTH / 2.0) / ins->f.zoom;
 	ins->f.offset_y = m_im - (y - HEIGHT / 2.0) / ins->f.zoom;
 	fractal(&ins->img, &ins->f);
 	mlx_put_image_to_window(ins->mlx, ins->win, ins->img.img, 0, 0);
 	return (0);
-}
-
-int	psychedelic_color(unsigned int iter, unsigned int max_iter)
-{
-	unsigned int	r;
-	unsigned int	g;
-	unsigned int	b;
-	double			t;
-
-	t = (double)iter / (double)max_iter;
-	r = (unsigned int)(sin((t + 0.000) * M_PI * 2) * 127 + 128);
-	g = (unsigned int)(sin((t + 0.000) * M_PI * 2) * 127 + 128);
-	b = (unsigned int)(sin((t + 0.000) * M_PI * 2) * 127 + 128);
-	r = (r + 255) / 2;
-	g = (g + 255) / 2;
-	b = (b + 255) / 2;
-	return ((r << 16) | (g << 8) | b);
 }

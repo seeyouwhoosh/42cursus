@@ -70,15 +70,20 @@ void	draw_julia(t_data *img, t_fractal *f, double px, double py)
 		mmlx_pixel_put(img, px, py, psychedelic_color(iter, f->max_iter));
 }
 
-
-void	fractal_init(t_fractal *f)
+void	fractal_init(t_ins	*ins)
 {
-	f->offset_y = 0;
-	f->offset_x = 0;
-	f->zoom = 400;
-	f->max_iter = 40;
-	f->z_re = 0;
-	f->z_im = 0;
-	if (f->draw_fractal == draw_mandelbrot)
-		f->offset_x = -0.5;
+	ins->f.offset_y = 0;
+	ins->f.offset_x = 0;
+	ins->f.zoom = WIDTH/HEIGHT * 200;
+	ins->f.max_iter = 40;
+	ins->f.z_re = 0;
+	ins->f.z_im = 0;
+	if (ins->f.draw_fractal == draw_mandelbrot)
+		ins->f.offset_x = -0.5;
+	ins->key_up = 0;
+	ins->key_down = 0;
+	ins->key_left = 0;
+	ins->key_right = 0;
+	ins->zoom_in = 0;
+	ins->zoom_out = 0;
 }

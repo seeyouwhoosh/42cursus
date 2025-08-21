@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:46:16 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/19 15:18:52 by xwu              ###   ########.fr       */
+/*   Updated: 2025/08/21 16:19:11 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,14 @@
 # include <math.h>
 # include <unistd.h>
 # ifndef WIDTH
-#  define WIDTH 1920
+#  define WIDTH 800
 # endif // WIDTH
 # ifndef HEIGHT
-#  define HEIGHT 1080
+#  define HEIGHT 600
 # endif // HEIGHT
+#ifndef M_PI
+#  define M_PI (3.14159265358979323846264338327950288) 
+# endif // M_PI
 
 enum
 {
@@ -64,6 +67,12 @@ typedef struct s_ins
 	void		*win;
 	t_data		img;
 	t_fractal	f;
+	short		key_up;
+	short		key_down;
+	short		key_left;
+	short		key_right;
+	short		zoom_in;
+	short		zoom_out;
 }				t_ins;
 
 /* PROGRAM UTILITIES */
@@ -76,29 +85,44 @@ void	manage_args(int ac, char **av, t_ins *ins);
 framework directly, whereas this one stores the pixel in memory*/
 void	mmlx_pixel_put(t_data *data, int x, int y, int color);
 
+/* Pastel psychedelic colors for fractals */
+int		psychedelic_color(unsigned int iter, unsigned int max_iter);
+
 /* FRACTAL FUNCTIONS */
 
-/* Initialize*/
-void	fractal_init(t_fractal *f);
+/* Initialize variables. If mandelbrot, then center it appropiately */
+void	fractal_init(t_ins	*ins);
 
+/* Goes through every pixel in the screen and draws the corresponding
+fractal established in t_fractal */
 void	fractal(t_data *img, t_fractal *f);
 
+/* Calculates if (px, py) converted to numbers are in the mandelbrot set,
+then colors the pixel if yes*/
 void	draw_mandelbrot(t_data *img, t_fractal *f, double px, double py);
 
+/* Calculates if (px, py) converted to numbers are in the julia set,
+then colors the pixel if yes*/
 void	draw_julia(t_data *img, t_fractal *f, double px, double py);
-
-int		psychedelic_color(unsigned int iter, unsigned int max_iter);
 
 /* EVENT MANAGEMENT FUNCTIONS */
 
+/* Manages key press, like, just one time thing */
 int		key_hook(int keycode, t_ins *ins);
 
-void	move(int keycode, t_fractal *f);
+/* Manages key press, like, a long time thing */
+int		key_press(int keycode, t_ins *ins);
 
-void	zoom(int keycode, t_fractal *f);
+/* Complementary function of the key_press */
+int		key_release(int keycode, t_ins *ins);
 
+/* Constantly checks hooks */
+int		loop_hook(t_ins *ins);
+
+/* Mouse zooming */
 int		mouse_hook(int keycode, int x, int y, t_ins *ins);
 
+/* Destroy window queue for the button */
 int		destroy_win(t_ins *par);
 
 #endif

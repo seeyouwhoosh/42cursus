@@ -12,6 +12,7 @@
 
 #include "fractol.h"
 #include <unistd.h>
+#include <stdio.h>
 
 void	mmlx_pixel_put(t_data *data, int x, int y, int color)
 {
@@ -58,7 +59,24 @@ void	manage_args(int ac, char **av, t_ins *ins)
 	{
 		printf("\e[1;1m Non valid parameters. You may choose from the following:\e[0m\
 \n [1] \e[1;34mmandelbrot \e[0m\
-\n [2] \e[1;34mjulia \e[0m\e[0;30m[real_part: 0.355] [imaginary_part: 0.113]\n");
+\n [2] \e[1;34mjulia \e[0m\e[0;30m[real_part: 0.355] [imaginary_part: 0.113]\e[0m\n");
 		exit(1);
 	}
+}
+
+int	psychedelic_color(unsigned int iter, unsigned int max_iter)
+{
+	unsigned int	r;
+	unsigned int	g;
+	unsigned int	b;
+	double			t;
+
+	t = (double)iter / (double)max_iter;
+	r = (unsigned int)(sin((t + 0.000) * M_PI * 2) * 127 + 128);
+	g = (unsigned int)(sin((t + 0.333) * M_PI * 2) * 127 + 128);
+	b = (unsigned int)(sin((t + 0.666) * M_PI * 2) * 127 + 128);
+	r = (r + 255) / 2;
+	g = (g + 255) / 2;
+	b = (b + 255) / 2;
+	return ((r << 16) | (g << 8) | b);
 }
