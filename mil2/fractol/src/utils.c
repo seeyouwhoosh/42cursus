@@ -39,8 +39,17 @@ int	destroy_win(t_ins *ins)
 	exit (0);
 }
 
+void	error_exit(void)
+{
+	printf("\e[1;1m Non valid parameters. You may choose from the following:\e[0m\
+\n [1] \e[1;34mmandelbrot \e[0m\
+\n [2] \e[1;34mjulia \e[0m\e[0;30m[real_part: 0.355] [imaginary_part: 0.113]\e[0m\n");
+	exit(1);
+}
+
 void	manage_args(int ac, char **av, t_ins *ins)
 {
+	char	*erptr;
 	if (ac == 2 && (!ft_strcmp(av[1], "mandelbrot") || ft_atoi(av[1]) == 1))
 		ins->f.draw_fractal = draw_mandelbrot;
 	else if (ac == 2 && (!ft_strcmp(av[1], "julia") || ft_atoi(av[1]) == 2))
@@ -52,16 +61,15 @@ void	manage_args(int ac, char **av, t_ins *ins)
 	else if (ac == 4 && (!ft_strcmp(av[1], "julia") || ft_atoi(av[1]) == 2))
 	{
 		ins->f.draw_fractal = draw_julia;
-		ins->f.re = 0.355;
-		ins->f.im = 0.113;
+		ins->f.re = ft_strtod(av[2], &erptr);
+		if (*erptr)
+			error_exit();
+		ins->f.im = ft_strtod(av[3], &erptr);
+		if (*erptr)
+			error_exit();
 	}
 	else
-	{
-		printf("\e[1;1m Non valid parameters. You may choose from the following:\e[0m\
-\n [1] \e[1;34mmandelbrot \e[0m\
-\n [2] \e[1;34mjulia \e[0m\e[0;30m[real_part: 0.355] [imaginary_part: 0.113]\e[0m\n");
-		exit(1);
-	}
+		error_exit();
 }
 
 int	psychedelic_color(unsigned int iter, unsigned int max_iter)

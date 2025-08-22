@@ -65,7 +65,7 @@ size_t	decimal_part(const char *restrict str, double *number)
 	return (index);
 }
 
-double	strtod(const char *restrict str, char **restrict endptr)
+double	ft_strtod(const char *restrict str, char **restrict endptr)
 {
 	size_t	index;
 	double	number;

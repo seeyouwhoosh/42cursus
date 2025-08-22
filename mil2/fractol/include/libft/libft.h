@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 11:57:02 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/22 14:03:46 by xwu              ###   ########.fr       */
+/*   Updated: 2025/08/22 14:31:03 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*ft_itoa(int n);
 
 int		ft_atoi(const char *str);
 
-double	strtod(const char *restrict str, char **restrict endptr);
+double	ft_strtod(const char *restrict str, char **restrict endptr);
 
 /* Outputting */
 
