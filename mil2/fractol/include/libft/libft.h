@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 11:57:02 by xwu               #+#    #+#             */
-/*   Updated: 2025/07/27 12:08:09 by xwu              ###   ########.fr       */
+/*   Updated: 2025/08/22 14:03:46 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int		ft_isprint(int c);
 
 int		ft_isascii(int c);
 
+int		ft_isspace(int c);
+
 /* Character conversion */
 
 int		ft_tolower(int c);
@@ -45,6 +47,8 @@ int		ft_toupper(int c);
 char	*ft_itoa(int n);
 
 int		ft_atoi(const char *str);
+
+double	strtod(const char *restrict str, char **restrict endptr);
 
 /* Outputting */
 
