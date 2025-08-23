@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:46:16 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/21 16:19:11 by xwu              ###   ########.fr       */
+/*   Updated: 2025/08/23 21:42:10 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 # ifndef HEIGHT
 #  define HEIGHT 600
 # endif // HEIGHT
-#ifndef M_PI
-#  define M_PI (3.14159265358979323846264338327950288) 
+# ifndef M_PI
+#  define M_PI 3.14159265358979323846264338327950288
 # endif // M_PI
 
 enum
@@ -58,7 +58,8 @@ typedef struct s_fractal
 	double			im;
 	double			z_re;
 	double			z_im;
-	void			(*draw_fractal)(t_data *, struct s_fractal *, double, double);
+	void			(*draw_fractal)(t_data *,
+			struct s_fractal *, double, double);
 }					t_fractal;
 
 typedef struct s_ins

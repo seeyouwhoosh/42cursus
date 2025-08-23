@@ -25,7 +25,6 @@ int	ft_power(int base, int exp)
 	int	n;
 
 	n = 1;
-
 	if (base == 0 || exp < 0)
 		return (0);
 	while (exp > 0)
@@ -37,12 +36,13 @@ int	ft_power(int base, int exp)
 	}
 	return (n);
 }
+
 size_t	decimal_part(const char *restrict str, double *number)
 {
 	size_t			index;
 	unsigned int	digits;
 	int				sign;
-	
+
 	sign = 1;
 	index = 0;
 	if (str[index] == '-' || str[index] == '+')
@@ -58,7 +58,8 @@ size_t	decimal_part(const char *restrict str, double *number)
 		while (ft_isdigit(str[digits]))
 			digits++;
 		if (digits > index)
-			*number += (double)ft_atoi(&(str[index])) / (double)ft_power(10, digits - index);
+			*number += (double)ft_atoi(&(str[index]))
+				/ (double)ft_power(10, digits - index);
 		index = digits;
 	}
 	*number *= sign;

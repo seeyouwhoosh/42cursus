@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 18:04:58 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/21 16:26:41 by xwu              ###   ########.fr       */
+/*   Updated: 2025/08/23 22:00:43 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,13 @@ int	loop_hook(t_ins *ins)
 		ins->f.offset_y += speed;
 	if (ins->key_right)
 		ins->f.offset_x += speed;
-		if (ins->zoom_in)
+	if (ins->zoom_in)
 		ins->f.zoom *= 1.04;
 	if (ins->zoom_out)
 		ins->f.zoom /= 1.04;
 	ins->f.max_iter = 40 + (int)(log10(ins->f.zoom) * 10);
-	if (ins->key_left || ins->key_right || ins->key_up || ins->key_down || ins->zoom_in || ins->zoom_out)
+	if (ins->key_left || ins->key_right || ins->key_up
+		|| ins->key_down || ins->zoom_in || ins->zoom_out)
 	{
 		fractal(&ins->img, &ins->f);
 		mlx_put_image_to_window(ins->mlx, ins->win, ins->img.img, 0, 0);

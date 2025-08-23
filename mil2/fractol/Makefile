@@ -24,7 +24,11 @@ PRINTF_DIR	= include/printf
 PRINTF		= $(PRINTF_DIR)/libftprintf.a
 LINKER		+= -L$(PRINTF_DIR) -lftprintf
 
-MLX_DIR 	= include/minilibx
+ifeq ($(OS), Linux)
+	MLX_DIR		= include/minilibx_Linux
+else
+	MLX_DIR 	= include/minilibx_Darwin
+endif
 MLX 		= $(MLX_DIR)/libmlx.a
 
 ifeq ($(OS), Linux)

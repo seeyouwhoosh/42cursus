@@ -41,15 +41,16 @@ int	destroy_win(t_ins *ins)
 
 void	error_exit(void)
 {
-	printf("\e[1;1m Non valid parameters. You may choose from the following:\e[0m\
-\n [1] \e[1;34mmandelbrot \e[0m\
-\n [2] \e[1;34mjulia \e[0m\e[0;30m[real_part: 0.355] [imaginary_part: 0.113]\e[0m\n");
+	ft_printf("Non valid parameters. You may choose from the following:
+\n [1] mmandelbrot\
+\n [2] julia [real_part: 0.355] [imaginary_part: 0.113]\n");
 	exit(1);
 }
 
 void	manage_args(int ac, char **av, t_ins *ins)
 {
 	char	*erptr;
+
 	if (ac == 2 && (!ft_strcmp(av[1], "mandelbrot") || ft_atoi(av[1]) == 1))
 		ins->f.draw_fractal = draw_mandelbrot;
 	else if (ac == 2 && (!ft_strcmp(av[1], "julia") || ft_atoi(av[1]) == 2))

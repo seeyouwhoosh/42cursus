@@ -74,7 +74,7 @@ void	fractal_init(t_ins	*ins)
 {
 	ins->f.offset_y = 0;
 	ins->f.offset_x = 0;
-	ins->f.zoom = WIDTH/HEIGHT * 150;
+	ins->f.zoom = WIDTH / HEIGHT * 150;
 	ins->f.max_iter = 40 + (unsigned int)(log10(ins->f.zoom) * 10);
 	ins->f.z_re = 0;
 	ins->f.z_im = 0;
