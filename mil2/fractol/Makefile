@@ -10,7 +10,7 @@ NC			= \033[0m
 # Compiler
 NAME		= fractol
 CC			= cc
-CFLAGS		= #-Wall -Werror -Wextra
+CFLAGS		= -Wall -Werror -Wextra
 MAKE		= make -sC
 RM			= rm -rf
 OS			= $(shell uname)
@@ -46,7 +46,7 @@ INCLUDES	= -I$(INCLUDE_DIR) \
 
 # Sources
 SRC_DIR		= src
-SOURCES		= main.c utils.c mandelbrot.c interactions.c
+SOURCES		= main.c utils.c fractal.c interactions.c
 
 # Objects
 OBJ_DIR		= obj

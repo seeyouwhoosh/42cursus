@@ -6,13 +6,14 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:46:16 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/23 21:42:10 by xwu              ###   ########.fr       */
+/*   Updated: 2025/08/24 12:46:55 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FRACTOL_H
 # define FRACTOL_H
 # include "libft.h"
+# include "ft_printf.h"
 # include "mlx.h"
 # include <X11/keysym.h>
 # include <stdlib.h>

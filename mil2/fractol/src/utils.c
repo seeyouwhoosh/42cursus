@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "fractol.h"
-#include <unistd.h>
-#include <stdio.h>
 
 void	mmlx_pixel_put(t_data *data, int x, int y, int color)
 {
@@ -41,7 +39,7 @@ int	destroy_win(t_ins *ins)
 
 void	error_exit(void)
 {
-	ft_printf("Non valid parameters. You may choose from the following:
+	ft_printf("Non valid parameters. You may choose from the following:\
 \n [1] mmandelbrot\
 \n [2] julia [real_part: 0.355] [imaginary_part: 0.113]\n");
 	exit(1);
