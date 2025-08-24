@@ -27,9 +27,9 @@ LINKER		+= -L$(PRINTF_DIR) -lftprintf
 ifeq ($(OS), Linux)
 	MLX_DIR		= include/minilibx_Linux
 else
-	MLX_DIR 	= include/minilibx_Darwin
+	MLX_DIR		= include/minilibx_Darwin
 endif
-MLX 		= $(MLX_DIR)/libmlx.a
+MLX			= $(MLX_DIR)/libmlx.a
 
 ifeq ($(OS), Linux)
 	LINKER	+= -L$(MLX_DIR) -lmlx -lXext -lX11 -lm -lz
