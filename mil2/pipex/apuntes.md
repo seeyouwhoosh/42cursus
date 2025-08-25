@@ -12,7 +12,7 @@
        exists and grants read, write, and execute permissions,
        respectively.
 * dup: duplica un descriptor de un archivo y devuelve el nuevo
-* dup2: parecido a dup, pero puedes elegir el fd del archivo
+* dup2: parecido a dup, pero puedes elegir el fd del archivo. Incluso cierra new fd con antelación. Si old fd no es válido, no se cierra. Si son iguales, no hace nada y retorna new fd
 * execve: Ejecuta un programa reemplazando el proceso actual
 * exit
 * fork: `pid_t fork(void);`, crea un proceso hijo duplicando el actual, devuelve 0 al hijo y el pid del hijo al padre
@@ -24,12 +24,14 @@
 # Cosas que no he entendido del todo de la subject
 * ¿Y si uso pipes en los argumentos? ¿O si lo redirijo en los argumentos? O sea, realmente no sé cómo gestiono los comandos, igual los cojo, los paso por el cmd y ya está, no sé
 * Para los múltiples pipes... ¿cómo sé cuándo es el file? Supongo que el primer y último de los argumentos y ya está
-* WTF es "here_doc"
+* WTF es "here_doc": es una forma de representar cadenas en los lenguajes de programación o shells
 * Y habría que investigar más a fondo realmente cómo funcionan los pipes, los infiles y todo eso. Además, el funcionamiento de las funciones de arriba que no conozca. 
 
 # En el proceso de entender qué demonios está pasando
 ```sh
 < file1 cmd1 | cmd2 > file2
+|			 |		|-> ">" redirección de output a un file o input stream, en este caso a file2
+|			 |-> "|" redirección del output de anterior comando al input del siguiente comando
 |-> "<" redirección del input, es decir, es el propio shell el que abre file1 (Más información: https://askubuntu.com/a/883822), lee el contenido y lo pasa como input stream. 
 	En este caso, el contenido del file1 es redirigido al stdin, es decir, si el cmd1 lee del stdin, lo va a leer del file1, en vez del teclado
 ```
@@ -44,5 +46,7 @@
 	```
 	son legales.
 
-
+## Otros operadores interesantes
+* `>>`: append
+* `<<`: Lee de la stdin hasta que se encuentra con un limitador especificado
 	
