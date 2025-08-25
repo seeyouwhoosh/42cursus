@@ -15,7 +15,7 @@ int	main(int ac, char **av)
 {
 	if (ac != 5)
 		exit(1);
-
+	
 	int f1_access = access(av[1], R_OK);
 	if (f1_access)
 		perror(strerror(f1_access));
@@ -25,7 +25,7 @@ int	main(int ac, char **av)
 	int f2_access = access(av[ac], W_OK);
 	if (f2_access)
 		perror(strerror(f1_access));
-	int f2 = open(av[ac], O_WRONLY); // O_APPEND si fuera >>
+	int f2 = open(av[ac - 1], O_WRONLY); // O_APPEND si fuera >>
 	dup2(f2, STDOUT_FILENO);
 
 

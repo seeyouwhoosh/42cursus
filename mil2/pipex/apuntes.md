@@ -49,4 +49,59 @@
 ## Otros operadores interesantes
 * `>>`: append
 * `<<`: Lee de la stdin hasta que se encuentra con un limitador especificado
-	
+
+## Me ha gustado este get_next_line
+```c
+/* Function that will read input from the terminal and return line. */
+int	get_next_line(char **line)
+{
+	char	*buffer;
+	int		i;
+	int		r;
+	char	c;
+
+	i = 0;
+	r = 0;
+	buffer = (char *)malloc(10000);
+	if (!buffer)
+		return (-1);
+	r = read(0, &c, 1);
+	while (r && c != '\n' && c != '\0')
+	{
+		if (c != '\n' && c != '\0')
+			buffer[i] = c;
+		i++;
+		r = read(0, &c, 1);
+	}
+	buffer[i] = '\n';
+	buffer[++i] = '\0';
+	*line = buffer;
+	free(buffer);
+	return (r);
+}
+
+char	*get_next_line(int fd)
+{
+	char	*ret = malloc(9999);
+	char	c;
+	int		i = 0;
+	int		cpt = 0;
+
+	if (fd < 0)
+		return (NULL);
+	while ((cpt = read(fd, &c, 1)) > 0)
+	{
+		ret[i] = c;
+		i++;
+		if (c == '\n')
+			break ;
+	}
+	if (i == 0 || cpt < 0)
+	{
+		free(ret);
+		return (NULL);
+	}
+	ret[i] = '\0';
+	return (ret);
+}
+```
