@@ -20,36 +20,24 @@
 
 int	main(int ac, char **av, char **env)
 {
+	int		fd[2];
+	pid_t	pid;
+	int		*status;
+
 	// Error
 	if (ac != 5)
-		exit(1);
-	
-	// Files checking and redirecting, tmp
-	int f1_access = access(av[1], R_OK);
-	if (f1_access)
-		perror(strerror(f1_access));
-	int f1 = open(av[1], O_RDONLY);
-	dup2(f1, STDIN_FILENO);
+		perror("Number of arguments invalid");
+	// pipe
+	if (pipe(fd))
+		perror("Pipe's not good");
+	// subprocesos
+	pid = fork();
+	if (pid == -1)
+		perror("Error on fork()");
+	else if (pid == 0)
+		child_process();
 
-	int f2_access = access(av[ac], W_OK);
-	if (f2_access)
-		perror(strerror(f1_access));
-	int f2 = open(av[ac - 1], O_WRONLY); // O_APPEND si fuera >>
-	dup2(f2, STDOUT_FILENO);
-
-	// piping
-	int	pipefd[2];
-
-	pipe(pipefd);
-	perror("Pipe's not good");
-
-
-	int i = 2;
-	while (i < ac)
-	{
-		pid_t pid = fork();
-		waitpid(pid, NULL, 0);
-		i++;
-	}
+	waitpid(pid, status, 0);
+	parent_process();
 	return (0);
 }
