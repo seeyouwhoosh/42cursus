@@ -10,7 +10,7 @@ NC			= \033[0m
 # Compiler
 NAME		= pipex
 CC			= cc
-CFLAGS		= -Wall -Werror -Wextra
+CFLAGS		= # -Wall -Werror -Wextra
 MAKE		= make -sC
 RM			= rm -rf
 OS			= $(shell uname)
@@ -56,7 +56,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@ 
 
-$(NAME): $(LIBFT) $(PRINTF) $(MLX) $(OBJECTS)
+$(NAME): $(LIBFT) $(PRINTF) $(OBJECTS)
 	@echo "$(BBLUE)$(NAME)$(NC): Creating $(GREEN)$@$(NC)..."
 	@$(CC) $(CFLAGS) -o $@ $(OBJECTS) $(LINKER)
 	@echo "$(BBLUE)$(NAME)$(NC): $(GREEN)$(NAME)$(NC) created"
