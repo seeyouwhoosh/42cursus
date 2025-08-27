@@ -105,3 +105,19 @@ char	*get_next_line(int fd)
 	return (ret);
 }
 ```
+
+## void	exec(char *cmd, char **env)
+
+```c
+void	exec(char *cmd, char **env)
+{
+	char	*path;
+	char	**split_cmd;
+
+	split_cmd = ft_split(cmd, ' ');
+	path = get_path(split_cmd[0], env);
+	execve(path, split_cmd, env); // Al parecer, muchos programas simplemente ignoran el argv[0]
+	ft_freesplit(split_cmd, ft_strwords(cmd, ' '));
+	free(path);
+}
+```

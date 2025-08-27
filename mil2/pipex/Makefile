@@ -32,7 +32,7 @@ INCLUDES	= -I$(INCLUDE_DIR) \
 
 # Sources
 SRC_DIR		= src
-SOURCES		= main.c
+SOURCES		= pipex.c
 
 # Objects
 OBJ_DIR		= obj

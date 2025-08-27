@@ -86,16 +86,27 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 
 size_t	ft_strlcat(char *dst, const char *src, size_t size);
 
+/* Locate a substring in a string. If str little is empty or is nowhere
+in str big, returns str big; else, return the pointer to the first
+character to str little */
 char	*ft_strnstr(const char *big, const char *little, size_t len);
 
 char	*ft_strdup(const char *s);
 
+/* Allocates memory (using malloc(3)) and returns a substring from
+the str s. The substring starts at index start and has a maximum
+length of len */
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 
+/* Allocates memory (using malloc(3)) and returns a new string, which
+is the result of concatenating ’s1’ and ’s2’. */
 char	*ft_strjoin(char const *s1, char const *s2);
 
 char	*ft_strtrim(char const *s1, char const *set);
 
+/* Allocates memory (using malloc(3)) and returns an array of strings
+obtained by splitting ’s’ using the character ’c’ as a delimiter. The
+array must end with a NULL pointer */
 char	**ft_split(char const *s, char c);
 
 /* Memory management specific functions */
