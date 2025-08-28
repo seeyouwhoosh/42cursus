@@ -1,11 +1,11 @@
 # Funciones permitidas
-* open
-* close
-* read
-* write
-* malloc
-* free
-* perror
+* open: <fcntl.h>
+* close: <unistd.h>
+* read: <unistd.h> 
+* write: <unistd.h> 
+* malloc: <stdlib.h>
+* free: <stdlib.h>
+* perror: <stdio.h>
 * strerror
 * access: comprueba los permisos de un archivo. F_OK tests for the
        existence of the file.  R_OK, W_OK, and X_OK test whether the file

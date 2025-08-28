@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 11:57:02 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/22 14:31:03 by xwu              ###   ########.fr       */
+/*   Updated: 2025/08/28 21:58:52 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 size_t	ft_strlcat(char *dst, const char *src, size_t size);
 
 /* Locate a substring in a string. If str little is empty or is nowhere
-in str big, returns str big; else, return the pointer to the first
+in str big, returns NULL; else, return the pointer to the first
 character to str little */
 char	*ft_strnstr(const char *big, const char *little, size_t len);
 
