@@ -76,7 +76,7 @@ void	parent_process(char **av, char **env, int *pipe)
 {
 	int	f2;
 
-	f2 = open(av[4], O_WRONLY | O_CREAT, 0777);
+	f2 = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (f2 <= -1)
 	{
 		perror(av[4]);
