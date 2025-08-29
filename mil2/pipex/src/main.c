@@ -20,7 +20,8 @@ char	*get_path(char *cmd, char **env)
 	char	*path;
 
 	i = -1;
-	while (env[++i] && !ft_strnstr(env[i], "PATH=", 5));
+	while (env[++i] && !ft_strnstr(env[i], "PATH=", 5))
+		;
 	if (env[i] == NULL)
 		perror("PATH");
 	split_paths = ft_split(env[i] + 5, ':');

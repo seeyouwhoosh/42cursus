@@ -27,13 +27,21 @@ INCLUDES	= -I$(INCLUDE_DIR) \
 
 # Sources
 SRC_DIR		= src
-SOURCES		= main.c
+SOURCES		= 
 
 # Objects
 OBJ_DIR		= obj
 OBJ			= $(SOURCES:.c=.o)
 OBJECTS		= $(addprefix $(OBJ_DIR)/, $(SOURCES:.c=.o))
 
+# Bonus sources
+BSRC_DIR		= src
+BSOURCES	= main.c
+
+# Bonus objects
+BOBJ_DIR		= obj
+BOBJ		= $(BSOURCES:.c=.o)
+BOBJECTS		= $(addprefix $(BOBJ_DIR)/, $(BSOURCES:.c=.o))
 
 all: $(LIBFT) $(OBJECTS) $(NAME)
 
@@ -51,10 +59,19 @@ $(NAME): $(LIBFT) $(OBJECTS)
 	@$(CC) $(CFLAGS) -o $@ $(OBJECTS) $(LINKER)
 	@echo "$(BBLUE)$(NAME)$(NC): $(GREEN)$(NAME)$(NC) created"
 
+$(BOBJ_DIR)/%.o: $(BSRC_DIR)/%.c
+	@mkdir -p $(BOBJ_DIR)
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@ 
+
+bonus: $(LIBFT) $(BOBJECTS)
+	@echo "$(BBLUE)$(NAME)$(NC): Creating $(GREEN)$(NAME) ($@)$(NC)..."
+	@$(CC) $(CFLAGS) -o $(NAME) $(BOBJECTS) $(LINKER)
+	@echo "$(BBLUE)$(NAME)$(NC): $(GREEN)$(NAME) ($@)$(NC) created"
 
 clean:
 	@$(MAKE) $(LIBFT_DIR) clean
 	@$(RM) $(OBJ_DIR)
+	@$(RM) $(BOBJ_DIR)
 	@echo "$(BBLUE)$(NAME)$(NC): Objects cleaned"
 
 fclean: clean
