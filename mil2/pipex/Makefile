@@ -27,7 +27,7 @@ INCLUDES	= -I$(INCLUDE_DIR) \
 
 # Sources
 SRC_DIR		= src
-SOURCES		= 
+SOURCES		= main.c
 
 # Objects
 OBJ_DIR		= obj
@@ -36,7 +36,7 @@ OBJECTS		= $(addprefix $(OBJ_DIR)/, $(SOURCES:.c=.o))
 
 # Bonus sources
 BSRC_DIR		= src
-BSOURCES	= main.c
+BSOURCES	= main_bonus.c
 
 # Bonus objects
 BOBJ_DIR		= obj

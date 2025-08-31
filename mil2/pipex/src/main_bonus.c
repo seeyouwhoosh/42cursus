@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 13:30:34 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/31 21:26:04 by xwu              ###   ########.fr       */
+/*   Updated: 2025/08/31 21:51:06 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,43 +56,64 @@ void	exec(char *cmd, char **env)
 	free(path);
 }
 
-void	child_process(char **av, char **env, int *pipe)
+void	child_process(char *cmd, char **env)
 {
-	int	f1;
+	int		fd[2];
+	pid_t	command;
 
-	f1 = open(av[1], O_RDONLY);
-	if (f1 <= -1)
+	if (pipe(fd))
+		return (perror("Pipe failed"));
+	command = fork();
+	if (command == -1)
+		return (perror("Fork failed"));
+	if (!command)
 	{
-		perror(av[1]);
-		exit(1);
+		dup2(fd[1], STDOUT_FILENO);
+		close(fd[0]);
+		exec(cmd, env);
 	}
-	dup2(f1, STDIN_FILENO);
-	dup2(pipe[1], STDOUT_FILENO);
-	close(pipe[0]);
-	exec(av[2], env);
+	else if (command > 0)
+	{
+		dup2(fd[0], STDIN_FILENO);
+		close(fd[1]);
+		wait(0);
+	}
 }
 
-void	parent_process(char **av, char **env, int *pipe)
+char	*get_next_line(int fd)
 {
-	int	f2;
+	char	c;
+	size_t	i;
+	char	*line;
+	int		nread;
 
-	f2 = open(av[4], O_WRONLY | O_CREAT, 0777);
-	if (f2 <= -1)
+	if (fd < 0)
+	return (NULL);
+	i = 0;
+	line = malloc(9999);
+	nread = read(fd, &c, 1);
+	while (nread > 0)
 	{
-		perror(av[4]);
-		exit(1);
+		line[i] = c;
+		i++;
+		if (c == '\n')
+			break ;
+		nread = read(fd, &c, 1);
 	}
-	dup2(f2, STDOUT_FILENO);
-	dup2(pipe[0], STDIN_FILENO);
-	close(pipe[1]);
-	exec(av[3], env);
+	line[i] = '\0';
+	if (i == 0 || nread < 0)
+		return (free(line), NULL);
+	return (line);
 }
 
-void	here_doc(char *limiter, int *fd)
+void	here_doc(char *limiter)
 {
 	char	*input;
-	int		read;
+	pid_t	read;
+	int		fd[2];
 
+	if (pipe(fd))
+		return (perror("Pipe failed"));
 	read = fork();
 	if (!read)
 	{
@@ -112,56 +133,33 @@ void	here_doc(char *limiter, int *fd)
 		dup2(fd[0], STDIN_FILENO);
 		wait(0);
 	}
-	
 }
 
-char	*get_next_line(int fd)
-{
-	char	c;
-	size_t	i;
-	char	*line;
-	int		nread;
-
-	if (fd < 0)
-	return (NULL);
-	i = 0;
-	line = malloc(9999);
-	nread = read(fd, &c, 1);
-	while (nread > 0)
-	{
-		line[i] = c;
-		i++;
-		if (c = '\n')
-			break ;
-		nread = read(fd, &c, 1);
-	}
-	line[i] = '\0';
-	if (i == 0 || nread < 0)
-		return (free(line), NULL);
-	return (line);
-}
 
 int	main(int ac, char **av, char **env)
 {
-	int	fd[2];
 	int	i;
 	int	outfile;
+	int	infile;
 
 	if (ac < 5)
 		return (write(2, "args\n", 5));
 	if (!(strcmp(av[1], "here_doc")))
 	{
-		i = 3;
+		i = 2;
 		outfile = open(av[ac - 1], O_CREAT | O_TRUNC | O_APPEND, 0777);
-		here_doc(av[2], fd);
+		here_doc(av[2]);
 	}
 	else
 	{
-		i = 2;
+		i = 1;
 		outfile = open(av[ac - 1], O_WRONLY | O_CREAT, 0777);
+		infile = open(av[1], O_RDONLY);
+		dup2(infile, STDIN_FILENO);
 	}
-	while (i < ac - 2)
-		child_process();
-	outfile = dup2(fd[1], STDOUT_FILENO);
-
+	while (++i < ac - 2)
+		child_process(av[i], env);
+	dup2(outfile, STDOUT_FILENO);
+	exec(av[ac - 2], env);
+	return (0);
 }
