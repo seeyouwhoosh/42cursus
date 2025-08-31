@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 13:30:34 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/28 22:44:36 by xwu              ###   ########.fr       */
+/*   Updated: 2025/08/31 21:26:04 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,41 +88,80 @@ void	parent_process(char **av, char **env, int *pipe)
 	exec(av[3], env);
 }
 
-void	here_doc(char *limiter, int **fd)
+void	here_doc(char *limiter, int *fd)
 {
-	;
+	char	*input;
+	int		read;
+
+	read = fork();
+	if (!read)
+	{
+		close(fd[0]);
+		input = get_next_line(0);
+		while (input)
+		{
+			if (!ft_strcmp(input, limiter))
+				exit(0);
+			write(fd[1], input, ft_strlen(input));
+			input = get_next_line(0);
+		}
+	}
+	else if (read > 0)
+	{
+		close(fd[1]);
+		dup2(fd[0], STDIN_FILENO);
+		wait(0);
+	}
+	
+}
+
+char	*get_next_line(int fd)
+{
+	char	c;
+	size_t	i;
+	char	*line;
+	int		nread;
+
+	if (fd < 0)
+	return (NULL);
+	i = 0;
+	line = malloc(9999);
+	nread = read(fd, &c, 1);
+	while (nread > 0)
+	{
+		line[i] = c;
+		i++;
+		if (c = '\n')
+			break ;
+		nread = read(fd, &c, 1);
+	}
+	line[i] = '\0';
+	if (i == 0 || nread < 0)
+		return (free(line), NULL);
+	return (line);
 }
 
 int	main(int ac, char **av, char **env)
 {
-	int		fd[2];
-	pid_t	pid;
-	char	*error_msg;
-
-	error_msg = "pipex simulates \033[1m< infile cmd1 | cmd2 > outfile\033[0m\n\
-Correct usage:\033[1m ./pipex infile cmd1 cmd2 outfile\033[0m\n";
+	int	fd[2];
+	int	i;
+	int	outfile;
 
 	if (ac < 5)
-		return (write(2, error_msg, ft_strlen(error_msg)));
-
-
-
-	if (pipe(fd))
-		return (perror("Pipe failed"), 1);
-
-	
+		return (write(2, "args\n", 5));
 	if (!(strcmp(av[1], "here_doc")))
-		here_doc(av[2], fd);
-	pid = fork();
-	if (pid == -1)
-		return (perror("Fork failed"), 1);
-	else if (pid == 0)
-		child_process(av, env, fd);
-	else if (pid > 0)
 	{
-		waitpid(pid, NULL, 0);
-		parent_process(av, env, fd);
+		i = 3;
+		outfile = open(av[ac - 1], O_CREAT | O_TRUNC | O_APPEND, 0777);
+		here_doc(av[2], fd);
 	}
-	return (0);
-}
+	else
+	{
+		i = 2;
+		outfile = open(av[ac - 1], O_WRONLY | O_CREAT, 0777);
+	}
+	while (i < ac - 2)
+		child_process();
+	outfile = dup2(fd[1], STDOUT_FILENO);
 
+}

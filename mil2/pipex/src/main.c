@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 13:30:34 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/28 22:44:36 by xwu              ###   ########.fr       */
+/*   Updated: 2025/08/31 14:12:04 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ Correct usage:\033[1m ./pipex infile cmd1 cmd2 outfile\033[0m\n";
 		child_process(av, env, fd);
 	else if (pid > 0)
 	{
-		waitpid(pid, NULL, 0);
+		wait(0);
 		parent_process(av, env, fd);
 	}
 	return (0);
