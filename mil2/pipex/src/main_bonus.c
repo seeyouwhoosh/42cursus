@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 13:30:34 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/31 21:51:06 by xwu              ###   ########.fr       */
+/*   Updated: 2025/08/31 22:58:22 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,14 +69,16 @@ void	child_process(char *cmd, char **env)
 	if (!command)
 	{
 		dup2(fd[1], STDOUT_FILENO);
+		close(fd[1]);
 		close(fd[0]);
 		exec(cmd, env);
 	}
 	else if (command > 0)
 	{
 		dup2(fd[0], STDIN_FILENO);
+		close(fd[0]);
 		close(fd[1]);
-		wait(0);
+		waitpid(command, NULL, 0);
 	}
 }
 
@@ -100,9 +102,9 @@ char	*get_next_line(int fd)
 			break ;
 		nread = read(fd, &c, 1);
 	}
-	line[i] = '\0';
-	if (i == 0 || nread < 0)
+	if (nread == -1 || (!nread && !i))
 		return (free(line), NULL);
+	line[i] = '\0';
 	return (line);
 }
 
@@ -118,12 +120,15 @@ void	here_doc(char *limiter)
 	if (!read)
 	{
 		close(fd[0]);
+		dup2(fd[1], STDOUT_FILENO);
+		close(fd[1]);
 		input = get_next_line(0);
 		while (input)
 		{
 			if (!ft_strcmp(input, limiter))
-				exit(0);
-			write(fd[1], input, ft_strlen(input));
+			exit(0);
+			write(STDOUT_FILENO, input, ft_strlen(input));
+			free(input);
 			input = get_next_line(0);
 		}
 	}
@@ -131,10 +136,10 @@ void	here_doc(char *limiter)
 	{
 		close(fd[1]);
 		dup2(fd[0], STDIN_FILENO);
-		wait(0);
+		close(fd[0]);
+		waitpid(read, NULL, 0);
 	}
 }
-
 
 int	main(int ac, char **av, char **env)
 {
@@ -146,20 +151,23 @@ int	main(int ac, char **av, char **env)
 		return (write(2, "args\n", 5));
 	if (!(strcmp(av[1], "here_doc")))
 	{
+		if (ac < 6)
+			return (write(2, "args\n", 5));
 		i = 2;
-		outfile = open(av[ac - 1], O_CREAT | O_TRUNC | O_APPEND, 0777);
+		outfile = open(av[ac - 1], O_CREAT | O_APPEND, 0777);
 		here_doc(av[2]);
 	}
 	else
 	{
 		i = 1;
-		outfile = open(av[ac - 1], O_WRONLY | O_CREAT, 0777);
+		outfile = open(av[ac - 1], O_WRONLY | O_CREAT | O_TRUNC, 0777);
 		infile = open(av[1], O_RDONLY);
 		dup2(infile, STDIN_FILENO);
+		close(infile);
 	}
 	while (++i < ac - 2)
 		child_process(av[i], env);
 	dup2(outfile, STDOUT_FILENO);
+	close(outfile);
 	exec(av[ac - 2], env);
-	return (0);
 }
