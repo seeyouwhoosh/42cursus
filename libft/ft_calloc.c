@@ -39,3 +39,26 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	}
 	return (ptr);
 }
+
+void	*ft_realloc(void *ptr, size_t old_size, size_t size)
+{
+	char	*dest;
+	char	*cptr;
+	size_t	i;
+
+	if (!size)
+	{
+		free(ptr);
+		return (NULL);
+	}
+	cptr = (char *)ptr;
+	dest = malloc(size);
+	if (!dest)
+		return (NULL);
+	if (!ptr)
+		return (dest);
+	i = -1;
+	while (++i < old_size && i < size)
+		dest[i] = cptr[i];
+	return (dest);
+}
