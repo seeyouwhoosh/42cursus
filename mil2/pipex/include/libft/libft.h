@@ -72,6 +72,13 @@ int		ft_memcmp(const void *s1, const void *s2, size_t n);
 
 void	*ft_memcpy(void *restrict dst, const void *restrict src, size_t n);
 
+void	*ft_calloc(size_t nmemb, size_t size);
+
+/* Changes the size of the memory block pointed by ptr to size bytes. If ptr
+is NULL, is equivalent to malloc(size), if size is 0, is equivalent to
+free(ptr)*/
+void	*ft_realloc(void *ptr, size_t old_size, size_t size);
+
 /* Strings */
 
 size_t	ft_strlen(const char *s);
@@ -108,10 +115,6 @@ char	*ft_strtrim(char const *s1, char const *set);
 obtained by splitting ’s’ using the character ’c’ as a delimiter. The
 array must end with a NULL pointer */
 char	**ft_split(char const *s, char c);
-
-/* Memory management specific functions */
-
-void	*ft_calloc(size_t nmemb, size_t size);
 
 /* Special functions */
 
