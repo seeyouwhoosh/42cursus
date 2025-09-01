@@ -36,7 +36,7 @@ OBJECTS		= $(addprefix $(OBJ_DIR)/, $(SOURCES:.c=.o))
 
 # Bonus sources
 BSRC_DIR		= src
-BSOURCES	= main_bonus.c
+BSOURCES	= main_bonus.c utils_bonus.c
 
 # Bonus objects
 BOBJ_DIR		= obj
