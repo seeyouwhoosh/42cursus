@@ -12,50 +12,6 @@
 
 #include "pipex.h"
 
-char	*get_path(char *cmd, char **env)
-{
-	size_t	i;
-	char	**split_paths;
-	char	*pathplus;
-	char	*path;
-
-	i = -1;
-	while (env[++i] && !ft_strnstr(env[i], "PATH=", 5))
-		;
-	if (env[i] == NULL)
-		perror("PATH");
-	split_paths = ft_split(env[i] + 5, ':');
-	i = -1;
-	while (split_paths[++i])
-	{
-		pathplus = ft_strjoin(split_paths[i], "/");
-		path = ft_strjoin(pathplus, cmd);
-		free(pathplus);
-		if (!access(path, X_OK))
-			return (ft_freesplit(split_paths, ft_strwords(env[i], ':')), path);
-		free(path);
-	}
-	ft_freesplit(split_paths, ft_strwords(env[i], ':'));
-	write(2, cmd, ft_strlen(cmd));
-	write(2, ": Command not found\n", 20);
-	return (0);
-}
-
-void	exec(char *cmd, char **env)
-{
-	char	*path;
-	char	**split_cmd;
-
-	split_cmd = ft_split(cmd, ' ');
-	path = get_path(split_cmd[0], env);
-	if (!path)
-		exit(1);
-	if (execve(path, split_cmd, env))
-		perror(path);
-	ft_freesplit(split_cmd, ft_strwords(cmd, ' '));
-	free(path);
-}
-
 void	child_process(char *cmd, char **env)
 {
 	int		fd[2];
@@ -80,35 +36,8 @@ void	child_process(char *cmd, char **env)
 	}
 }
 
-char	*get_next_line(int fd)
-{
-	char	c;
-	size_t	i;
-	char	*line;
-	int		nread;
-
-	if (fd < 0)
-		return (NULL);
-	i = 0;
-	line = malloc(100);
-	nread = read(fd, &c, 1);
-	while (nread > 0)
-	{
-		line[i] = c;
-		i++;
-		if (c == '\n')
-			break ;
-		nread = read(fd, &c, 1);
-	}
-	if (nread == -1 || (!nread && !i))
-		return (free(line), NULL);
-	line[i] = '\0';
-	return (line);
-}
-
 void	here_doc(char *limiter)
 {
-	char	*input;
 	pid_t	read;
 	int		fd[2];
 
@@ -118,18 +47,7 @@ void	here_doc(char *limiter)
 	if (!read)
 	{
 		close(fd[0]);
-		input = get_next_line(0);
-		while (input)
-		{
-			if (!ft_strcmp(input, limiter))
-			{
-				free(input);
-				exit(0);
-			}
-			write(fd[1], input, ft_strlen(input));
-			free(input);
-			input = get_next_line(0);
-		}
+		here_doc_put(limiter, fd[1]);
 		dup2(fd[1], STDOUT_FILENO);
 	}
 	else if (read > 0)
@@ -139,6 +57,7 @@ void	here_doc(char *limiter)
 		waitpid(read, NULL, 0);
 	}
 }
+
 
 int	main(int ac, char **av, char **env)
 {
