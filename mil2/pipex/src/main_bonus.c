@@ -69,14 +69,12 @@ void	child_process(char *cmd, char **env)
 	if (!command)
 	{
 		dup2(fd[1], STDOUT_FILENO);
-		close(fd[1]);
 		close(fd[0]);
 		exec(cmd, env);
 	}
 	else if (command > 0)
 	{
 		dup2(fd[0], STDIN_FILENO);
-		close(fd[0]);
 		close(fd[1]);
 		waitpid(command, NULL, 0);
 	}
@@ -90,9 +88,9 @@ char	*get_next_line(int fd)
 	int		nread;
 
 	if (fd < 0)
-	return (NULL);
+		return (NULL);
 	i = 0;
-	line = malloc(9999);
+	line = malloc(100);
 	nread = read(fd, &c, 1);
 	while (nread > 0)
 	{
@@ -120,23 +118,24 @@ void	here_doc(char *limiter)
 	if (!read)
 	{
 		close(fd[0]);
-		dup2(fd[1], STDOUT_FILENO);
-		close(fd[1]);
 		input = get_next_line(0);
 		while (input)
 		{
 			if (!ft_strcmp(input, limiter))
-			exit(0);
-			write(STDOUT_FILENO, input, ft_strlen(input));
+			{
+				free(input);
+				exit(0);
+			}
+			write(fd[1], input, ft_strlen(input));
 			free(input);
 			input = get_next_line(0);
 		}
+		dup2(fd[1], STDOUT_FILENO);
 	}
 	else if (read > 0)
 	{
 		close(fd[1]);
 		dup2(fd[0], STDIN_FILENO);
-		close(fd[0]);
 		waitpid(read, NULL, 0);
 	}
 }
@@ -154,7 +153,7 @@ int	main(int ac, char **av, char **env)
 		if (ac < 6)
 			return (write(2, "args\n", 5));
 		i = 2;
-		outfile = open(av[ac - 1], O_CREAT | O_APPEND, 0777);
+		outfile = open(av[ac - 1], O_WRONLY | O_CREAT | O_APPEND, 0777);
 		here_doc(av[2]);
 	}
 	else
@@ -163,11 +162,9 @@ int	main(int ac, char **av, char **env)
 		outfile = open(av[ac - 1], O_WRONLY | O_CREAT | O_TRUNC, 0777);
 		infile = open(av[1], O_RDONLY);
 		dup2(infile, STDIN_FILENO);
-		close(infile);
 	}
 	while (++i < ac - 2)
 		child_process(av[i], env);
 	dup2(outfile, STDOUT_FILENO);
-	close(outfile);
 	exec(av[ac - 2], env);
 }
