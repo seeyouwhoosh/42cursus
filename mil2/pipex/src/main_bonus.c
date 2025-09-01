@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 13:30:34 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/31 22:58:22 by xwu              ###   ########.fr       */
+/*   Updated: 2025/09/01 18:16:28 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	child_process(char *cmd, char **env)
 	int		fd[2];
 	pid_t	command;
 
+	
 	if (pipe(fd))
 		return (perror("Pipe failed"));
 	command = fork();
@@ -58,6 +59,36 @@ void	here_doc(char *limiter)
 	}
 }
 
+void	error(void)
+{
+	char	*msg;
+
+	msg = "pipex simulates the following:\n\t\033[1m< infile cmd1\
+ | cmd2 | ... | cmdn > outfile\033[0m\n\
+Correct usage:\033[1m ./pipex infile cmd1 cmd2 ... cmdn outfile\033[0m\n\
+\t\033[1m<< LIMITER cmd1 | cmd2 | ... | cmdn >> outfile\033[0m\n\
+Correct usage:\033[1m ./pipex here_doc LIMITER cmd1 cmd2 ... cmdn outfile\033[0m\n";
+	write(2, msg, ft_strlen(msg));
+	exit(EXIT_FAILURE);
+}
+
+int	ft_open(const char *filename, char mode)
+{
+	int	fd;
+	if (mode == 'r')
+		fd = open(filename, O_RDONLY);
+	else if (mode == 'w')
+		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	else if (mode == 'a')
+		fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0777);
+	if (fd < 0)
+	{
+		perror(filename);
+		exit (EXIT_FAILURE);
+	}
+	return (fd);
+}
+
 int	main(int ac, char **av, char **env)
 {
 	int	i;
@@ -65,20 +96,20 @@ int	main(int ac, char **av, char **env)
 	int	infile;
 
 	if (ac < 5)
-		return (write(2, "args\n", 5));
+		error(NULL, 1);
 	if (!(strcmp(av[1], "here_doc")))
 	{
 		if (ac < 6)
-			return (write(2, "args\n", 5));
+			error(NULL, 1);
 		i = 2;
-		outfile = open(av[ac - 1], O_WRONLY | O_CREAT | O_APPEND, 0777);
+		outfile = ft_open(av[ac - 1], 'a');
 		here_doc(av[2]);
 	}
 	else
 	{
 		i = 1;
-		outfile = open(av[ac - 1], O_WRONLY | O_CREAT | O_TRUNC, 0777);
-		infile = open(av[1], O_RDONLY);
+		outfile = ft_open(av[ac - 1], 'w');
+		infile = ft_open(av[1], 'r');
 		dup2(infile, STDIN_FILENO);
 	}
 	while (++i < ac - 2)
