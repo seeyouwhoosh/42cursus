@@ -58,7 +58,6 @@ void	here_doc(char *limiter)
 	}
 }
 
-
 int	main(int ac, char **av, char **env)
 {
 	int	i;
