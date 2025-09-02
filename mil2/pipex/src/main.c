@@ -23,8 +23,13 @@ char	*get_path(char *cmd, char **env)
 	while (env[++i] && !ft_strnstr(env[i], "PATH=", 5))
 		;
 	if (env[i] == NULL)
+	{
 		perror("PATH");
+		return (NULL);
+	}
 	split_paths = ft_split(env[i] + 5, ':');
+	if (!split_paths)
+		return (NULL);
 	i = -1;
 	while (split_paths[++i])
 	{
@@ -38,7 +43,7 @@ char	*get_path(char *cmd, char **env)
 	ft_freesplit(split_paths, ft_strwords(env[i], ':'));
 	write(2, cmd, ft_strlen(cmd));
 	write(2, ": Command not found\n", 20);
-	return (0);
+	return (NULL);
 }
 
 void	exec(char *cmd, char **env)
@@ -49,11 +54,17 @@ void	exec(char *cmd, char **env)
 	split_cmd = ft_split(cmd, ' ');
 	path = get_path(split_cmd[0], env);
 	if (!path)
-		exit(1);
+	{
+		ft_freesplit(split_cmd, ft_strwords(cmd, ' '));
+		free(path);
+		return ;
+	}
 	if (execve(path, split_cmd, env))
+	{
 		perror(path);
-	ft_freesplit(split_cmd, ft_strwords(cmd, ' '));
-	free(path);
+		ft_freesplit(split_cmd, ft_strwords(cmd, ' '));
+		free(path);
+	}
 }
 
 void	child_process(char **av, char **env, int *pipe)
