@@ -37,10 +37,14 @@ size_t	ft_strwords(const char *s, char c)
 
 void	ft_freesplit(char **words, size_t ls)
 {
-	while (ls)
+	size_t	i;
+
+	(void)ls;
+	i = 0;
+	while (words[i])
 	{
-		free(words[ls - 1]);
-		ls--;
+		free(words[i]);
+		i++;
 	}
 	free(words);
 }
