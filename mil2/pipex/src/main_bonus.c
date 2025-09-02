@@ -17,7 +17,6 @@ void	child_process(char *cmd, char **env)
 	int		fd[2];
 	pid_t	command;
 
-	
 	if (pipe(fd))
 		return (perror("Pipe failed"));
 	command = fork();
@@ -67,7 +66,8 @@ void	error(void)
  | cmd2 | ... | cmdn > outfile\033[0m\n\
 Correct usage:\033[1m ./pipex infile cmd1 cmd2 ... cmdn outfile\033[0m\n\
 \t\033[1m<< LIMITER cmd1 | cmd2 | ... | cmdn >> outfile\033[0m\n\
-Correct usage:\033[1m ./pipex here_doc LIMITER cmd1 cmd2 ... cmdn outfile\033[0m\n";
+Correct usage:\033[1m ./pipex here_doc LIMITER cmd1 cmd2 ... cmdn \
+outfile\033[0m\n";
 	write(2, msg, ft_strlen(msg));
 	exit(EXIT_FAILURE);
 }
@@ -75,6 +75,7 @@ Correct usage:\033[1m ./pipex here_doc LIMITER cmd1 cmd2 ... cmdn outfile\033[0m
 int	ft_open(const char *filename, char mode)
 {
 	int	fd;
+
 	if (mode == 'r')
 		fd = open(filename, O_RDONLY);
 	else if (mode == 'w')
