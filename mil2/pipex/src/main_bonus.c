@@ -76,6 +76,7 @@ int	ft_open(const char *filename, char mode)
 {
 	int	fd;
 
+	fd = -1;
 	if (mode == 'r')
 		fd = open(filename, O_RDONLY);
 	else if (mode == 'w')
@@ -97,11 +98,11 @@ int	main(int ac, char **av, char **env)
 	int	infile;
 
 	if (ac < 5)
-		error(NULL, 1);
+		error();
 	if (!(strcmp(av[1], "here_doc")))
 	{
 		if (ac < 6)
-			error(NULL, 1);
+			error();
 		i = 2;
 		outfile = ft_open(av[ac - 1], 'a');
 		here_doc(av[2]);
