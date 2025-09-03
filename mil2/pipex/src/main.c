@@ -22,11 +22,6 @@ char	*get_path(char *cmd, char **env)
 	i = -1;
 	while (env[++i] && !ft_strnstr(env[i], "PATH=", 5))
 		;
-	if (env[i] == NULL)
-	{
-		perror("PATH");
-		return (NULL);
-	}
 	split_paths = ft_split(env[i] + 5, ':');
 	if (!split_paths)
 		return (NULL);
