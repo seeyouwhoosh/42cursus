@@ -33,7 +33,7 @@ char	*get_path(char *cmd, char **env)
 			return (path);
 		free(path);
 	}
-	ft_freesplit(split_paths, n_paths);
+	ft_freesplit(split_paths);
 	return (perror("No command found"), NULL);
 }
 
@@ -45,14 +45,14 @@ void	exec(char *cmd, char **env)
 	split_cmd = ft_split(cmd, ' ');
 	path = get_path(split_cmd[0], env);
 	execve(path, split_cmd, env);
-	ft_freesplit(split_cmd, ft_strwords(cmd, ' '));
+	ft_freesplit(split_cmd);
 	free(path);
 }
 
 int	main(int ac, char **av, char **env)
 {
 	pid_t	pid;
-	
+
 	pid = fork();
 	if (pid == -1)
 		perror("No fork");

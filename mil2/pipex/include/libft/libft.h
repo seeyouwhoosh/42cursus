@@ -145,7 +145,7 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 /* Extra functions of lists not included in the subject */
 void	del(void *content);
 
-void	ft_freesplit(char **words, size_t ls);
+void	ft_freesplit(char **words);
 
 /* Find number of words based on the separator c */
 size_t	ft_strwords(const char *s, char c);

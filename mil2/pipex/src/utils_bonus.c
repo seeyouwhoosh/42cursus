@@ -32,10 +32,10 @@ char	*get_path(char *cmd, char **env)
 		path = ft_strjoin(pathplus, cmd);
 		free(pathplus);
 		if (!access(path, X_OK))
-			return (ft_freesplit(split_paths, ft_strwords(env[i], ':')), path);
+			return (ft_freesplit(split_paths), path);
 		free(path);
 	}
-	ft_freesplit(split_paths, ft_strwords(env[i], ':'));
+	ft_freesplit(split_paths);
 	write(2, cmd, ft_strlen(cmd));
 	write(2, ": Command not found\n", 20);
 	return (0);
@@ -52,7 +52,7 @@ void	exec(char *cmd, char **env)
 		exit(1);
 	if (execve(path, split_cmd, env))
 		perror(path);
-	ft_freesplit(split_cmd, ft_strwords(cmd, ' '));
+	ft_freesplit(split_cmd);
 	free(path);
 }
 
