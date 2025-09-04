@@ -60,5 +60,6 @@ void	*ft_realloc(void *ptr, size_t old_size, size_t size)
 	i = -1;
 	while (++i < old_size && i < size)
 		dest[i] = cptr[i];
+	free(ptr);
 	return (dest);
 }

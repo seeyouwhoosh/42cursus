@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 11:57:02 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/22 14:31:03 by xwu              ###   ########.fr       */
+/*   Updated: 2025/08/28 21:58:52 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,13 @@ int		ft_memcmp(const void *s1, const void *s2, size_t n);
 
 void	*ft_memcpy(void *restrict dst, const void *restrict src, size_t n);
 
+void	*ft_calloc(size_t nmemb, size_t size);
+
+/* Changes the size of the memory block pointed by ptr to size bytes. If ptr
+is NULL, is equivalent to malloc(size), if size is 0, is equivalent to
+free(ptr)*/
+void	*ft_realloc(void *ptr, size_t old_size, size_t size);
+
 /* Strings */
 
 size_t	ft_strlen(const char *s);
@@ -86,21 +93,28 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 
 size_t	ft_strlcat(char *dst, const char *src, size_t size);
 
+/* Locate a substring in a string. If str little is empty or is nowhere
+in str big, returns NULL; else, return the pointer to the first
+character to str little */
 char	*ft_strnstr(const char *big, const char *little, size_t len);
 
 char	*ft_strdup(const char *s);
 
+/* Allocates memory (using malloc(3)) and returns a substring from
+the str s. The substring starts at index start and has a maximum
+length of len */
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 
+/* Allocates memory (using malloc(3)) and returns a new string, which
+is the result of concatenating ’s1’ and ’s2’. */
 char	*ft_strjoin(char const *s1, char const *s2);
 
 char	*ft_strtrim(char const *s1, char const *set);
 
+/* Allocates memory (using malloc(3)) and returns an array of strings
+obtained by splitting ’s’ using the character ’c’ as a delimiter. The
+array must end with a NULL pointer */
 char	**ft_split(char const *s, char c);
-
-/* Memory management specific functions */
-
-void	*ft_calloc(size_t nmemb, size_t size);
 
 /* Special functions */
 
@@ -131,7 +145,7 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 /* Extra functions of lists not included in the subject */
 void	del(void *content);
 
-void	ft_freesplit(char **words, size_t ls);
+void	ft_freesplit(char **words);
 
 /* Find number of words based on the separator c */
 size_t	ft_strwords(const char *s, char c);

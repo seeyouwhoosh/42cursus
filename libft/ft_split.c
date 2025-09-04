@@ -35,12 +35,15 @@ size_t	ft_strwords(const char *s, char c)
 	return (count);
 }
 
-void	ft_freesplit(char **words, size_t ls)
+void	ft_freesplit(char **words)
 {
-	while (ls)
+	size_t	i;
+
+	i = 0;
+	while (words[i])
 	{
-		free(words[ls - 1]);
-		ls--;
+		free(words[i]);
+		i++;
 	}
 	free(words);
 }
@@ -77,7 +80,7 @@ char	**ft_split(char const *s, char c)
 				i++;
 			result[ls++] = ft_wordcpy(s, j, i);
 			if (!result[ls - 1])
-				return (ft_freesplit(result, ls), NULL);
+				return (ft_freesplit(result), NULL);
 		}
 		else
 			i++;
@@ -107,7 +110,7 @@ int main(void)
 	char **strstr = ft_split(str, ' ');
 	size_t	n = ft_strwords(str, ' ');
 	ft_putstrstr(strstr, n);
-	ft_freesplit(strstr, n);
+	ft_freesplit(strstr);
 	printf("Número de palabras en la frase \"%s\" es %zu", str, n);
 	return (0);
 }
