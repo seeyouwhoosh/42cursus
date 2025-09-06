@@ -15,6 +15,7 @@ MAKE		= make -sC
 RM			= rm -rf
 
 # Libs
+LINKER		= -lpthread
 
 # Includes
 INCLUDE_DIR	= include
