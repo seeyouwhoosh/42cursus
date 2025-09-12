@@ -55,6 +55,10 @@ Creo que un buen paso sería entender cómo funciona pthread
 * https://www.cs.cmu.edu/afs/cs/academic/class/15492-f07/www/pthreads.html
 
 ## Concepto de mutexes
-Los mutex ó cerrojos bloquean a los threads el acceso de variables. Esto para prevenir uno de los problemas al manejar threads: data races.
+Los mutex ó cerrojos bloquean a los threads el acceso de variables. Esto para prevenir uno de los problemas al manejar threads: **data races**.
 
-Cuando dos o más threads necesitan acceder a un mismo espacio de memoria, casi como cuando dos personas colaboradoras intentan hacer push simultáneamente a una misma rama
+Cuando dos o más threads necesitan acceder a un mismo espacio de memoria, casi como cuando dos personas colaboradoras intentan hacer push simultáneamente a una misma rama.
+
+Otro aspecto a tener en cuenta es que las funciones que llaamos tiene que ser **thread safe**, es decir, no hay variables globales o estáticas (que no están protegidas); y no devuelve punteros a memoria estática interna
+
+Y por último, el **deadlock**: cuando un mutex se aplica, pero no se desbloquea. De esta forma, la ejecución del programa es pausada indefinidamente.
