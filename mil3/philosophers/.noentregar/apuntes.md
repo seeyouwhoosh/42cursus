@@ -39,13 +39,12 @@
 				void *(*start_routine) (void *), // Función ejecutadora que tiene que ser del tipo `
 				void *arg); //argumentos que se pasan
 	```
-	* **pthread_join**
-```c
-int pthread_join(
-				pthread_t thread, 
-				void **retval); // dónde colocar el valor que se devuelve
-
-```
+	* **pthread_join**: esperar a que el thread termine de ejecutarse y almacenar el valor de return en retval
+	```c
+	int pthread_join(
+					pthread_t thread, 
+					void **retval); // dónde colocar el valor que se devuelve
+	```
 	* pthread_mutex_init
 	* pthread_mutex_destroy
 	* pthread_mutex_lock
@@ -54,3 +53,8 @@ int pthread_join(
 # pthreads
 Creo que un buen paso sería entender cómo funciona pthread
 * https://www.cs.cmu.edu/afs/cs/academic/class/15492-f07/www/pthreads.html
+
+## Concepto de mutexes
+Los mutex ó cerrojos bloquean a los threads el acceso de variables. Esto para prevenir uno de los problemas al manejar threads: data races.
+
+Cuando dos o más threads necesitan acceder a un mismo espacio de memoria, casi como cuando dos personas colaboradoras intentan hacer push simultáneamente a una misma rama

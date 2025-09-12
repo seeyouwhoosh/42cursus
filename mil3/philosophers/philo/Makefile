@@ -10,7 +10,7 @@ NC			= \033[0m
 # Compiler
 NAME		= philo
 CC			= cc
-CFLAGS		= -Wall -Werror -Wextra
+CFLAGS		= # -Wall -Werror -Wextra
 MAKE		= make -sC
 RM			= rm -rf
 
@@ -23,7 +23,7 @@ INCLUDES	= -I$(INCLUDE_DIR)
 
 # Sources
 SRC_DIR		= src
-SOURCES		= 
+SOURCES		= main.c
 
 # Objects
 OBJ_DIR		= obj
@@ -66,13 +66,11 @@ bonus: deps $(BOBJECTS)
 
 # Cleaning targets
 clean:
-	@$(MAKE) $(LIBFT_DIR) clean
 	@$(RM) $(OBJ_DIR)
 	@$(RM) $(BOBJ_DIR)
 	@echo "$(BBLUE)$(NAME)$(NC): Objects cleaned"
 
 fclean: clean
-	@$(MAKE) $(LIBFT_DIR) fclean
 	@$(RM) $(NAME)
 	@echo "$(BBLUE)$(NAME)$(NC): Fully cleaned"
 
