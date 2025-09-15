@@ -14,7 +14,15 @@
 # define PHILO_H
 # include <pthread.h>
 # include <stdio.h>
+# include <unistd.h>
 # include <sys/time.h>
+# include <stdlib.h>
+
+typedef struct s_philo
+{
+	size_t	id;
+	size_t	n_eaten;
+}			t_philo;
 
 typedef struct s_house
 {
@@ -24,13 +32,8 @@ typedef struct s_house
 	size_t			t_sleep;
 	int				n_eat;
 	unsigned int	start_time;
+	t_philo			*philo;
 }					t_house;
-
-typedef struct s_philo
-{
-	size_t	id;
-	size_t	n_eaten;
-}			t_philo;
 
 int				ft_atoi(const char *str);
 

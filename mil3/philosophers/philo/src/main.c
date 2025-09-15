@@ -24,9 +24,10 @@ int	isnumeric(char *str)
 		if (!(str[i] >= '0' && str[i] <= '9'))
 			return (0);
 	}
+	return (1);
 }
 
-int	args_parse(t_house *philo, char **av)
+int	args_parse(t_house *house, char **av)
 {
 	size_t	i;
 
@@ -49,7 +50,19 @@ int	args_parse(t_house *philo, char **av)
 
 void	*philo_life(void *args)
 {
-	t_house
+	t_house	*house;
+	size_t	philo_id;
+
+	house = (t_house *)args;
+
+	philo_id = house->philo.id + 1;
+
+
+	unsigned int	current_t;
+	current_t = gettime_milisec();
+	printf("%u	%zu ha empezado su vida\n", current_t - house->start_time, philo_id);
+	usleep(19);
+	return (NULL);
 }
 
 int	main(int ac, char **av)
@@ -71,6 +84,7 @@ int	main(int ac, char **av)
 	printf("-------------------------------------------\nInitializing Philosophers with:\nn_philo: %ld\nt_die: %ld\nt_eat: %ld\nt_sleep: %ld\nn_eat: %d\n-------------------------------------------\n", house.n_philo, house.t_die, house.t_eat, house.t_sleep, house.n_eat);
 
 	threads = (pthread_t *) malloc(sizeof(pthread_t) * house.n_philo);
+	house.philo = (t_philo *) malloc(sizeof(t_philo) * house.n_philo);
 	if (!threads)
 		printf("Error: malloc()");
 	house.start_time = gettime_milisec();
@@ -79,14 +93,15 @@ int	main(int ac, char **av)
 	i = 0;
 	while (house.n_philo > i)
 	{
+		house.philo[i].id = i;
 		pthread_create(&threads[i], NULL, philo_life, &house);
 		i++;
 	}
 	i = 0;
-	int	retval;
+	int	*retval;
 	while (house.n_philo > i)
 	{
-		pthread_join(&threads[i], &retval);
+		pthread_join(threads[i], (void **)&retval);
 		if (retval)
 			printf("Thread number %ld has exited with error", i + 1);
 		i++;
