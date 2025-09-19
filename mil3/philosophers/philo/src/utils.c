@@ -1,5 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/19 17:30:53 by xwu               #+#    #+#             */
+/*   Updated: 2025/09/19 17:30:56 by xwu              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "philo.h"
+
+/* All utils, organizar más tarde */
 
 static int	ft_isspace(int c)
 {
@@ -39,7 +52,7 @@ int	ft_atoi(const char *str)
 	return (number * sign);
 }
 
-unsigned int	gettime_milisec(void)
+size_t	gettime_milisec(void)
 {
 	struct timeval	tv;
 
@@ -49,4 +62,13 @@ unsigned int	gettime_milisec(void)
 		return (-1);
 	}
 	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
+}
+
+void	usleep_milisec(size_t miliseconds)
+{
+	size_t	start_time;
+
+	start_time = gettime_milisec();
+	while (gettime_milisec() - start_time < miliseconds)
+		usleep(500);
 }
