@@ -12,16 +12,37 @@
 
 #include "philo.h"
 
+void	grab_forks(t_philo	*philo)
+{
+	if (philo->id % 2)
+	{
+		izquierda;
+		derecha;
+	}
+	else
+	{
+		derecha;
+		izquierda;
+	}
+}
+
 void	*philo_life(void *args)
 {
 	t_philo	*philo;
+	size_t	last_time_eat;
 
 	philo = (t_philo *)args;
 	philo->start_time = gettime_milisec();
-	printf("%lu	%zu ha empezado su vida\n", gettime_milisec() - philo->start_time, philo->id);
-	usleep_milisec(10);
-	printf("%zu	%zu tiene hambre\n", gettime_milisec() - philo->start_time, philo->id);
-	return (NULL);
+	last_time_eat = philo->start_time;
+	while (philo->n_eaten && gettime_milisec - last_time_eat < philo->t_die)
+	{
+		printf("%lu	%zu ha empezado su vida\n", gettime_milisec() - philo->start_time, philo->id);
+		grab_forks(philo);
+		printf("%lu	%zu is sleeping\n", gettime_milisec() - philo->start_time, philo->id);
+		printf("%lu	%zu is sleeping\n", gettime_milisec() - philo->start_time, philo->id);
+		usleep_milisec(philo->t_sleep);
+	}
+		return (NULL);
 }
 
 int	main(int ac, char **av)
