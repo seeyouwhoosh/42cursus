@@ -15,13 +15,12 @@
 void	*philo_life(void *args)
 {
 	t_philo	*philo;
-	size_t	current_t;
 
 	philo = (t_philo *)args;
-	current_t = gettime_milisec();
-	printf("%lu	%zu ha empezado su vida\n", current_t - philo->start_time, philo->id);
+	philo->start_time = gettime_milisec();
+	printf("%lu	%zu ha empezado su vida\n", gettime_milisec() - philo->start_time, philo->id);
 	usleep_milisec(10);
-	printf("%lu	%zu tiene hambre\n", current_t - philo->start_time, philo->id);
+	printf("%zu	%zu tiene hambre\n", gettime_milisec() - philo->start_time, philo->id);
 	return (NULL);
 }
 

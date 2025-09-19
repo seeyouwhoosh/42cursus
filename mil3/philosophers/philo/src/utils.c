@@ -66,9 +66,5 @@ size_t	gettime_milisec(void)
 
 void	usleep_milisec(size_t miliseconds)
 {
-	size_t	start_time;
-
-	start_time = gettime_milisec();
-	while (gettime_milisec() - start_time < miliseconds)
-		usleep(500);
+	usleep(miliseconds * 1000);
 }
