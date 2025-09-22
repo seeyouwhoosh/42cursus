@@ -99,8 +99,7 @@ int	house_init(char **av, t_house *house)
 	while (++i < house->n_philo)
 	{
 		house->philo[i].left_fork = house->forks[i];
-		if ()
-		house->philo[i].right_fork = house->forks[i + 1];
+		house->philo[i].right_fork = house->forks[i + 1 % house->n_philo];
 	}
 }
 
