@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:07:21 by xwu               #+#    #+#             */
-/*   Updated: 2025/09/07 11:07:29 by xwu              ###   ########.fr       */
+/*   Updated: 2025/09/23 01:49:35 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@ void	grab_forks(t_philo	*philo)
 {
 	if (philo->id % 2)
 	{
-		izquierda;
-		derecha;
+		pthread_mutex_lock(&philo->left_fork);
+		pthread_mutex_lock(&philo->right_fork);
 	}
 	else
 	{
-		derecha;
-		izquierda;
+		pthread_mutex_lock(&philo->right_fork);
+		pthread_mutex_lock(&philo->left_fork);
 	}
 }
 
@@ -33,10 +33,14 @@ void	*philo_life(void *args)
 	philo = (t_philo *)args;
 	philo->start_time = gettime_milisec();
 	philo->last_time_eat = gettime_milisec();
+	printf("%lu	%zu ha empezado su vida\n", gettime_milisec() - philo->start_time, philo->id);
 	while (1)
 	{
-		printf("%lu	%zu ha empezado su vida\n", gettime_milisec() - philo->start_time, philo->id);
-		
+		grab_forks(philo);
+		printf("%lu	%zu is eating\n", gettime_milisec() - philo->start_time, philo->id);
+		usleep_milisec(philo->t_eat);
+
+
 		printf("%lu	%zu is sleeping\n", gettime_milisec() - philo->start_time, philo->id);
 		usleep_milisec(philo->t_sleep);
 		printf("%lu	%zu is thinking\n", gettime_milisec() - philo->start_time, philo->id);
@@ -62,7 +66,7 @@ int	isnumeric(char *str)
 /* Checking that the numbers of args are valid, that they are all positive numbers before initializing anything */
 int	parse_args(int ac, char **av)
 {
-	size_t	i;
+	int	i;
 
 	if (ac < 5 || ac > 6)
 		return (1);
@@ -70,7 +74,7 @@ int	parse_args(int ac, char **av)
 	while (++i < ac)
 		if (!isnumeric(av[i]))
 			return (1);
-	if (ft_atoi(av[1] > MAX_N_PHILO))
+	if (ft_atoi(av[1]) > MAX_N_PHILO)
 		return (1);
 	return (0);
 }
@@ -78,7 +82,6 @@ int	parse_args(int ac, char **av)
 int	house_init(char **av, t_house *house)
 {
 	size_t	i;
-	size_t	j;
 
 	house->n_philo = ft_atoi(av[1]);
 	i = -1;
@@ -99,8 +102,9 @@ int	house_init(char **av, t_house *house)
 	while (++i < house->n_philo)
 	{
 		house->philo[i].left_fork = house->forks[i];
-		house->philo[i].right_fork = house->forks[i + 1 % house->n_philo];
+		house->philo[i].right_fork = house->forks[(i + 1) % house->n_philo];
 	}
+	return 0;
 }
 
 int	main(int ac, char **av)

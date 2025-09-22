@@ -10,7 +10,7 @@ NC			= \033[0m
 # Compiler
 NAME		= philo
 CC			= cc
-CFLAGS		= # -Wall -Werror -Wextra
+CFLAGS		= -Wall -Werror -Wextra
 MAKE		= make -sC
 RM			= rm -rf
 
