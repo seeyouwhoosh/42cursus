@@ -29,20 +29,79 @@ void	grab_forks(t_philo	*philo)
 void	*philo_life(void *args)
 {
 	t_philo	*philo;
-	size_t	last_time_eat;
 
 	philo = (t_philo *)args;
 	philo->start_time = gettime_milisec();
-	last_time_eat = philo->start_time;
-	while (philo->n_eaten && gettime_milisec - last_time_eat < philo->t_die)
+	philo->last_time_eat = gettime_milisec();
+	while (1)
 	{
 		printf("%lu	%zu ha empezado su vida\n", gettime_milisec() - philo->start_time, philo->id);
-		grab_forks(philo);
-		printf("%lu	%zu is sleeping\n", gettime_milisec() - philo->start_time, philo->id);
+		
 		printf("%lu	%zu is sleeping\n", gettime_milisec() - philo->start_time, philo->id);
 		usleep_milisec(philo->t_sleep);
+		printf("%lu	%zu is thinking\n", gettime_milisec() - philo->start_time, philo->id);
 	}
 		return (NULL);
+}
+
+/* 1. PARSING ARGUMENTS PART */
+
+int	isnumeric(char *str)
+{
+	size_t	i;
+
+	i = -1;
+	while (str[++i])
+	{
+		if (!(str[i] >= '0' && str[i] <= '9'))
+			return (0);
+	}
+	return (1);
+}
+
+/* Checking that the numbers of args are valid, that they are all positive numbers before initializing anything */
+int	parse_args(int ac, char **av)
+{
+	size_t	i;
+
+	if (ac < 5 || ac > 6)
+		return (1);
+	i = 0;
+	while (++i < ac)
+		if (!isnumeric(av[i]))
+			return (1);
+	if (ft_atoi(av[1] > MAX_N_PHILO))
+		return (1);
+	return (0);
+}
+
+int	house_init(char **av, t_house *house)
+{
+	size_t	i;
+	size_t	j;
+
+	house->n_philo = ft_atoi(av[1]);
+	i = -1;
+	while (++i < house->n_philo)
+	{
+		house->philo[i].t_die = ft_atoi(av[2]);
+		house->philo[i].t_eat = ft_atoi(av[3]);
+		house->philo[i].t_sleep = ft_atoi(av[4]);
+		if (av[5])
+			house->philo[i].n_eat = ft_atoi(av[5]);
+		else
+			house->philo[i].n_eat = -1;
+	}
+	i = -1;
+	while (++i < house->n_philo)
+		pthread_mutex_init(&house->forks[i], NULL);
+	i = -1;
+	while (++i < house->n_philo)
+	{
+		house->philo[i].left_fork = house->forks[i];
+		if ()
+		house->philo[i].right_fork = house->forks[i + 1];
+	}
 }
 
 int	main(int ac, char **av)
@@ -51,11 +110,12 @@ int	main(int ac, char **av)
 	size_t	i;
 	int		*retval;
 
-	house.n_philo = ft_atoi(av[1]);
-	house.philo = (t_philo *) malloc(sizeof(t_philo) * house.n_philo);
-	if (!house.philo)
-		printf("Error: malloc()");
-
+	if (parse_args(ac, av))
+	{
+		printf("\e[1;31mError\e[0;0m: arguments invalid");
+		return (1);
+	}
+	house_init(av, &house);
 	i = 0;
 	while (house.n_philo > i)
 	{
@@ -75,5 +135,4 @@ int	main(int ac, char **av)
 			printf("Thread number %ld has exited with error", i + 1);
 		i++;
 	}
-	free(house.philo);
 }

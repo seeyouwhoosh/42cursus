@@ -19,6 +19,10 @@
 # include <stdlib.h>
 # include <unistd.h>
 
+# define MAX_N_PHILO 200
+
+typedef pthread_mutex_t	t_mutex;
+
 typedef struct s_philo
 {
 	size_t		id;
@@ -28,14 +32,18 @@ typedef struct s_philo
 	size_t		t_sleep;
 	int			n_eat;
 	size_t		start_time;
+	size_t		last_time_eat;
 	pthread_t	thread;
-}			t_philo;
+	t_mutex		left_fork;
+	t_mutex		right_fork;
+}				t_philo;
 
 typedef struct s_house
 {
-	size_t		n_philo;
-	t_philo		*philo;
-}					t_house;
+	size_t	n_philo;
+	t_philo	philo[MAX_N_PHILO];
+	t_mutex	forks[MAX_N_PHILO];
+}			t_house;
 
 int		ft_atoi(const char *str);
 
