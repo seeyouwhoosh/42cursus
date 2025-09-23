@@ -49,13 +49,13 @@ int	is_int(char *s)
 	if ((sign && conv >= 0) || (!sign && conv < 0))
 		return (0);
 	if (conv < 0)
-		conv = -conv;	
+		conv = -conv;
 	while (i-- > sign)
 	{
 		if (s[i] < '0' || s[i] > '9')
-			return 0;
+			return (0);
 		if ((s[i] - '0') != (conv % 10))
-			return 0;
+			return (0);
 		conv /= 10;
 	}
 	return (1);

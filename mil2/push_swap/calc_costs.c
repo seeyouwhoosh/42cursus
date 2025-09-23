@@ -47,7 +47,6 @@ int	target_pos_asc(t_list *b, int n)
 	int		i;
 	t_list	*tmp;
 
-
 	tmp = b;
 	i = 0;
 	if (n < ft_minint(b) || n > ft_maxint(b))
@@ -63,7 +62,6 @@ int	target_pos_asc(t_list *b, int n)
 		}
 		if (tmp && *(int *)tmp->content < n && *(int *)b->content > n)
 			return (0);
-
 	}
 	return (i);
 }
@@ -72,7 +70,6 @@ int	target_pos_des(t_list *b, int n)
 {
 	int		i;
 	t_list	*tmp;
-
 
 	tmp = b;
 	i = 0;
@@ -101,7 +98,6 @@ int	op_cost(t_list *a, t_list *b, int n, short ascending)
 	int	cost_b;
 
 	index_a = ft_index(a, n);
-
 	if (index_a == -1)
 		return (-1);
 	cost_a = cost_to_top(a, index_a);

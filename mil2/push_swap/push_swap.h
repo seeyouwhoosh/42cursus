@@ -16,7 +16,6 @@
 # include "ft_printf.h"
 # define BUFFER_SIZE 8
 
-
 /* PRACTICAL FUNCTIONS */
 
 /* Join all strings given into one single string, separated by
@@ -35,7 +34,6 @@ int		ft_min(int a, int b);
 
 int		is_int(char *s);
 
-
 /* LIST FUNCTIONS THAT ARE NOT INCLUDED IN THE LIBFT */
 
 /* Check whether there are repeated ints in a linked list */
@@ -52,7 +50,6 @@ int		ft_minint(t_list *lst);
 
 /* Get the maximum in the linked list */
 int		ft_maxint(t_list *lst);
-
 
 /* GENERIC OPERATIONS WITH LINKED LISTS */
 
@@ -93,7 +90,6 @@ void	ft_rr(t_list **a, t_list **b);
 void	ft_rrr(t_list **a, t_list **b);
 
 void	rotate_ab(t_list **a, int cost_a, t_list **b, int cost_b);
-
 
 /* SPECIFIC OPERATIONS FOR LINKED LISTS WITH LISTS */
 

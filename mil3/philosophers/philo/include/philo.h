@@ -26,7 +26,6 @@ typedef pthread_mutex_t	t_mutex;
 typedef struct s_philo
 {
 	size_t		id;
-	size_t		n_eaten;
 	size_t		t_die;
 	size_t		t_eat;
 	size_t		t_sleep;
@@ -34,8 +33,8 @@ typedef struct s_philo
 	size_t		start_time;
 	size_t		last_time_eat;
 	pthread_t	thread;
-	t_mutex		left_fork;
-	t_mutex		right_fork;
+	t_mutex		*left_fork;
+	t_mutex		*right_fork;
 }				t_philo;
 
 typedef struct s_house

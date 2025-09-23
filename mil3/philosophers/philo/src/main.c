@@ -16,13 +16,13 @@ void	grab_forks(t_philo	*philo)
 {
 	if (philo->id % 2)
 	{
-		pthread_mutex_lock(&philo->left_fork);
-		pthread_mutex_lock(&philo->right_fork);
+		pthread_mutex_lock(philo->left_fork);
+		pthread_mutex_lock(philo->right_fork);
 	}
 	else
 	{
-		pthread_mutex_lock(&philo->right_fork);
-		pthread_mutex_lock(&philo->left_fork);
+		pthread_mutex_lock(philo->right_fork);
+		pthread_mutex_lock(philo->left_fork);
 	}
 }
 
@@ -33,14 +33,17 @@ void	*philo_life(void *args)
 	philo = (t_philo *)args;
 	philo->start_time = gettime_milisec();
 	philo->last_time_eat = gettime_milisec();
-	printf("%lu	%zu ha empezado su vida\n", gettime_milisec() - philo->start_time, philo->id);
 	while (1)
 	{
 		grab_forks(philo);
 		printf("%lu	%zu is eating\n", gettime_milisec() - philo->start_time, philo->id);
 		usleep_milisec(philo->t_eat);
-
-
+		if (philo->n_eat != -1 && philo->n_eat)
+			philo->n_eat--;
+		else if (!philo->n_eat)
+			exit(1);
+		pthread_mutex_unlock(philo->right_fork);
+		pthread_mutex_unlock(philo->left_fork);
 		printf("%lu	%zu is sleeping\n", gettime_milisec() - philo->start_time, philo->id);
 		usleep_milisec(philo->t_sleep);
 		printf("%lu	%zu is thinking\n", gettime_milisec() - philo->start_time, philo->id);
@@ -101,8 +104,8 @@ int	house_init(char **av, t_house *house)
 	i = -1;
 	while (++i < house->n_philo)
 	{
-		house->philo[i].left_fork = house->forks[i];
-		house->philo[i].right_fork = house->forks[(i + 1) % house->n_philo];
+		house->philo[i].left_fork = &house->forks[i];
+		house->philo[i].right_fork = &house->forks[(i + 1) % house->n_philo];
 	}
 	return 0;
 }

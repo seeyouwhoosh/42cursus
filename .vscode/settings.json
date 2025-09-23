@@ -1,8 +1,0 @@
-{
-	"files.associations": {
-		"fractol.h": "c",
-		"keysym.h": "c",
-		"unistd.h": "c",
-		"mlx_opengl.h": "c"
-	}
-}
