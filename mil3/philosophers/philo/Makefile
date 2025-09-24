@@ -39,13 +39,13 @@ BOBJ_DIR	= obj
 BOBJ		= $(BSOURCES:.c=.o)
 BOBJECTS	= $(addprefix $(BOBJ_DIR)/, $(BSOURCES:.c=.o))
 
-all: deps $(OBJECTS) $(NAME)
+all: $(OBJECTS) $(NAME)
 
 # Libraries and other dependencies
-deps: 
+deps:
 
 # Main program
-$(NAME): deps $(OBJECTS)
+$(NAME): $(OBJECTS)
 	@echo "$(BBLUE)$(NAME)$(NC): Creating $(GREEN)$@$(NC)..."
 	@$(CC) $(CFLAGS) -o $@ $(OBJECTS) $(LINKER)
 	@echo "$(BBLUE)$(NAME)$(NC): $(GREEN)$(NAME)$(NC) created"
