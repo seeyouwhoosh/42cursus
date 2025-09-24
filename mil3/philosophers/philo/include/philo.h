@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 12:31:17 by xwu               #+#    #+#             */
-/*   Updated: 2025/09/06 12:31:17 by xwu              ###   ########.fr       */
+/*   Updated: 2025/09/24 21:41:37 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,11 @@ typedef struct s_philo
 
 typedef struct s_house
 {
-	size_t	n_philo;
-	t_philo	philo[MAX_N_PHILO];
-	t_mutex	forks[MAX_N_PHILO];
-}			t_house;
+	size_t		n_philo;
+	t_philo		philo[MAX_N_PHILO];
+	t_mutex		forks[MAX_N_PHILO];
+	pthread_t	valkyrie;
+}				t_house;
 
 int		ft_atoi(const char *str);
 

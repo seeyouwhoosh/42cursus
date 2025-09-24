@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:07:21 by xwu               #+#    #+#             */
-/*   Updated: 2025/09/23 01:49:35 by xwu              ###   ########.fr       */
+/*   Updated: 2025/09/24 22:00:13 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,37 @@ void	grab_forks(t_philo	*philo)
 	if (philo->id % 2)
 	{
 		pthread_mutex_lock(philo->left_fork);
+		printf("%lu	%zu has taken a fork\n", gettime_milisec() - philo->start_time, philo->id);
 		pthread_mutex_lock(philo->right_fork);
+		printf("%lu	%zu has taken a fork\n", gettime_milisec() - philo->start_time, philo->id);
 	}
 	else
 	{
 		pthread_mutex_lock(philo->right_fork);
+		printf("%lu	%zu has taken a fork\n", gettime_milisec() - philo->start_time, philo->id);
 		pthread_mutex_lock(philo->left_fork);
+		printf("%lu	%zu has taken a fork\n", gettime_milisec() - philo->start_time, philo->id);
+	}
+}
+
+void	*valkyrie(void *args)
+{
+	t_house	*house;
+	size_t	i;
+
+	house = (t_house *)args;
+	while (1)
+	{
+		usleep_milisec(10);
+		i =	-1;
+		while (++i < house->n_philo)
+		{
+			if (gettime_milisec() - house->philo[i].last_time_eat - 5 > house->philo[i].t_die)
+			{
+				printf("%lu	%zu has died\n", gettime_milisec() - house->philo[i].start_time, house->philo[i].id);
+				exit(0);
+			}
+		}
 	}
 }
 
@@ -35,20 +60,21 @@ void	*philo_life(void *args)
 	philo->last_time_eat = gettime_milisec();
 	while (1)
 	{
+		if (!philo->n_eat)
+			return (NULL);
 		grab_forks(philo);
 		printf("%lu	%zu is eating\n", gettime_milisec() - philo->start_time, philo->id);
 		usleep_milisec(philo->t_eat);
 		if (philo->n_eat != -1 && philo->n_eat)
 			philo->n_eat--;
-		else if (!philo->n_eat)
-			exit(1);
+		philo->last_time_eat = gettime_milisec();
 		pthread_mutex_unlock(philo->right_fork);
 		pthread_mutex_unlock(philo->left_fork);
 		printf("%lu	%zu is sleeping\n", gettime_milisec() - philo->start_time, philo->id);
 		usleep_milisec(philo->t_sleep);
 		printf("%lu	%zu is thinking\n", gettime_milisec() - philo->start_time, philo->id);
 	}
-		return (NULL);
+	return (NULL);
 }
 
 /* 1. PARSING ARGUMENTS PART */
@@ -82,7 +108,7 @@ int	parse_args(int ac, char **av)
 	return (0);
 }
 
-int	house_init(char **av, t_house *house)
+void	house_init(char **av, t_house *house)
 {
 	size_t	i;
 
@@ -107,7 +133,6 @@ int	house_init(char **av, t_house *house)
 		house->philo[i].left_fork = &house->forks[i];
 		house->philo[i].right_fork = &house->forks[(i + 1) % house->n_philo];
 	}
-	return 0;
 }
 
 int	main(int ac, char **av)
@@ -132,13 +157,21 @@ int	main(int ac, char **av)
 		i++;
 	}
 
+	pthread_create(&house.valkyrie, NULL,
+			valkyrie, &house);
+	pthread_join(house.valkyrie, (void **)&retval);
+
 /* Retrieving threads */
 	i = 0;
 	while (house.n_philo > i)
 	{
 		pthread_join(house.philo[i].thread, (void **)&retval);
 		if (retval)
-			printf("Thread number %ld has exited with error", i + 1);
+			printf("Thread number %ld has exited with error\n", i + 1);
 		i++;
 	}
+
+	i = -1;
+	while (++i < house.n_philo)
+		pthread_mutex_destroy(&house.forks[i]);
 }
