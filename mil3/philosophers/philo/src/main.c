@@ -12,21 +12,29 @@
 
 #include "philo.h"
 
+void	printf_action(t_philo *philo, char *action)
+{
+	size_t	timestamp;
+
+	timestamp = gettime_milisec() - philo->start_time;
+	printf("%lu	%zu %s\n", timestamp, philo->id, action);
+}
+
 void	grab_forks(t_philo	*philo)
 {
 	if (philo->id % 2)
 	{
 		pthread_mutex_lock(philo->left_fork);
-		printf("%lu	%zu has taken a fork\n", gettime_milisec() - philo->start_time, philo->id);
+		printf_action(philo, "has taken a fork");
 		pthread_mutex_lock(philo->right_fork);
-		printf("%lu	%zu has taken a fork\n", gettime_milisec() - philo->start_time, philo->id);
+		printf_action(philo, "has taken a fork");
 	}
 	else
 	{
 		pthread_mutex_lock(philo->right_fork);
-		printf("%lu	%zu has taken a fork\n", gettime_milisec() - philo->start_time, philo->id);
+		printf_action(philo, "has taken a fork");
 		pthread_mutex_lock(philo->left_fork);
-		printf("%lu	%zu has taken a fork\n", gettime_milisec() - philo->start_time, philo->id);
+		printf_action(philo, "has taken a fork");
 	}
 }
 
@@ -39,14 +47,18 @@ void	*valkyrie(void *args)
 	while (1)
 	{
 		usleep_milisec(10);
-		i =	-1;
+		i = -1;
 		while (++i < house->n_philo)
 		{
-			if (gettime_milisec() - house->philo[i].last_time_eat - 5 > house->philo[i].t_die)
+			pthread_mutex_lock(&house->philo[i].meal_mutex);
+			if (gettime_milisec() - house->philo[i].last_time_eat
+				> house->philo[i].t_die)
 			{
-				printf("%lu	%zu has died\n", gettime_milisec() - house->philo[i].start_time, house->philo[i].id);
+				printf_action(&house->philo[i], "has died");
+				pthread_mutex_unlock(&house->philo[i].meal_mutex);
 				exit(0);
 			}
+			pthread_mutex_unlock(&house->philo[i].meal_mutex);
 		}
 	}
 }
@@ -62,51 +74,27 @@ void	*philo_life(void *args)
 	{
 		if (!philo->n_eat)
 			return (NULL);
+
 		grab_forks(philo);
-		printf("%lu	%zu is eating\n", gettime_milisec() - philo->start_time, philo->id);
+		printf_action(philo, "is eating");
 		usleep_milisec(philo->t_eat);
 		if (philo->n_eat != -1 && philo->n_eat)
 			philo->n_eat--;
+
+		pthread_mutex_lock(&philo->meal_mutex);
 		philo->last_time_eat = gettime_milisec();
+		pthread_mutex_unlock(&philo->meal_mutex);
+
 		pthread_mutex_unlock(philo->right_fork);
 		pthread_mutex_unlock(philo->left_fork);
-		printf("%lu	%zu is sleeping\n", gettime_milisec() - philo->start_time, philo->id);
+
+		printf_action(philo, "is sleeping");
 		usleep_milisec(philo->t_sleep);
-		printf("%lu	%zu is thinking\n", gettime_milisec() - philo->start_time, philo->id);
+		printf_action(philo, "is thinking");
 	}
 	return (NULL);
 }
 
-/* 1. PARSING ARGUMENTS PART */
-
-int	isnumeric(char *str)
-{
-	size_t	i;
-
-	i = -1;
-	while (str[++i])
-	{
-		if (!(str[i] >= '0' && str[i] <= '9'))
-			return (0);
-	}
-	return (1);
-}
-
-/* Checking that the numbers of args are valid, that they are all positive numbers before initializing anything */
-int	parse_args(int ac, char **av)
-{
-	int	i;
-
-	if (ac < 5 || ac > 6)
-		return (1);
-	i = 0;
-	while (++i < ac)
-		if (!isnumeric(av[i]))
-			return (1);
-	if (ft_atoi(av[1]) > MAX_N_PHILO)
-		return (1);
-	return (0);
-}
 
 void	house_init(char **av, t_house *house)
 {
@@ -130,6 +118,7 @@ void	house_init(char **av, t_house *house)
 	i = -1;
 	while (++i < house->n_philo)
 	{
+		pthread_mutex_init(&house->philo[i].meal_mutex, NULL);
 		house->philo[i].left_fork = &house->forks[i];
 		house->philo[i].right_fork = &house->forks[(i + 1) % house->n_philo];
 	}
@@ -157,11 +146,9 @@ int	main(int ac, char **av)
 		i++;
 	}
 
-	pthread_create(&house.valkyrie, NULL,
-			valkyrie, &house);
+	pthread_create(&house.valkyrie, NULL, valkyrie, &house);
 	pthread_join(house.valkyrie, (void **)&retval);
 
-/* Retrieving threads */
 	i = 0;
 	while (house.n_philo > i)
 	{
@@ -170,6 +157,7 @@ int	main(int ac, char **av)
 			printf("Thread number %ld has exited with error\n", i + 1);
 		i++;
 	}
+
 
 	i = -1;
 	while (++i < house.n_philo)

@@ -23,7 +23,7 @@ INCLUDES	= -I$(INCLUDE_DIR)
 
 # Sources
 SRC_DIR		= src
-SOURCES		= main.c utils.c
+SOURCES		= copy.c utils.c
 
 # Objects
 OBJ_DIR		= obj

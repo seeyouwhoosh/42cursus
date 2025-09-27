@@ -35,6 +35,7 @@ typedef struct s_philo
 	pthread_t	thread;
 	t_mutex		*left_fork;
 	t_mutex		*right_fork;
+	t_mutex		meal_mutex;
 }				t_philo;
 
 typedef struct s_house
@@ -50,5 +51,7 @@ int		ft_atoi(const char *str);
 size_t	gettime_milisec(void);
 
 void	usleep_milisec(size_t miliseconds);
+
+int		parse_args(int ac, char **av);
 
 #endif /* PHILO_H */

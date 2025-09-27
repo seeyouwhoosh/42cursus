@@ -24,6 +24,19 @@ static int	ft_isdigit(int c)
 	return (c >= '0' && c <= '9');
 }
 
+int	isnumeric(char *str)
+{
+	size_t	i;
+
+	i = -1;
+	while (str[++i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+	}
+	return (1);
+}
+
 int	ft_atoi(const char *str)
 {
 	int	index;
@@ -71,4 +84,19 @@ void	usleep_milisec(size_t miliseconds)
 	start_time = gettime_milisec();
 	while (gettime_milisec() - start_time < miliseconds)
 		usleep(500);
+}
+
+int	parse_args(int ac, char **av)
+{
+	int	i;
+
+	if (ac < 5 || ac > 6)
+		return (1);
+	i = 0;
+	while (++i < ac)
+		if (!isnumeric(av[i]))
+			return (1);
+	if (ft_atoi(av[1]) > MAX_N_PHILO)
+		return (1);
+	return (0);
 }
