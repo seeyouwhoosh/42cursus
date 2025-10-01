@@ -44,11 +44,10 @@ void	*valkyrie(void *args)
 		{
 			pthread_mutex_lock(&house->philo[i].meal_mutex);
 			if (gettime_milisec() - house->philo[i].last_time_eat
-				> house->philo[i].t_die)
+				>= house->philo[i].t_die)
 			{
 				printf_action(&house->philo[i], "has died");
 				pthread_mutex_unlock(&house->philo[i].meal_mutex);
-				exit(0);
 			}
 			pthread_mutex_unlock(&house->philo[i].meal_mutex);
 		}
@@ -65,16 +64,19 @@ void	*philo_life(void *args)
 	{
 		pthread_mutex_lock(&philo->meal_mutex);
 		if (!philo->n_eat)
+		{
+			pthread_mutex_unlock(&philo->meal_mutex);
 			return (NULL);
+		}
 		pthread_mutex_unlock(&philo->meal_mutex);
 
 		grab_forks(philo);
 		printf_action(philo, "is eating");
 		usleep_milisec(philo->t_eat);
-		if (philo->n_eat != -1 && philo->n_eat)
-			philo->n_eat--;
 
 		pthread_mutex_lock(&philo->meal_mutex);
+		if (philo->n_eat != -1 && philo->n_eat)
+			philo->n_eat--;
 		philo->last_time_eat = gettime_milisec();
 		pthread_mutex_unlock(&philo->meal_mutex);
 
@@ -94,6 +96,7 @@ void	house_init(char **av, t_house *house)
 	size_t	i;
 
 	house->n_philo = ft_atoi(av[1]);
+	house->someone_died = 0;
 	i = -1;
 	while (++i < house->n_philo)
 	{
@@ -134,25 +137,22 @@ int	main(int ac, char **av)
 
 	pthread_create(&house.valkyrie, NULL, valkyrie, &house);
 
-	i = 0;
+	i = -1;
 	start_time = gettime_milisec();
-	while (house.n_philo > i)
+	while (house.n_philo > ++i)
 	{
 		house.philo[i].start_time = start_time;
 		pthread_create(&house.philo[i].thread, NULL,
 			philo_life, &house.philo[i]);
-		i++;
 	}
 
-	i = 0;
-
 	pthread_join(house.valkyrie, (void **)&retval);
-	while (house.n_philo > i)
+	i = -1;
+	while (house.n_philo > ++i)
 	{
 		pthread_join(house.philo[i].thread, (void **)&retval);
 		if (retval)
 			printf("Thread number %ld has exited with error\n", i + 1);
-		i++;
 	}
 
 	i = -1;

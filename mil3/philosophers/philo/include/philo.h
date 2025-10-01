@@ -46,6 +46,7 @@ typedef struct s_house
 	t_mutex		forks[MAX_N_PHILO];
 	pthread_t	valkyrie;
 	t_mutex		print_mutex;
+	int			someone_died;
 }				t_house;
 
 int		ft_atoi(const char *str);
