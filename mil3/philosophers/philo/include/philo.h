@@ -36,6 +36,7 @@ typedef struct s_philo
 	t_mutex		*left_fork;
 	t_mutex		*right_fork;
 	t_mutex		meal_mutex;
+	t_mutex		*print_mutex;
 }				t_philo;
 
 typedef struct s_house
@@ -44,6 +45,7 @@ typedef struct s_house
 	t_philo		philo[MAX_N_PHILO];
 	t_mutex		forks[MAX_N_PHILO];
 	pthread_t	valkyrie;
+	t_mutex		print_mutex;
 }				t_house;
 
 int		ft_atoi(const char *str);
@@ -53,5 +55,7 @@ size_t	gettime_milisec(void);
 void	usleep_milisec(size_t miliseconds);
 
 int		parse_args(int ac, char **av);
+
+void	printf_action(t_philo *philo, char *action);
 
 #endif /* PHILO_H */

@@ -12,14 +12,6 @@
 
 #include "philo.h"
 
-void	printf_action(t_philo *philo, char *action)
-{
-	size_t	timestamp;
-
-	timestamp = gettime_milisec() - philo->start_time;
-	printf("%lu	%zu %s\n", timestamp, philo->id, action);
-}
-
 void	grab_forks(t_philo	*philo)
 {
 	if (philo->id % 2)
@@ -68,12 +60,13 @@ void	*philo_life(void *args)
 	t_philo	*philo;
 
 	philo = (t_philo *)args;
-	philo->start_time = gettime_milisec();
-	philo->last_time_eat = gettime_milisec();
+	philo->last_time_eat = philo->start_time;
 	while (1)
 	{
+		pthread_mutex_lock(&philo->meal_mutex);
 		if (!philo->n_eat)
 			return (NULL);
+		pthread_mutex_unlock(&philo->meal_mutex);
 
 		grab_forks(philo);
 		printf_action(philo, "is eating");
@@ -111,14 +104,15 @@ void	house_init(char **av, t_house *house)
 			house->philo[i].n_eat = ft_atoi(av[5]);
 		else
 			house->philo[i].n_eat = -1;
-	}
-	i = -1;
-	while (++i < house->n_philo)
+		house->philo[i].id = i + 1;
 		pthread_mutex_init(&house->forks[i], NULL);
+		pthread_mutex_init(&house->philo[i].meal_mutex, NULL);
+	}
+	pthread_mutex_init(&house->print_mutex, NULL);
 	i = -1;
 	while (++i < house->n_philo)
 	{
-		pthread_mutex_init(&house->philo[i].meal_mutex, NULL);
+		house->philo[i].print_mutex = &house->print_mutex;
 		house->philo[i].left_fork = &house->forks[i];
 		house->philo[i].right_fork = &house->forks[(i + 1) % house->n_philo];
 	}
@@ -129,6 +123,7 @@ int	main(int ac, char **av)
 	t_house	house;
 	size_t	i;
 	int		*retval;
+	size_t	start_time;
 
 	if (parse_args(ac, av))
 	{
@@ -136,20 +131,22 @@ int	main(int ac, char **av)
 		return (1);
 	}
 	house_init(av, &house);
+
+	pthread_create(&house.valkyrie, NULL, valkyrie, &house);
+
 	i = 0;
+	start_time = gettime_milisec();
 	while (house.n_philo > i)
 	{
-		house.philo[i].id = i + 1;
-		house.philo[i].start_time = gettime_milisec();
+		house.philo[i].start_time = start_time;
 		pthread_create(&house.philo[i].thread, NULL,
 			philo_life, &house.philo[i]);
 		i++;
 	}
 
-	pthread_create(&house.valkyrie, NULL, valkyrie, &house);
-	pthread_join(house.valkyrie, (void **)&retval);
-
 	i = 0;
+
+	pthread_join(house.valkyrie, (void **)&retval);
 	while (house.n_philo > i)
 	{
 		pthread_join(house.philo[i].thread, (void **)&retval);
@@ -157,7 +154,6 @@ int	main(int ac, char **av)
 			printf("Thread number %ld has exited with error\n", i + 1);
 		i++;
 	}
-
 
 	i = -1;
 	while (++i < house.n_philo)

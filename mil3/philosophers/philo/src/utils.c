@@ -14,12 +14,12 @@
 
 /* All utils, organizar más tarde */
 
-static int	ft_isspace(int c)
+int	ft_isspace(int c)
 {
 	return (c == 32 || (c >= 9 && c <= 13));
 }
 
-static int	ft_isdigit(int c)
+int	ft_isdigit(int c)
 {
 	return (c >= '0' && c <= '9');
 }
@@ -48,13 +48,10 @@ int	ft_atoi(const char *str)
 	sign = 1;
 	while (ft_isspace(str[index]))
 		index++;
-	if (str[index] == '-')
+	while (str[index] == '-' || str[index] == '+')
 	{
-		sign = -1;
-		index++;
-	}
-	else if (str[index] == '+')
-	{
+		if (str[index] == '-')
+			sign += -1;
 		index++;
 	}
 	while (ft_isdigit(str[index]))
@@ -99,4 +96,14 @@ int	parse_args(int ac, char **av)
 	if (ft_atoi(av[1]) > MAX_N_PHILO)
 		return (1);
 	return (0);
+}
+
+void	printf_action(t_philo *philo, char *action)
+{
+	size_t	timestamp;
+
+	timestamp = gettime_milisec() - philo->start_time;
+	pthread_mutex_lock(philo->print_mutex);
+	printf("%lu	%zu %s\n", timestamp, philo->id, action);
+	pthread_mutex_unlock(philo->print_mutex);
 }
