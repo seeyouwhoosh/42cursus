@@ -47,7 +47,7 @@ deps:
 # Main program
 $(NAME): $(OBJECTS)
 	@echo "$(BBLUE)$(NAME)$(NC): Creating $(GREEN)$@$(NC)..."
-	@$(CC) $(CFLAGS) -o $@ $(OBJECTS) $(LINKER)
+	$(CC) $(CFLAGS) -o $@ $(OBJECTS) $(LINKER)
 	@echo "$(BBLUE)$(NAME)$(NC): $(GREEN)$(NAME)$(NC) created"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
@@ -57,11 +57,11 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 # Bonus program
 $(BOBJ_DIR)/%.o: $(BSRC_DIR)/%.c
 	@mkdir -p $(BOBJ_DIR)
-	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@ 
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@ 
 
-bonus: deps $(BOBJECTS)
+bonus: $(BOBJECTS)
 	@echo "$(BBLUE)$(NAME)$(NC): Creating $(GREEN)$(NAME) ($@)$(NC)..."
-	@$(CC) $(CFLAGS) -o $(NAME) $(BOBJECTS) $(LINKER)
+	$(CC) $(CFLAGS) -o $(NAME) $(BOBJECTS) $(LINKER)
 	@echo "$(BBLUE)$(NAME)$(NC): $(GREEN)$(NAME) ($@)$(NC) created"
 
 # Cleaning targets

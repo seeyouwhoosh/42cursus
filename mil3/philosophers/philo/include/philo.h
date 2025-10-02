@@ -37,6 +37,8 @@ typedef struct s_philo
 	t_mutex		*right_fork;
 	t_mutex		meal_mutex;
 	t_mutex		*print_mutex;
+	t_mutex		*dead_mutex;
+	int			*someone_died;
 }				t_philo;
 
 typedef struct s_house
@@ -46,6 +48,7 @@ typedef struct s_house
 	t_mutex		forks[MAX_N_PHILO];
 	pthread_t	valkyrie;
 	t_mutex		print_mutex;
+	t_mutex		dead_mutex;
 	int			someone_died;
 }				t_house;
 
