@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   copy.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:07:21 by xwu               #+#    #+#             */
-/*   Updated: 2025/09/24 22:03:57 by xwu              ###   ########.fr       */
+/*   Updated: 2025/10/04 22:18:18 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,11 +150,8 @@ int	main(int ac, char **av)
 	while (house.n_philo > i)
 	{
 		pthread_join(house.philo[i].thread, &retval);
-		if (retval)
-			printf("Thread number %zu has exited with error\n", i + 1);
 		i++;
 	}
-
 
 	i = -1;
 	while (++i < house.n_philo)

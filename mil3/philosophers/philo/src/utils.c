@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 17:30:53 by xwu               #+#    #+#             */
-/*   Updated: 2025/09/19 17:30:56 by xwu              ###   ########.fr       */
+/*   Updated: 2025/10/04 21:47:33 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,8 @@ void	printf_action(t_philo *philo, char *action)
 {
 	size_t	timestamp;
 
-	timestamp = gettime_milisec() - philo->start_time;
 	pthread_mutex_lock(philo->print_mutex);
+	timestamp = gettime_milisec() - philo->start_time;
 	printf("%lu	%zu %s\n", timestamp, philo->id, action);
 	pthread_mutex_unlock(philo->print_mutex);
 }
