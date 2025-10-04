@@ -93,7 +93,7 @@ int	parse_args(int ac, char **av)
 	while (++i < ac)
 		if (!isnumeric(av[i]))
 			return (1);
-	if (ft_atoi(av[1]) > MAX_N_PHILO)
+	if (ft_atoi(av[1]) > MAX_N_PHILO || !ft_atoi(av[1]))
 		return (1);
 	return (0);
 }

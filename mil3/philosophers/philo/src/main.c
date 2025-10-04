@@ -30,22 +30,51 @@ void	grab_forks(t_philo	*philo)
 	}
 }
 
+/* Risky area, everything is broken */
+/* --------------------------------------------- */
 
 void	exit_house(t_house *house)
 {
 	size_t	i;
 
 	i = -1;
+
 	while (house->n_philo > ++i)
 	{
-		pthread_join(house->philo[i].thread, NULL);
 		pthread_mutex_destroy(&house->forks[i]);
 		pthread_mutex_destroy(&house->philo[i].meal_mutex);
 	}
 	pthread_mutex_destroy(&house->print_mutex);
 	pthread_mutex_destroy(&house->dead_mutex);
 
-	exit(0);
+	return ;
+}
+
+int	someone_died(t_philo *philo)
+{
+	int	dead;
+
+	pthread_mutex_lock(philo->dead_mutex);
+	dead = *(philo->someone_died);
+	pthread_mutex_unlock(philo->dead_mutex);
+	return (dead);
+}
+
+int	all_has_eaten(t_house *house)
+{
+	size_t	i;
+
+	i = -1;
+	while (++i < house->n_philo)
+	{
+		pthread_mutex_lock(&house->philo[i].meal_mutex);
+		if (house->philo[i].n_eat && house->philo[i].n_eat != -1)
+		{
+			pthread_mutex_unlock(&house->philo[i].meal_mutex);
+			return (0);
+		}
+	}
+	return (1);
 }
 
 void	*valkyrie(void *args)
@@ -54,9 +83,9 @@ void	*valkyrie(void *args)
 	size_t	i;
 
 	house = (t_house *)args;
-	while (1)
+	usleep_milisec(10);
+	while (all_has_eaten(house))
 	{
-		usleep_milisec(10);
 		i = -1;
 		while (++i < house->n_philo)
 		{
@@ -67,9 +96,10 @@ void	*valkyrie(void *args)
 				pthread_mutex_lock(&house->dead_mutex);
 				house->someone_died = 1;
 				pthread_mutex_unlock(&house->dead_mutex);
-				printf_action(&house->philo[i], "has died");
 				pthread_mutex_unlock(&house->philo[i].meal_mutex);
-				exit_house(house);
+				printf_action(&house->philo[i], "has died");
+				pthread_mutex_lock(&house->print_mutex);
+				return (NULL);
 			}
 			pthread_mutex_unlock(&house->philo[i].meal_mutex);
 		}
@@ -77,15 +107,29 @@ void	*valkyrie(void *args)
 }
 
 
+void	philo_eating(t_philo *philo)
+{
+	grab_forks(philo);
+	printf_action(philo, "is eating");
+	usleep_milisec(philo->t_eat);
+	pthread_mutex_lock(&philo->meal_mutex);
+	if (philo->n_eat != -1 && philo->n_eat)
+		philo->n_eat--;
+	philo->last_time_eat = gettime_milisec();
+	pthread_mutex_unlock(&philo->meal_mutex);
+
+	pthread_mutex_unlock(philo->right_fork);
+	pthread_mutex_unlock(philo->left_fork);
+}
+
 void	*philo_life(void *args)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)args;
 	philo->last_time_eat = philo->start_time;
-	while (!(*philo->someone_died))
+	while (!someone_died(philo))
 	{
-		pthread_mutex_unlock(philo->dead_mutex);
 		pthread_mutex_lock(&philo->meal_mutex);
 		if (!philo->n_eat)
 		{
@@ -93,24 +137,10 @@ void	*philo_life(void *args)
 			return (NULL);
 		}
 		pthread_mutex_unlock(&philo->meal_mutex);
-
-		grab_forks(philo);
-		printf_action(philo, "is eating");
-		usleep_milisec(philo->t_eat);
-
-		pthread_mutex_lock(&philo->meal_mutex);
-		if (philo->n_eat != -1 && philo->n_eat)
-			philo->n_eat--;
-		philo->last_time_eat = gettime_milisec();
-		pthread_mutex_unlock(&philo->meal_mutex);
-
-		pthread_mutex_unlock(philo->right_fork);
-		pthread_mutex_unlock(philo->left_fork);
-
+		philo_eating(philo);
 		printf_action(philo, "is sleeping");
 		usleep_milisec(philo->t_sleep);
 		printf_action(philo, "is thinking");
-		pthread_mutex_lock(philo->dead_mutex);
 	}
 	return (NULL);
 }
@@ -133,17 +163,16 @@ void	house_init(char **av, t_house *house)
 		house->philo[i].t_die = ft_atoi(av[2]);
 		house->philo[i].t_eat = ft_atoi(av[3]);
 		house->philo[i].t_sleep = ft_atoi(av[4]);
+		house->philo[i].n_eat = -1;
 		if (av[5])
 			house->philo[i].n_eat = ft_atoi(av[5]);
-		else
-			house->philo[i].n_eat = -1;
 		house->philo[i].id = i + 1;
-		pthread_mutex_init(&house->forks[i], NULL);
 		pthread_mutex_init(&house->philo[i].meal_mutex, NULL);
 		house->philo[i].print_mutex = &house->print_mutex;
 		house->philo[i].dead_mutex = &house->dead_mutex;
 		house->philo[i].left_fork = &house->forks[i];
 		house->philo[i].right_fork = &house->forks[(i + 1) % house->n_philo];
+		house->philo[i].someone_died = &house->someone_died;
 	}
 }
 
@@ -152,25 +181,26 @@ int	main(int ac, char **av)
 	t_house	house;
 	size_t	i;
 	int		*retval;
-	size_t	start_time;
 
 	if (parse_args(ac, av))
-	{
-		printf("\e[1;31mError\e[0;0m: arguments invalid");
-		return (1);
-	}
+		return (printf("\e[1;31mError\e[0;0m: arguments invalid"));
+
 	house_init(av, &house);
 
-	pthread_create(&house.valkyrie, NULL, valkyrie, &house);
+	if (pthread_create(&house.valkyrie, NULL, valkyrie, &house))
+		printf("\e[1;31mError\e[0;0m: pthread_create failed\n");
 
 	i = -1;
-	start_time = gettime_milisec();
 	while (house.n_philo > ++i)
 	{
-		house.philo[i].start_time = start_time;
-		pthread_create(&house.philo[i].thread, NULL,
-			philo_life, &house.philo[i]);
+		house.philo[i].start_time = gettime_milisec();
+		if (pthread_create(&house.philo[i].thread, NULL,
+				philo_life, &house.philo[i]))
+			printf("\e[1;31mError\e[0;0m: pthread_create failed\n");
 	}
-
+	i = -1;
 	pthread_join(house.valkyrie, (void **)&retval);
+	while (house.n_philo > ++i)
+		pthread_detach(house.philo[i].thread);
+	exit_house(&house);
 }
