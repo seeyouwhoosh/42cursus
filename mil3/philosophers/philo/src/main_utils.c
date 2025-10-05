@@ -73,7 +73,9 @@ void	threads_create(t_house *house)
 	i = -1;
 	while (house->n_philo > ++i)
 	{
+		pthread_mutex_lock(&house->print_mutex);
 		house->philo[i].start_time = gettime_milisec();
+		pthread_mutex_unlock(&house->print_mutex);
 		if (pthread_create(&house->philo[i].thread, NULL,
 				philo_life, &house->philo[i]))
 			printf("\e[1;31mError\e[0;0m: pthread_create failed\n");
@@ -104,5 +106,4 @@ void	exit_house(t_house *house)
 	}
 	pthread_mutex_destroy(&house->print_mutex);
 	pthread_mutex_destroy(&house->dead_mutex);
-	return ;
 }

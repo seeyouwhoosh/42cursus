@@ -27,7 +27,6 @@ SOURCES		= main.c main_utils.c utils.c philo.c valkyrie.c
 
 # Objects
 OBJ_DIR		= obj
-OBJ			= $(SOURCES:.c=.o)
 OBJECTS		= $(addprefix $(OBJ_DIR)/, $(SOURCES:.c=.o))
 
 # Bonus sources
@@ -36,33 +35,34 @@ BSOURCES	=
 
 # Bonus objects
 BOBJ_DIR	= obj
-BOBJ		= $(BSOURCES:.c=.o)
 BOBJECTS	= $(addprefix $(BOBJ_DIR)/, $(BSOURCES:.c=.o))
 
-all: $(OBJECTS) $(NAME)
+all: $(NAME)
 
 # Libraries and other dependencies
 deps:
 
 # Main program
 $(NAME): $(OBJECTS)
-	@echo "$(BBLUE)$(NAME)$(NC): Creating $(GREEN)$@$(NC)..."
+	@echo "$(BBLUE)$(NAME)$(NC): Creating $(GREEN)$(NAME)$(NC)..."
 	$(CC) $(CFLAGS) -o $@ $(OBJECTS) $(LINKER)
 	@echo "$(BBLUE)$(NAME)$(NC): $(GREEN)$(NAME)$(NC) created"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
-	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@ 
+	@echo "$(BBLUE)$(NAME)$(NC): Creating $(GREEN)$(NAME)'s objects$(NC)..."
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@ 
+	@echo "$(BBLUE)$(NAME)$(NC): $(GREEN)$(NAME)'s object$(NC) created"
 
 # Bonus program
-$(BOBJ_DIR)/%.o: $(BSRC_DIR)/%.c
-	@mkdir -p $(BOBJ_DIR)
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@ 
-
 bonus: $(BOBJECTS)
 	@echo "$(BBLUE)$(NAME)$(NC): Creating $(GREEN)$(NAME) ($@)$(NC)..."
 	$(CC) $(CFLAGS) -o $(NAME) $(BOBJECTS) $(LINKER)
 	@echo "$(BBLUE)$(NAME)$(NC): $(GREEN)$(NAME) ($@)$(NC) created"
+
+$(BOBJ_DIR)/%.o: $(BSRC_DIR)/%.c
+	@mkdir -p $(BOBJ_DIR)
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 # Cleaning targets
 clean:

@@ -36,7 +36,7 @@ void	*valkyrie(void *args)
 	size_t	i;
 
 	house = (t_house *)args;
-	usleep_milisec(10);
+	usleep_milisec(1);
 	while (!all_has_eaten(house))
 	{
 		i = -1;

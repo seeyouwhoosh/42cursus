@@ -35,25 +35,19 @@ int	someone_died(t_philo *philo)
 void	grab_forks(t_philo	*philo)
 {
 	if (philo->id % 2)
-	{
-		pthread_mutex_lock(philo->left_fork);
-		if (someone_died(philo))
-			return ;
-		printf_action(philo, "has taken a fork");
-		if (someone_died(philo))
-			return ;
-		pthread_mutex_lock(philo->right_fork);
-		printf_action(philo, "has taken a fork");
-	}
+		usleep_milisec(1);
 	else
 	{
+		if (someone_died(philo))
+			return ;
 		pthread_mutex_lock(philo->right_fork);
-		if (someone_died(philo))
-			return ;
 		printf_action(philo, "has taken a fork");
-		pthread_mutex_lock(philo->left_fork);
 		if (someone_died(philo))
+		{
+			pthread_mutex_unlock(philo->right_fork);
 			return ;
+		}
+		pthread_mutex_lock(philo->left_fork);
 		printf_action(philo, "has taken a fork");
 	}
 }
@@ -76,7 +70,6 @@ void	philo_eating(t_philo *philo)
 		philo->n_eat--;
 	philo->last_time_eat = gettime_milisec();
 	pthread_mutex_unlock(&philo->meal_mutex);
-
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
 }
@@ -86,7 +79,9 @@ void	*philo_life(void *args)
 	t_philo	*philo;
 
 	philo = (t_philo *)args;
+	pthread_mutex_lock(&philo->meal_mutex);
 	philo->last_time_eat = philo->start_time;
+	pthread_mutex_unlock(&philo->meal_mutex);
 	while (!someone_died(philo))
 	{
 		pthread_mutex_lock(&philo->meal_mutex);
@@ -96,8 +91,6 @@ void	*philo_life(void *args)
 			return (NULL);
 		}
 		pthread_mutex_unlock(&philo->meal_mutex);
-		if (someone_died(philo))
-			return (NULL);
 		philo_eating(philo);
 		if (someone_died(philo))
 			return (NULL);
