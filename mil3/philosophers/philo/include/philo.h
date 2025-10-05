@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 12:31:17 by xwu               #+#    #+#             */
-/*   Updated: 2025/09/24 21:41:37 by xwu              ###   ########.fr       */
+/*   Updated: 2025/10/05 14:08:11 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,53 @@ typedef struct s_house
 	int			someone_died;
 }				t_house;
 
+/* main_utils.c */
+/* Auxiliary functions used for the main, like parsing, initiating stuff */
+
+void	philo_init(char **av, t_house *house);
+
+void	house_init(char **av, t_house *house);
+
+void	threads_create(t_house *house);
+
+void	threads_join(t_house *house);
+
+int		parse_args(int ac, char **av);
+
+void	exit_house(t_house *house);
+
+
+/* utils.c */
+/* General purpose functions */
+
 int		ft_atoi(const char *str);
 
 size_t	gettime_milisec(void);
 
 void	usleep_milisec(size_t miliseconds);
 
-int		parse_args(int ac, char **av);
+/* Function that checks if STR is a natural number (zero included), does not look for limits */
+int		isnumeric(char *str);
+
+
+/* philo.c */
+/* Functions used through all a philosophers life */
 
 void	printf_action(t_philo *philo, char *action);
+
+int	someone_died(t_philo *philo);
+
+void	grab_forks(t_philo	*philo);
+
+void	philo_eating(t_philo *philo);
+
+void	*philo_life(void *args);
+
+/* valkyrie.c */
+/* Functions used  to watch the dying philosopher */
+
+int		all_has_eaten(t_house *house);
+
+void	*valkyrie(void *args);
 
 #endif /* PHILO_H */
