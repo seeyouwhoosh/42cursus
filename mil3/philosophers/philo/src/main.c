@@ -12,6 +12,21 @@
 
 #include "philo.h"
 
+int	parse_args(int ac, char **av)
+{
+	int	i;
+
+	if (ac < 5 || ac > 6)
+		return (1);
+	i = 0;
+	while (++i < ac)
+		if (!isnumeric(av[i]))
+			return (1);
+	if (ft_atoi(av[1]) > MAX_N_PHILO || !ft_atoi(av[1]))
+		return (1);
+	return (0);
+}
+
 int	main(int ac, char **av)
 {
 	t_house	house;

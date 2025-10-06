@@ -15,7 +15,7 @@
 int	isnumeric(char *str)
 {
 	size_t	i;
-	
+
 	if (!str || !(*str))
 		return (0);
 	i = -1;

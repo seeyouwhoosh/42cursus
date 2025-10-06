@@ -12,21 +12,6 @@
 
 #include "philo.h"
 
-int	parse_args(int ac, char **av)
-{
-	int	i;
-
-	if (ac < 5 || ac > 6)
-		return (1);
-	i = 0;
-	while (++i < ac)
-		if (!isnumeric(av[i]))
-			return (1);
-	if (ft_atoi(av[1]) > MAX_N_PHILO || !ft_atoi(av[1]))
-		return (1);
-	return (0);
-}
-
 void	philo_init(char **av, t_house *house)
 {
 	size_t	i;
@@ -41,12 +26,12 @@ void	philo_init(char **av, t_house *house)
 		if (av[5])
 			house->philo[i].n_eat = ft_atoi(av[5]);
 		house->philo[i].id = i + 1;
-		pthread_mutex_init(&house->philo[i].meal_mutex, NULL);
 		house->philo[i].print_mutex = &house->print_mutex;
 		house->philo[i].dead_mutex = &house->dead_mutex;
 		house->philo[i].left_fork = &house->forks[i];
 		house->philo[i].right_fork = &house->forks[(i + 1) % house->n_philo];
 		house->philo[i].someone_died = &house->someone_died;
+		pthread_mutex_init(&house->philo[i].meal_mutex, NULL);
 	}
 }
 
@@ -74,7 +59,7 @@ void	threads_create(t_house *house)
 	while (house->n_philo > ++i)
 	{
 		pthread_mutex_lock(&house->print_mutex);
-		house->philo[i].start_time = gettime_milisec();
+		house->philo[i].start_time = gettime_milisec(); //start_time; print_mutex
 		pthread_mutex_unlock(&house->print_mutex);
 		if (pthread_create(&house->philo[i].thread, NULL,
 				philo_life, &house->philo[i]))

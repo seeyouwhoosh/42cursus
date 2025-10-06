@@ -63,8 +63,6 @@ void	threads_create(t_house *house);
 
 void	threads_join(t_house *house);
 
-int		parse_args(int ac, char **av);
-
 void	exit_house(t_house *house);
 
 
