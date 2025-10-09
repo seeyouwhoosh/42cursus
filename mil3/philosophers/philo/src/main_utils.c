@@ -19,19 +19,23 @@ void	philo_init(char **av, t_house *house)
 	i = -1;
 	while (++i < house->n_philo)
 	{
+		pthread_mutex_init(&house->philo[i].meal_mutex, NULL);
 		house->philo[i].t_die = ft_atoi(av[2]);
 		house->philo[i].t_eat = ft_atoi(av[3]);
 		house->philo[i].t_sleep = ft_atoi(av[4]);
 		house->philo[i].n_eat = -1;
 		if (av[5])
 			house->philo[i].n_eat = ft_atoi(av[5]);
+		house->philo[i].eating = 0;
+		house->philo[i].n_eaten = 0;
 		house->philo[i].id = i + 1;
 		house->philo[i].print_mutex = &house->print_mutex;
 		house->philo[i].dead_mutex = &house->dead_mutex;
 		house->philo[i].left_fork = &house->forks[i];
 		house->philo[i].right_fork = &house->forks[(i + 1) % house->n_philo];
 		house->philo[i].someone_died = &house->someone_died;
-		pthread_mutex_init(&house->philo[i].meal_mutex, NULL);
+		house->philo[i].start_time = gettime_milisec();
+		house->philo[i].last_time_eat = gettime_milisec();
 	}
 }
 

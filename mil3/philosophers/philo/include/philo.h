@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 12:31:17 by xwu               #+#    #+#             */
-/*   Updated: 2025/10/05 14:08:11 by xwu              ###   ########.fr       */
+/*   Updated: 2025/10/10 01:09:53 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,18 @@
 # define MAX_N_PHILO 200
 
 typedef pthread_mutex_t	t_mutex;
+typedef struct s_house t_house;
 
 typedef struct s_philo
 {
+	t_house		*house;
 	size_t		id;
 	size_t		t_die;
 	size_t		t_eat;
 	size_t		t_sleep;
 	int			n_eat;
+	int			n_eaten;
+	short		eating;
 	size_t		start_time;
 	size_t		last_time_eat;
 	pthread_t	thread;
@@ -84,9 +88,9 @@ int		isnumeric(char *str);
 
 void	printf_action(t_philo *philo, char *action);
 
-int	someone_died(t_philo *philo);
+int		anyone_died(t_philo *philo);
 
-void	grab_forks(t_philo	*philo);
+int		grab_forks(t_philo	*philo);
 
 void	philo_eating(t_philo *philo);
 
