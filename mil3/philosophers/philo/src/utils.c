@@ -72,4 +72,3 @@ void	usleep_milisec(size_t miliseconds)
 	while (gettime_milisec() - start_time < miliseconds)
 		usleep(500);
 }
-

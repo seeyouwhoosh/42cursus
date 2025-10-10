@@ -63,7 +63,7 @@ void	threads_create(t_house *house)
 	while (house->n_philo > ++i)
 	{
 		pthread_mutex_lock(&house->print_mutex);
-		house->philo[i].start_time = gettime_milisec(); //start_time; print_mutex
+		house->philo[i].start_time = gettime_milisec();
 		pthread_mutex_unlock(&house->print_mutex);
 		if (pthread_create(&house->philo[i].thread, NULL,
 				philo_life, &house->philo[i]))

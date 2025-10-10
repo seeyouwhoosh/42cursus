@@ -32,40 +32,8 @@ int	anyone_died(t_philo *philo)
 	return (dead);
 }
 
-int	_grab_forks(t_philo	*philo)
-{
-	if (philo->id % 2)
-	{
-		pthread_mutex_lock(philo->left_fork);
-		if (anyone_died(philo))
-			return (pthread_mutex_unlock(philo->left_fork), 1);
-		printf_action(philo, "has taken a fork");
-		if (philo->left_fork == philo->right_fork)
-		{
-			usleep_milisec(philo->t_die);
-			pthread_mutex_unlock(philo->left_fork);
-			return (1);
-		}
-		pthread_mutex_lock(philo->right_fork);
-	}
-	else
-	{
-		pthread_mutex_lock(philo->right_fork);
-		if (anyone_died(philo))
-			return (pthread_mutex_unlock(philo->right_fork), 1);
-		printf_action(philo, "has taken a fork");
-		pthread_mutex_lock(philo->left_fork);
-	}
-	if (anyone_died(philo))
-		return (pthread_mutex_unlock(philo->right_fork),
-			pthread_mutex_unlock(philo->left_fork), 1);
-	printf_action(philo, "has taken a fork");
-	return (0);
-}
-
 int	grab_forks(t_philo	*philo)
 {
-
 	pthread_mutex_lock(philo->left_fork);
 	printf_action(philo, "has taken a fork");
 	if (philo->left_fork == philo->right_fork)

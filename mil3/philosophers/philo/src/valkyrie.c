@@ -48,7 +48,7 @@ int	someone_has_died(t_house *house)
 			pthread_mutex_lock(&house->dead_mutex);
 			*house->philo[i].someone_died = 1;
 			pthread_mutex_unlock(&house->dead_mutex);
-			printf_action(&house->philo[i], "has died");
+			printf_action(&house->philo[i], "died");
 			return (1);
 		}
 	}
