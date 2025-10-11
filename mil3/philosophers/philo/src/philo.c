@@ -35,6 +35,8 @@ int	anyone_died(t_philo *philo)
 int	grab_forks(t_philo	*philo)
 {
 	pthread_mutex_lock(philo->left_fork);
+	if (anyone_died(philo))
+		return (pthread_mutex_unlock(philo->left_fork), 1);
 	printf_action(philo, "has taken a fork");
 	if (philo->left_fork == philo->right_fork)
 	{
