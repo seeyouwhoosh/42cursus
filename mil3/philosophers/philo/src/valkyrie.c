@@ -48,7 +48,10 @@ int	someone_has_died(t_house *house)
 			pthread_mutex_lock(&house->dead_mutex);
 			*house->philo[i].someone_died = 1;
 			pthread_mutex_unlock(&house->dead_mutex);
-			printf_action(&house->philo[i], "died");
+			pthread_mutex_lock(&house->print_mutex);
+			printf("%lu	%zu	%s\n", gettime_milisec()
+				- house->philo[i].start_time, house->philo[i].id, "died");
+			pthread_mutex_unlock(&house->print_mutex);
 			return (1);
 		}
 	}

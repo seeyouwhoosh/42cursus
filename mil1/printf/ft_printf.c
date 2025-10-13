@@ -72,8 +72,8 @@ int	ft_printf(char const *s, ...)
 	return (count);
 }
 
-/*
-#include <stdio.h>
+
+/* #include <stdio.h>
 
 int	main(void)
 {
@@ -95,9 +95,15 @@ int	main(void)
 	printf("   Exp: %d	Rea: %d\n\n", printf_value, ft_printf_value);
 	
 	char *str = "Hello World";
+	char *str2 = NULL;
+
 	printf_value = printf("2. String: %s\n", str);
 	ft_printf_value = ft_printf("   String: %s\n", str);
 	printf("   Exp: %d	Rea: %d\n\n", printf_value, ft_printf_value);
+
+	printf_value = ft_printf("2.1. Void pointer: %s\n", str2);
+	ft_printf_value = ft_printf("     Void pointer: %s\n", str2);
+	printf("     Exp: %d	Rea: %d\n\n", printf_value, ft_printf_value);
 
 	void *ptr = str;
 	void *ptr2 = NULL;
@@ -142,5 +148,7 @@ int	main(void)
 	printf("Characters: %c%c%c%c%s\n", 'a', 'b', 'c', 'd', "fjsladjf");
 	ft_printf("Characters: %c%c%c%c%s\n", 'a', 'b', 'c', 'd', "fjladjf");
 	
+
+	ft_printf("%v ", 12);
 	return (0);
 } */

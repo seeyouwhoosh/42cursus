@@ -22,8 +22,10 @@ int	parse_args(int ac, char **av)
 	while (++i < ac)
 		if (!isnumeric(av[i]))
 			return (1);
-	if (ft_atoi(av[1]) > MAX_N_PHILO || !ft_atoi(av[1]))
+	if (!ft_atoi(av[1]))
 		return (1);
+	if (ft_atoi(av[1]) > 32751)
+		printf("\e[1;31mThe program is on the verge of crashing\e[0;0m:");
 	return (0);
 }
 

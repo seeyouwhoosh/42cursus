@@ -48,8 +48,8 @@ typedef struct s_philo
 typedef struct s_house
 {
 	size_t		n_philo;
-	t_philo		philo[MAX_N_PHILO];
-	t_mutex		forks[MAX_N_PHILO];
+	t_philo		*philo;
+	t_mutex		*forks;
 	pthread_t	valkyrie;
 	t_mutex		print_mutex;
 	t_mutex		dead_mutex;

@@ -44,6 +44,8 @@ void	house_init(char **av, t_house *house)
 	size_t	i;
 
 	house->n_philo = ft_atoi(av[1]);
+	house->philo = (t_philo *)malloc(sizeof(t_philo) * house->n_philo);
+	house->forks = (t_mutex *)malloc(sizeof(t_mutex) * house->n_philo);
 	house->someone_died = 0;
 	i = -1;
 	while (++i < house->n_philo)
@@ -95,4 +97,6 @@ void	exit_house(t_house *house)
 	}
 	pthread_mutex_destroy(&house->print_mutex);
 	pthread_mutex_destroy(&house->dead_mutex);
+	free(house->philo);
+	free(house->forks);
 }
