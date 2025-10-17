@@ -43,8 +43,10 @@ int main(int ac, char **av, char **env)
 	printf("\e[0;33mPARENT PROCESS: %d\n\e[0;0m", pid);
 	printf("%d\n", --nb);
 
-	
+	/* 	char *ttyname(int fildes);
+	int ttyslot(void); */
 	printf("\e[0;34mPATHNAME OF TERMINAL: %s\n\e[0;0m", ttyname(0));
+	printf("\e[0;34mINDEX OF CURRENT TERMINAL: %s\n\e[0;0m", ttyslot());
 }
 
 /* #include <fcntl.h>

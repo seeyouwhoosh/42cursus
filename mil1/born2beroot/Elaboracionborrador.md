@@ -86,9 +86,9 @@ Al parecer linux mint es más ligero que Ubuntu, yay. Me hace demasiada gracia l
           1.  sudo apt install libpam-pwquality
           2.  En /etc/pam.d/common-password:
             ```
-            password [success=1 default=ignore] pam_succeed_if.so user != root
-            password requisite pam_pwquality.so difok=7
-            password requisite pam_pwquality.so retry=3 minlen=10 dcredit=-1 ucredit=-1 lcredit=-1 maxrepeat=3 usercheck=1 enforce_for_root
+   password [success=1 default=ignore] pam_succeed_if.so user != root
+   password requisite pam_pwquality.so difok=7
+   password requisite pam_pwquality.so retry=3 minlen=10 dcredit=-1 ucredit=-1 lcredit=-1 maxrepeat=3 usercheck=1 enforce_for_root
             ```
 1. Cambio de nombre de host
    1. Archivos a cambiar: /etc/hostname y /etc/hosts
@@ -194,7 +194,8 @@ wall "   # Architecture:    $ARCH
    # Virtual CPUs:    $VCPU
    # RAM usage:       $RAM_USED/$RAM_TOTAL ($RAM_PERC)
    # Disk usage:      $DISK_USED/$DISK_TOTAL ($DISK_PERC)
-   # CPU load:        $CPUT_BOOT
+   # CPU load:        $CPU_LOAD
+   # Last boot:       $LAST_BOOT
    # LVM use:         $LVM
    # TCP connections: $TCP established
    # Users logged:    $USER_LOG
