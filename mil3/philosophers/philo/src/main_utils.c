@@ -48,10 +48,10 @@ void	house_init(char **av, t_house *house)
 	house->forks = (t_mutex *)malloc(sizeof(t_mutex) * house->n_philo);
 	house->someone_died = 0;
 	i = -1;
-	while (++i < house->n_philo)
-		pthread_mutex_init(&house->forks[i], NULL);
 	pthread_mutex_init(&house->print_mutex, NULL);
 	pthread_mutex_init(&house->dead_mutex, NULL);
+	while (++i < house->n_philo)
+		pthread_mutex_init(&house->forks[i], NULL);
 	philo_init(av, house);
 }
 
