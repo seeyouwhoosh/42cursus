@@ -34,8 +34,6 @@ void	philo_init(char **av, t_house *house)
 		house->philo[i].left_fork = &house->forks[i];
 		house->philo[i].right_fork = &house->forks[(i + 1) % house->n_philo];
 		house->philo[i].someone_died = &house->someone_died;
-		house->philo[i].start_time = gettime_milisec();
-		house->philo[i].last_time_eat = gettime_milisec();
 	}
 }
 
@@ -66,6 +64,7 @@ void	threads_create(t_house *house)
 	{
 		pthread_mutex_lock(&house->print_mutex);
 		house->philo[i].start_time = gettime_milisec();
+		house->philo[i].last_time_eat = gettime_milisec();
 		pthread_mutex_unlock(&house->print_mutex);
 		if (pthread_create(&house->philo[i].thread, NULL,
 				philo_life, &house->philo[i]))

@@ -59,14 +59,14 @@ int	grab_forks(t_philo	*philo)
 	return (0);
 }
 
-int	eat(t_philo *philo)
+int	eat(t_philo *philo) //!!!
 {
 	if (grab_forks(philo))
 		return (1);
-	printf_action(philo, "is eating");
 	pthread_mutex_lock(&philo->meal_mutex);
-	philo->last_time_eat = gettime_milisec();
 	philo->eating = 1;
+	philo->last_time_eat = gettime_milisec();
+	printf_action(philo, "is eating");
 	pthread_mutex_unlock(&philo->meal_mutex);
 	usleep_milisec(philo->t_eat);
 	pthread_mutex_lock(&philo->meal_mutex);
