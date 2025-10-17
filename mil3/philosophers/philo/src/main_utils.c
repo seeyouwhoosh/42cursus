@@ -34,6 +34,8 @@ void	philo_init(char **av, t_house *house)
 		house->philo[i].left_fork = &house->forks[i];
 		house->philo[i].right_fork = &house->forks[(i + 1) % house->n_philo];
 		house->philo[i].someone_died = &house->someone_died;
+		house->philo[i].start_time = gettime_milisec();
+		house->philo[i].last_time_eat = gettime_milisec();
 	}
 }
 
@@ -62,10 +64,6 @@ void	threads_create(t_house *house)
 	i = -1;
 	while (house->n_philo > ++i)
 	{
-		pthread_mutex_lock(&house->print_mutex);
-		house->philo[i].start_time = gettime_milisec();
-		house->philo[i].last_time_eat = gettime_milisec();
-		pthread_mutex_unlock(&house->print_mutex);
 		if (pthread_create(&house->philo[i].thread, NULL,
 				philo_life, &house->philo[i]))
 			printf("\e[1;31mError\e[0;0m: pthread_create failed\n");

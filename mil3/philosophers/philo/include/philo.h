@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 12:31:17 by xwu               #+#    #+#             */
-/*   Updated: 2025/10/10 01:09:53 by xwu              ###   ########.fr       */
+/*   Updated: 2025/10/17 22:15:41 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ typedef struct s_house	t_house;
 
 typedef struct s_philo
 {
-	t_house		*house;
 	size_t		id;
 	size_t		t_die;
 	size_t		t_eat;
