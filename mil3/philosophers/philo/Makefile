@@ -44,7 +44,7 @@ all: $(NAME)
 # deps:
 
 # Main program
-$(NAME): 
+$(NAME): $(OBJECTS)
 	@echo "$(BBLUE)$(NAME)$(NC): Creating $(GREEN)$(NAME)'s objects$(NC)..."
 	@make $(OBJECTS)
 	@echo "$(BBLUE)$(NAME)$(NC): $(GREEN)$(NAME)'s objects$(NC) created"

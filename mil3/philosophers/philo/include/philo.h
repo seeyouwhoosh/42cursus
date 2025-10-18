@@ -27,9 +27,9 @@ typedef struct s_house	t_house;
 typedef struct s_philo
 {
 	size_t		id;
-	size_t		t_die;
-	size_t		t_eat;
-	size_t		t_sleep;
+	int			t_die;
+	int			t_eat;
+	int			t_sleep;
 	int			n_eat;
 	int			n_eaten;
 	short		eating;
