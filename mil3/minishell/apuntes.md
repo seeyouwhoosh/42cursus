@@ -116,3 +116,6 @@ int tputs(const char *str, int affcnt, int (*putc)(int));
 int tcsetattr(int fildes, int optional_actions, const struct termios *termios_p);
 int tcgetattr(int fildes, struct termios *termios_p);
 ```
+
+## Guidelines generales
+* La minishell no implementa 

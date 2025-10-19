@@ -24,7 +24,7 @@ int	isnumeric(char *str)
 		if (!(str[i] >= '0' && str[i] <= '9'))
 			return (0);
 	}
-	return (1);
+	return (ft_atoi(str) >= 0);
 }
 
 int	ft_atoi(const char *str)

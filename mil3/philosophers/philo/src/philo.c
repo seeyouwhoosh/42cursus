@@ -57,7 +57,7 @@ int	grab_forks(t_philo	*philo)
 int	eat(t_philo *philo)
 {
 	if (grab_forks(philo))
-	return (1);
+		return (1);
 	pthread_mutex_lock(&philo->meal_mutex);
 	printf_action(philo, "is eating");
 	philo->last_time_eat = gettime_milisec();
