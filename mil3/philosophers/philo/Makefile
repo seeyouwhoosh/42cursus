@@ -44,10 +44,7 @@ all: $(NAME)
 # deps:
 
 # Main program
-$(NAME): 
-	@echo "$(BBLUE)$(NAME)$(NC): Creating $(GREEN)$(NAME)'s objects$(NC)..."
-	@make $(OBJECTS)
-	@echo "$(BBLUE)$(NAME)$(NC): $(GREEN)$(NAME)'s objects$(NC) created"
+$(NAME): $(OBJECTS)
 	@echo "$(BBLUE)$(NAME)$(NC): Creating $(GREEN)$(NAME)$(NC)..."
 	$(CC) $(CFLAGS) -o $@ $(OBJECTS) $(LINKER)
 	@echo "$(BBLUE)$(NAME)$(NC): $(GREEN)$(NAME)$(NC) created"
@@ -62,7 +59,7 @@ bonus: $(BOBJECTS)
 	$(CC) $(CFLAGS) -o $(NAME) $(BOBJECTS) $(LINKER)
 	@echo "$(BBLUE)$(NAME)$(NC): $(GREEN)$(NAME) ($@)$(NC) created"
 
-%.o: %.c
+$(BOBJ_DIR)/%.o: $(BOBJ_DIR)/%.c
 	@mkdir -p $(BOBJ_DIR)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 

@@ -19,11 +19,6 @@ void	printf_action(t_philo *philo, char *action)
 	if (anyone_died(philo))
 		return ;
 	pthread_mutex_lock(philo->print_mutex);
-	if (anyone_died(philo))
-	{
-		pthread_mutex_unlock(philo->print_mutex);
-		return ;
-	}
 	timestamp = gettime_milisec() - philo->start_time;
 	printf("%lu	%zu	%s\n", timestamp, philo->id, action);
 	pthread_mutex_unlock(philo->print_mutex);

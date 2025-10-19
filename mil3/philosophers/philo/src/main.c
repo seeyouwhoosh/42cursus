@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:07:21 by xwu               #+#    #+#             */
-/*   Updated: 2025/10/05 21:51:20 by xwu              ###   ########.fr       */
+/*   Updated: 2025/10/20 00:49:53 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,10 @@ int	parse_args(int ac, char **av)
 		return (1);
 	i = 0;
 	while (++i < ac)
-		if (!isnumeric(av[i]))
+		if (!isnumeric(av[i]) || (ft_atoi(av[i]) < 0))
 			return (1);
 	if (!ft_atoi(av[1]))
 		return (1);
-	if (ft_atoi(av[1]) > 32751)
-		printf("\e[1;31mThe program is on the verge of crashing\e[0;0m:");
 	return (0);
 }
 

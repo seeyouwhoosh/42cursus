@@ -10,7 +10,7 @@ NC			= \033[0m
 # Compiler
 NAME		= fractol
 CC			= cc
-CFLAGS		= -Wall -Werror -Wextra
+CFLAGS		= -Wall -Werror -Wextra -g
 MAKE		= make -sC
 RM			= rm -rf
 OS			= $(shell uname)
@@ -54,7 +54,7 @@ OBJ			= $(SOURCES:.c=.o)
 OBJECTS		= $(addprefix $(OBJ_DIR)/, $(SOURCES:.c=.o))
 
 
-all: $(LIBFT) $(PRINTF) $(MLX) $(OBJECTS) $(NAME)
+deps: $(LIBFT) $(PRINTF) $(MLX)
 
 $(LIBFT):
 	@echo "$(BBLUE)$(NAME)$(NC): Creating $(GREEN)libft$(NC)..."
@@ -71,11 +71,14 @@ $(MLX):
 	@$(MAKE) $(MLX_DIR)
 	@echo "$(BBLUE)$(NAME)$(NC): $(GREEN)minilibx$(NC) created"
 
+
+all: deps $(OBJECTS) $(NAME)
+
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@ 
 
-$(NAME): $(LIBFT) $(PRINTF) $(MLX) $(OBJECTS)
+$(NAME): $(OBJECTS)
 	@echo "$(BBLUE)$(NAME)$(NC): Creating $(GREEN)$@$(NC)..."
 	@$(CC) $(CFLAGS) -o $@ $(OBJECTS) $(LINKER)
 	@echo "$(BBLUE)$(NAME)$(NC): $(GREEN)$(NAME)$(NC) created"
