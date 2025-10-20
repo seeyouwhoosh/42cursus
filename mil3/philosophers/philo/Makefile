@@ -40,8 +40,6 @@ BOBJECTS	= $(addprefix $(BOBJ_DIR)/, $(BSOURCES:.c=.o))
 
 all: $(NAME)
 
-# Libraries and other dependencies
-# deps:
 
 # Main program
 $(NAME): $(OBJECTS)

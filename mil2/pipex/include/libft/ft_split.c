@@ -88,15 +88,15 @@ char	**ft_split(char const *s, char c)
 	return (result[ls] = NULL, result);
 }
 
-void	ft_putstrstr(char **s, size_t quantity, char sep)
+void	ft_putstrstr(char **s, char sep)
 {
 	size_t	i;
 
 	i = 0;
-	while (quantity >= i)
+	while (s[i])
 	{
 		ft_putstr_fd(s[i], 1);
-		if (quantity != i)
+		if (s[i + 1])
 			ft_putchar_fd(sep, 1);
 		i++;
 	}

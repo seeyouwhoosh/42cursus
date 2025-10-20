@@ -26,8 +26,8 @@ int open(const char *pathname, int flags, mode_t mode);
 
 /*
 @ Mira si los permisos de un archivo son correctos
-@ int mode: Bitwise-inclusive OR of the access permissions to be checked (R_OK, W_OK, X_OK) or
-the existence test (F_OK)
+@ int mode: Bitwise-inclusive OR of the access permissions to be checked (R_OK, W_OK, X_OK)
+or the existence test (F_OK)
 @ return: 0 si no hay ningún problema, -1 otherwise, que hay específicos, según definidos
 */
 int access(const char *pathname, int mode);
@@ -36,7 +36,8 @@ ssize_t read(int fildes, void *buf, size_t nbyte);
 int close(int fildes);
 
 /*
-@ El absolute path al current working directory
+@ El absolute path al current working directory, pero solo para el proceso, es decir, no
+altera realmente la localización de la termina actual
 */
 char *getcwd(char *buf, size_t size);
 
@@ -62,7 +63,15 @@ int pipe(int fildes[2]);
 @ find the pathname of a terminal associated with the file descriptor
 */
 char *ttyname(int fildes);
+
+/*
+@ En qué slot está la terminal actual, pero creo que hoy en día está prácticamente deprecated
+*/
 int ttyslot(void);
+
+/*
+@ Básicamente eliminar lo que sea que tenga ese nombre, si hay algún proceso con el archivo abierto, espera a que acabe antes de eliminarlo
+*/
 int unlink(const char *path);
 
 #include <dirent.h>
