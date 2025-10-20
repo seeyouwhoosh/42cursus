@@ -2,6 +2,7 @@
 .POSIX:
 .PHONY: clean re fclean all
 
+
 # Color
 BBLUE		= \033[1;34m
 GREEN		= \033[0;32m
@@ -54,6 +55,7 @@ OBJ			= $(SOURCES:.c=.o)
 OBJECTS		= $(addprefix $(OBJ_DIR)/, $(SOURCES:.c=.o))
 
 
+# Libraries and other dependencies
 deps: $(LIBFT) $(PRINTF) $(MLX)
 
 $(LIBFT):
@@ -72,18 +74,31 @@ $(MLX):
 	@echo "$(BBLUE)$(NAME)$(NC): $(GREEN)minilibx$(NC) created"
 
 
+# Main program
 all: deps $(OBJECTS) $(NAME)
-
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@mkdir -p $(OBJ_DIR)
-	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@ 
 
 $(NAME): $(OBJECTS)
 	@echo "$(BBLUE)$(NAME)$(NC): Creating $(GREEN)$@$(NC)..."
 	@$(CC) $(CFLAGS) -o $@ $(OBJECTS) $(LINKER)
 	@echo "$(BBLUE)$(NAME)$(NC): $(GREEN)$(NAME)$(NC) created"
 
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@ 
 
+
+# Bonus program
+bonus: $(BOBJECTS)
+	@echo "$(BBLUE)$(NAME)$(NC): Creating $(GREEN)$(NAME) ($@)$(NC)..."
+	$(CC) $(CFLAGS) -o $(NAME) $(BOBJECTS) $(LINKER)
+	@echo "$(BBLUE)$(NAME)$(NC): $(GREEN)$(NAME) ($@)$(NC) created"
+
+$(BOBJ_DIR)/%.o: $(BOBJ_DIR)/%.c
+	@mkdir -p $(BOBJ_DIR)
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+
+# Cleaning targets
 clean:
 	@$(MAKE) $(LIBFT_DIR) clean
 	@$(MAKE) $(PRINTF_DIR) clean
