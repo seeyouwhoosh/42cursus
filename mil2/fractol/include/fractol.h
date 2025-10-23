@@ -6,14 +6,12 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:46:16 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/24 12:46:55 by xwu              ###   ########.fr       */
+/*   Updated: 2025/10/24 00:23:02 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FRACTOL_H
 # define FRACTOL_H
-# include "libft.h"
-# include "ft_printf.h"
 # include "mlx.h"
 # include <X11/keysym.h>
 # include <stdlib.h>
@@ -126,5 +124,17 @@ int		mouse_hook(int keycode, int x, int y, t_ins *ins);
 
 /* Destroy window queue for the button */
 int		destroy_win(t_ins *par);
+
+/* UTILS*/
+
+double	ft_strtod(const char *restrict str, char **restrict endptr);
+
+int	ft_strcmp(const char *s1, const char *s2);
+
+int	ft_atoi(const char *str);
+
+size_t	ft_strlen(const char *s);
+
+int	ft_isdigit(int c);
 
 #endif
