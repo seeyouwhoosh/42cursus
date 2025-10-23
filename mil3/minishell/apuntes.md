@@ -127,4 +127,21 @@ int tcgetattr(int fildes, struct termios *termios_p);
 ```
 
 ## Guidelines generales
-* La minishell no implementa 
+
+### Hacer las built-in functions
+* echo with option -n
+* cd with only a relative or absolute path
+* pwd with no options
+* unset with no options
+* export with no options
+* env with no options or arguments
+* exit with no options
+
+### Gestionar los shortcuts (Ctrl-C, Ctrl-D...)
+* ctrl-C displays a new prompt on a new line.
+* ctrl-D exits the shell.
+* ctrl-\ does nothing.
+
+
+## Further links
+* https://brennan.io/2015/01/16/write-a-shell-in-c/

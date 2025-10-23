@@ -4,6 +4,8 @@
 #include <errno.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <sys/time.h>
+#include <signal.h>
 
 #define RED \e[1;31m
 #define NONE \e[0;0m
@@ -53,14 +55,10 @@ int main(int ac, char **av, char **env)
 		perror("touch command");
 	if (unlink("think"))
 		perror("unlink");
+
+	signal(SIGINT, SIG_DFL)
+	while (1)
+		pause();
 }
 
-/* #include <fcntl.h>
-int open(const char *pathname, int flags, mode_t mode);
-#include <unistd.h>
-int access(const char *pathname, int mode);
-ssize_t write(int fildes, const void *buf, size_t nbyte);
-ssize_t read(int fildes, void *buf, size_t nbyte);
-int close(int fildes);
-char *getcwd(char *buf, size_t size);
-int chdir(const char *path); */
+
