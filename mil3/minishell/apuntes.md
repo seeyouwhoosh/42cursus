@@ -26,8 +26,8 @@ int open(const char *pathname, int flags, mode_t mode);
 
 /*
 @ Mira si los permisos de un archivo son correctos
-@ int mode: Bitwise-inclusive OR of the access permissions to be checked (R_OK, W_OK, X_OK) or
-the existence test (F_OK)
+@ int mode: Bitwise-inclusive OR of the access permissions to be checked (R_OK, W_OK, X_OK)
+or the existence test (F_OK)
 @ return: 0 si no hay ningún problema, -1 otherwise, que hay específicos, según definidos
 */
 int access(const char *pathname, int mode);
@@ -36,7 +36,8 @@ ssize_t read(int fildes, void *buf, size_t nbyte);
 int close(int fildes);
 
 /*
-@ El absolute path al current working directory
+@ El absolute path al current working directory, pero solo para el proceso, es decir, no
+altera realmente la localización de la termina actual
 */
 char *getcwd(char *buf, size_t size);
 
@@ -62,7 +63,15 @@ int pipe(int fildes[2]);
 @ find the pathname of a terminal associated with the file descriptor
 */
 char *ttyname(int fildes);
+
+/*
+@ En qué slot está la terminal actual, pero creo que hoy en día está prácticamente deprecated
+*/
 int ttyslot(void);
+
+/*
+@ Básicamente eliminar lo que sea que tenga ese nombre, si hay algún proceso con el archivo abierto, espera a que acabe antes de eliminarlo
+*/
 int unlink(const char *path);
 
 #include <dirent.h>
@@ -118,4 +127,21 @@ int tcgetattr(int fildes, struct termios *termios_p);
 ```
 
 ## Guidelines generales
-* La minishell no implementa 
+
+### Hacer las built-in functions
+* echo with option -n
+* cd with only a relative or absolute path
+* pwd with no options
+* unset with no options
+* export with no options
+* env with no options or arguments
+* exit with no options
+
+### Gestionar los shortcuts (Ctrl-C, Ctrl-D...)
+* ctrl-C displays a new prompt on a new line.
+* ctrl-D exits the shell.
+* ctrl-\ does nothing.
+
+
+## Further links
+* https://brennan.io/2015/01/16/write-a-shell-in-c/

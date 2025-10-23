@@ -2,6 +2,7 @@
 .POSIX:
 .PHONY: clean re fclean all
 
+
 # Color
 BBLUE		= \033[1;34m
 GREEN		= \033[0;32m
@@ -54,11 +55,11 @@ OBJ			= $(SOURCES:.c=.o)
 OBJECTS		= $(addprefix $(OBJ_DIR)/, $(SOURCES:.c=.o))
 
 # Bonus sources
-BSRC_DIR	= src
+BSRC_DIR	= src_bonus
 BSOURCES	= 
 
 # Bonus objects
-BOBJ_DIR	= obj
+BOBJ_DIR	= obj_bonus
 BOBJECTS	= $(addprefix $(BOBJ_DIR)/, $(BSOURCES:.c=.o))
 
 
@@ -85,6 +86,8 @@ $(MLX):
 
 
 # Main program
+all: deps $(OBJECTS) $(NAME)
+
 $(NAME): $(OBJECTS)
 	@echo "$(BBLUE)$(NAME)$(NC): Creating $(GREEN)$@$(NC)..."
 	@$(CC) $(CFLAGS) -o $@ $(OBJECTS) $(LINKER)
