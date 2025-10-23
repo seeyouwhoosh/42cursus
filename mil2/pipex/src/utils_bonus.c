@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/31 22:58:22 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/31 22:58:22 by xwu              ###   ########.fr       */
+/*   Updated: 2025/10/24 00:46:25 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,17 +65,22 @@ void	exec(char *cmd, char **env)
 void	here_doc_put(char *limiter, int fd)
 {
 	char	*input;
-
+	char	*new_limiter;
+	
+	new_limiter = ft_strjoin(limiter, "\n");
+	write(1, "\e[1;1mhere_doc> \e[0;0m", 22);
 	input = get_next_line(0);
 	while (input)
 	{
-		if (!ft_strncmp(input, limiter, ft_strlen(limiter)))
+		if (!ft_strncmp(input, new_limiter, ft_strlen(input)))
 		{
+			free(new_limiter);
 			free(input);
 			exit(0);
 		}
 		write(fd, input, ft_strlen(input));
 		free(input);
+		write(1, "\e[1;1mhere_doc> \e[0;0m", 22);
 		input = get_next_line(0);
 	}
 }
