@@ -46,7 +46,7 @@ void	draw_mandelbrot(t_data *img, t_fractal *f, double px, double py)
 	if (iter == f->max_iter)
 		mmlx_pixel_put(img, px, py, 0x00000000);
 	else
-		mmlx_pixel_put(img, px, py, psychedelic_color(iter, f->max_iter));
+		mmlx_pixel_put(img, px, py, 0x000000FF);
 }
 
 void	draw_julia(t_data *img, t_fractal *f, double px, double py)

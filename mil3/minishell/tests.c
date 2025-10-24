@@ -10,14 +10,14 @@
 #define RED \e[1;31m
 #define NONE \e[0;0m
 
-void msg_before_dying(int sig)
-{
-	printf("Goodbye, good fellow <3");
-	exit(0);
-}
+
+void msg_before_dying(int sig);
+void kill_ass(int sig);
 
 int main(int ac, char **av, char **env)
 {
+	/* SIGNAL THINGIES */
+		signal(SIGINT, msg_before_dying);
 	/* char *getenv(const char *name); */
 	for (size_t i = 0; env[i]; i++)
 		printf("%s\n", env[i]); // aquí se imprimen todas las environmental variables
@@ -62,9 +62,12 @@ int main(int ac, char **av, char **env)
 	if (unlink("think"))
 		perror("unlink");
 
-	signal(SIGINT, msg_before_dying);
-	while (1)
-		pause();
+
 }
 
-
+void msg_before_dying(int sig)
+{
+	signal(SIGINT, SIG_IGN);
+	printf("Goodbye, good fellow <3\n");
+	exit(0);
+}

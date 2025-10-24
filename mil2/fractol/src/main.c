@@ -32,6 +32,7 @@ int	destroy_win(t_ins *ins)
 void	error_exit(void)
 {
 	char	*msg;
+
 	msg = "Non valid parameters. You may choose from the following:\n[1] \
 mandelbrot\n[2] julia [real_part: 0.355] [imaginary_part: 0.113]\n";
 	write(2, msg, ft_strlen(msg));
