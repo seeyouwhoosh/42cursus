@@ -110,21 +110,29 @@ int tcgetattr(int fildes, struct termios *termios_p);
 
 ## Guidelines generales
 
+### Características en general
+- [ ] Todos los comandos se ven con el comando `history`
+- [ ] Manejar `"..."` (no expande los caracteres especiales excepto el dólar) y `'...'` (no expande nada, todo es literal);
+	* Metacharacters are: pipe (|), ampersand (&), semicolon (;), less-than sign (<), greater-than sign (>), left parenthesis ((), right parenthesis ()), dollar sign ($), backquote (`), backslash (\), right quote ('), double quotation marks (")
+- [ ] `Not interpret unclosed quotes or special characters which are not required by the subject such as \ (backslash) or ; (semicolon).` Esto me parece muy sospechoso
+- [ ] Variables de entorno $ALGO
+
+
 ### Hacer las built-in functions
-* echo with option -n
-* cd with only a relative or absolute path
-* pwd with no options
-* unset with no options
-* export with no options
-* env with no options or arguments
-* exit with no options
+- [ ] echo with option -n
+- [ ] cd with only a relative or absolute path
+- [ ] pwd with no options
+- [ ] unset with no options
+- [ ] export with no options
+- [ ] env with no options or arguments
+- [ ] exit with no options
 Los demás comandos se pueden gestionar con el `execve`
 
 ### Gestionar los shortcuts (Ctrl-C, Ctrl-D...)
 LINK: https://www.infor.uva.es/~fdiaz/so/doc/SO_PR04_20061115.pdf 
-* ctrl-C displays a new prompt on a new line. `SIGINT`
-* ctrl-D exits the shell. `SIGQUIT`
-* ctrl-\ does nothing. `SIGQUIT`
+- [ ] ctrl-C displays a new prompt on a new line. `SIGINT`
+- [ ] ctrl-D exits the shell. EOF
+- [ ] ctrl-\ does nothing. `SIGQUIT`
 
 #### Ejemplo para el Ctrl + C
 ```c
@@ -156,9 +164,6 @@ int  main(void)
 }
 ```
 
-### Gestionar cosas misceláneas
-* Todos los comandos se ven con el comando `history`
-
 ### Gestionar redirecciones
 Todas las permitaciones tipo
 ```sh
@@ -168,11 +173,18 @@ cmd arg1 < file arg2
 cmd arg1 arg2 < file
 ```
 son legales.
-* `<` should redirect input.
-* `>` should redirect output.
-* `<<` should be given a delimiter, then read the input until a line containing the delimiter is seen. 
+- [ ] `<` should redirect input.
+- [ ] `>` should redirect output.
+- [ ] `<<` should be given a delimiter, then read the input until a line containing the delimiter is seen. 
     * However, it doesn’t have to update the history!
-* `>>` should redirect output in append mode.
+- [ ] `>>` should redirect output in append mode.
+- [ ] Pipes
+
+------------------------------------------------
+## Extras
+* && and || with parenthesis for priorities.
+* Wildcards * should work for the current working directory.
 
 ## Further links
+* https://www.ibm.com/docs/en/aix/7.1.0?topic=concepts-shells-terminology 
 * https://brennan.io/2015/01/16/write-a-shell-in-c/

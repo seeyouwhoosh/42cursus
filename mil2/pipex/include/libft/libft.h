@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 11:57:02 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/28 21:58:52 by xwu              ###   ########.fr       */
+/*   Updated: 2025/10/25 01:09:40 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ void	ft_freesplit(char **words);
 size_t	ft_strwords(const char *s, char c);
 
 /* Dedicated putstr for split */
-void	ft_putstrstr(char **s, size_t quantity, char sep);
+void	ft_putstrstr(char **s, char sep);
 
 int		ft_strcmp(const char *s1, const char *s2);
 

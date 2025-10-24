@@ -6,11 +6,12 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 13:30:34 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/31 22:43:47 by xwu              ###   ########.fr       */
+/*   Updated: 2025/10/25 01:17:58 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+#include <errno.h>
 
 char	*get_path(char *cmd, char **env)
 {
@@ -116,5 +117,6 @@ Correct usage:\033[1m ./pipex infile cmd1 cmd2 outfile\033[0m\n";
 		waitpid(pid, NULL, 0);
 		parent_process(av, env, fd);
 	}
+	printf("hola2");
 	return (0);
 }
