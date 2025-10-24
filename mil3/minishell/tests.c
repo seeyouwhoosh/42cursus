@@ -10,6 +10,12 @@
 #define RED \e[1;31m
 #define NONE \e[0;0m
 
+void msg_before_dying(int sig)
+{
+	printf("Goodbye, good fellow <3");
+	exit(0);
+}
+
 int main(int ac, char **av, char **env)
 {
 	/* char *getenv(const char *name); */
@@ -56,7 +62,7 @@ int main(int ac, char **av, char **env)
 	if (unlink("think"))
 		perror("unlink");
 
-	signal(SIGINT, SIG_DFL)
+	signal(SIGINT, msg_before_dying);
 	while (1)
 		pause();
 }
