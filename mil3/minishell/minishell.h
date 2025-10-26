@@ -6,21 +6,29 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:46:16 by xwu               #+#    #+#             */
-/*   Updated: 2025/08/24 12:46:55 by xwu              ###   ########.fr       */
+/*   Updated: 2025/10/24 11:08:09 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef	MNSH_H
-# define MNSH_H
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
-typedef	struct t_cmdtab
+typedef struct s_cmds
 {
-	infile
-	outfile
-	errfile
-	
-}				t_cmdtab;
+	char	*cmd;
+	char	**options; //hay veces que son más de una letra
+	char	*args; // problema: hay a veces que las opciones afectan al siguiente argumento solo
+}			t_cmds;
+
+
+typedef struct s_cmdtab
+{
+	int		infile;
+	int		outfile;
+	int		errfile;
+	t_cmds	*cmds;
+}			t_cmdtab;
 
 
 
-#endif /* MNSH_H */
+#endif /* MINISHELL_H */
