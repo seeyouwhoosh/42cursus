@@ -6,6 +6,9 @@
 #include <sys/wait.h>
 #include <sys/time.h>
 #include <signal.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+
 
 #define RED \e[1;31m
 #define NONE \e[0;0m
@@ -62,6 +65,18 @@ int main(int ac, char **av, char **env)
 	if (unlink("think"))
 		perror("unlink");
 
+/* 	char *line;
+	while ((line = readline("\e[1;35mminishell> \e[0;0m")))
+	{
+		add_history(line);
+	} */
+	    char *input;
+    input = readline("Enter a line of text: ");
+    printf("You entered: %s\n", input);
+    rl_replace_line("This is the new line", 0);
+    rl_redisplay();
+    input = readline("Enter another line of text: ");
+    printf("You entered: %s\n", input);
 
 }
 

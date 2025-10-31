@@ -6,12 +6,14 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:46:16 by xwu               #+#    #+#             */
-/*   Updated: 2025/10/24 11:08:09 by xwu              ###   ########.fr       */
+/*   Updated: 2025/10/31 12:16:31 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+# include <readline/readline.h>
+# include <readline/history.h>
 
 typedef struct s_cmds
 {

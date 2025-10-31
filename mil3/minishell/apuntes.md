@@ -110,12 +110,17 @@ int tcgetattr(int fildes, struct termios *termios_p);
 
 ## Guidelines generales
 
+### Notas de lo que no hace falta gestionar
+* "The readline() function can cause memory leaks. You don’t have to fix them."
+
 ### Características en general
+- [ ] Runnear comandos con rutas absolutas, relativas y sin ruta
 - [ ] Todos los comandos se ven con el comando `history`
 - [ ] Manejar `"..."` (no expande los caracteres especiales excepto el dólar) y `'...'` (no expande nada, todo es literal);
 	* Metacharacters are: pipe (|), ampersand (&), semicolon (;), less-than sign (<), greater-than sign (>), left parenthesis ((), right parenthesis ()), dollar sign ($), backquote (`), backslash (\), right quote ('), double quotation marks (")
 - [ ] `Not interpret unclosed quotes or special characters which are not required by the subject such as \ (backslash) or ; (semicolon).` Esto me parece muy sospechoso
 - [ ] Variables de entorno $ALGO
+- [ ] Handle $? which should expand to the exit status of the most recently executed foreground pipeline.
 
 
 ### Hacer las built-in functions
