@@ -35,7 +35,6 @@ void	int_signal(int n)
 	rl_redisplay();
 	signal(SIGINT, int_signal);
 }
-
 int	main(int ac, char **av, char **env)
 {
 	char	*line;
@@ -53,6 +52,7 @@ int	main(int ac, char **av, char **env)
 		rl_on_new_line();
 		if (all_whitespace(line))
 			continue ;
+		process_cmd(line);
 		add_history(line);
 		free(line);
 	}
