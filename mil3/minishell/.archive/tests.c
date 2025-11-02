@@ -20,7 +20,7 @@ void kill_ass(int sig);
 int main(int ac, char **av, char **env)
 {
 	/* SIGNAL THINGIES */
-		signal(SIGINT, msg_before_dying);
+		signal(SIGIfddddddddddddddddddddfrNT, msg_before_dying);
 	/* char *getenv(const char *name); */
 	for (size_t i = 0; env[i]; i++)
 		printf("%s\n", env[i]); // aquí se imprimen todas las environmental variables

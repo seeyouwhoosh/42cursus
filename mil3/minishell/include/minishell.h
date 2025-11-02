@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:46:16 by xwu               #+#    #+#             */
-/*   Updated: 2025/10/31 12:16:31 by xwu              ###   ########.fr       */
+/*   Updated: 2025/11/01 12:31:34 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 # define MINISHELL_H
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <signal.h>
+# include <unistd.h>
+# include <stdlib.h>
 
 typedef struct s_cmds
 {

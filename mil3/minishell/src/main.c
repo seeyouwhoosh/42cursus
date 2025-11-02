@@ -16,7 +16,7 @@ int	all_whitespace(char	*s)
 {
 	if (!s)
 		return (1);
-	while(*s)
+	while (*s)
 	{
 		if (*s != 32 || (*s < 9 && *s > 13))
 			return (0);
@@ -25,17 +25,35 @@ int	all_whitespace(char	*s)
 	return (1);
 }
 
-int	main()
+void	int_signal(int n)
+{
+	(void)n;
+	signal(SIGINT, SIG_IGN);
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	signal(SIGINT, int_signal);
+}
+
+int	main(int ac, char **av, char **env)
 {
 	char	*line;
-	char	*name;
 
-	name ="\e[1m\e[38;5;198mM\e[38;5;202mi\e[38;5;214mn\e[38;5;226mi\e[38;5;154m\
-s\e[38;5;76mh\e[38;5;44me\e[38;5;33ml\e[38;5;21ml\e[38;5;92m> \e[0;0m";
-	while ((line = readline(name)))
+	(void)av;
+	(void)env;
+	if (ac != 1)
+		return(write(1, "\e[1;31mInvalid arguments\e[0m\n", 29));
+	signal(SIGINT, int_signal);
+	signal(SIGQUIT, SIG_IGN);
+	line = (char *)1;
+	while (line)
 	{
+		line = readline("Minishell> ");
+		rl_on_new_line();
 		if (all_whitespace(line))
 			continue ;
 		add_history(line);
-	} 
+		free(line);
+	}
 }

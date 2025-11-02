@@ -68,7 +68,7 @@ pid_t wait3(int *_Nullable wstatus, int options, struct rusage *_Nullable rusage
 pid_t wait4(pid_t pid, int *_Nullable wstatus, int options, struct rusage *_Nullable rusage);
 
 #include <signal.h>
-/*  @ Cuando se ejecuta la señal, se delega a la handler */
+/* @ Cuando se ejecuta la señal, se delega a la handler */
 sighandler_t signal(int signum, sighandler_t handler);
 int sigaction(int sig, const struct sigaction *restrict act, struct sigaction *restrict oact);
 int sigemptyset(sigset_t *set);
@@ -87,11 +87,20 @@ char *strerror(int errnum)
 int ioctl(int fd, unsigned long op, ...);
 
 #include <readline/readline.h>
+/* @ Esto es como la función input() de python */
 char *readline(const char *prompt);
+
+/* @ Permite acceder a comandos anteriores usando las flechas*/
 void add_history(const char *line);
 void rl_clear_history();
+
+/* @ Indica al sistema que estás en una nueva línea, like, cuando has insertado un comando y pones enter. No entiendo muy bien esto, pero podrían surgir problemas si no se pone*/
 int rl_on_new_line();
-void rl_replace_line (const char *text, int clear_undo);
+
+/* @ Reemplazar la línea actual con lo que sea que tenga text; el clear_undo es para indicar si hay que limpiar el historial */
+void rl_replace_line(const char *text, int clear_undo);
+
+/* @ Vuelve a mostrar el prompt */
 void rl_redisplay();
 
 #include <term.h>

@@ -16,7 +16,7 @@ MAKE		= make -sC
 RM			= rm -rf
 
 # Libs
-LINKER		= -
+LINKER		= -lreadline
 
 # Includes
 INCLUDE_DIR	= include
@@ -24,7 +24,7 @@ INCLUDES	= -I$(INCLUDE_DIR) \
 
 # Sources
 SRC_DIR		= src
-SOURCES		= 
+SOURCES		= main.c
 
 # Objects
 OBJ_DIR		= obj
@@ -40,7 +40,7 @@ BOBJ_DIR	= obj_bonus
 BOBJECTS	= $(addprefix $(BOBJ_DIR)/, $(BSOURCES:.c=.o))
 
 
-all: deps $(OBJECTS) $(NAME)
+all: $(OBJECTS) $(NAME)
 
 
 # Main program
@@ -48,12 +48,12 @@ all: $(NAME)
 
 $(NAME): $(OBJECTS)
 	@echo "$(BBLUE)$(NAME)$(NC): Creating $(GREEN)$@$(NC)..."
-	@$(CC) $(CFLAGS) -o $@ $(OBJECTS) $(LINKER)
+	$(CC) $(CFLAGS) -o $@ $(OBJECTS) $(LINKER)
 	@echo "$(BBLUE)$(NAME)$(NC): $(GREEN)$(NAME)$(NC) created"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
-	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@ 
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@ 
 
 
 # Bonus program
@@ -69,16 +69,11 @@ $(BOBJ_DIR)/%.o: $(BOBJ_DIR)/%.c
 
 # Cleaning targets
 clean:
-	@$(MAKE) $(LIBFT_DIR) clean
-	@$(MAKE) $(PRINTF_DIR) clean
-	@$(MAKE) $(MLX_DIR) clean
 	@$(RM) $(OBJ_DIR)
 	@$(RM) $(BOBJ_DIR)
 	@echo "$(BBLUE)$(NAME)$(NC): Objects cleaned"
 
 fclean: clean
-	@$(MAKE) $(LIBFT_DIR) fclean
-	@$(MAKE) $(PRINTF_DIR) fclean
 	@$(RM) $(NAME)
 	@echo "$(BBLUE)$(NAME)$(NC): Fully cleaned"
 
