@@ -119,6 +119,9 @@ int tcgetattr(int fildes, struct termios *termios_p);
 
 ## Guidelines generales
 
+### Programa detallado (https://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html)
+
+
 ### Notas de lo que no hace falta gestionar
 * "The readline() function can cause memory leaks. You don’t have to fix them."
 
