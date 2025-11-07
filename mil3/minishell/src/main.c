@@ -90,10 +90,15 @@ void	exec(char *cmd, char **env)
 
 int	process_args(char *line, char **env)
 {
-	char	**tokens;
-	int		pid;
+	char		**tokens;
+	int			pid;
+	t_cmdtab	cmdtab;
 
 	tokens = ft_split(line);
+	while (*tokens)
+	{
+		if (ft_strcmp(*tokens, "|") || ft_strcmp(*tokens, ">") || ft_strcmp(*tokens, "<"))
+	}
 	(void)tokens;
 	pid = fork();
 	if (!pid)

@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 18:55:19 by xwu               #+#    #+#             */
-/*   Updated: 2025/11/03 22:01:13 by xwu              ###   ########.fr       */
+/*   Updated: 2025/11/07 10:48:42 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,26 @@ size_t	ft_strlen(const char *s)
 int	ft_isspace(int c)
 {
 	return (c == 32 || (c >= 9 && c <= 13));
+}
+
+char	*charset_in_str(const char *str, const char *charset)
+{
+	size_t	i;
+	size_t	j;
+
+	if (!str || !charset || !(*charset) || !(*str))
+		return (NULL);
+	i = -1;
+	while (charset[++i])
+	{
+		j = -1;
+		while (str[++j])
+		{
+			if (charset[i] == str[j])
+				return (&str[j]);
+		}
+	}
+	return (NULL);
 }
 
 size_t	ft_strwords(const char *s)
@@ -50,7 +70,7 @@ size_t	ft_strwords(const char *s)
 	return (count);
 }
 
-size_t	ft_strwords_sep(const char *s, char c)
+size_t	ft_strwords_sep(const char *s, const char *charset)
 {
 	size_t	i;
 	size_t	count;

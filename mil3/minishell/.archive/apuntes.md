@@ -11,8 +11,8 @@ void *malloc(size_t size);
 void free(void *ptr);
 void exit(int status);
 
-/* @ Para conseguir el contenido del environment, principalmente creo que PATH y supongo que todo
-lo demás si hay que imitar el comportamiento de hecho */
+/* @ Para conseguir el contenido del environment, principalmente creo que PATH y supongo
+que todo lo demás si hay que imitar el comportamiento de hecho */
 char *getenv(const char *name);
 
 #include <fcntl.h>
@@ -50,14 +50,21 @@ int pipe(int fildes[2]);
 /* @ find the pathname of a terminal associated with the file descriptor */
 char *ttyname(int fildes);
 
-/* @ En qué slot está la terminal actual, pero creo que hoy en día está prácticamente deprecated */
+/* @ En qué slot está la terminal actual, pero creo que hoy en día está prácticamente
+deprecated */
 int ttyslot(void);
 
-/* @ Básicamente eliminar lo que sea que tenga ese nombre, si hay algún proceso con el archivo abierto, espera a que acabe antes de eliminarlo */
+/* @ Básicamente eliminar lo que sea que tenga ese nombre, si hay algún proceso con el archivo
+abierto, espera a que acabe antes de eliminarlo */
 int unlink(const char *path);
 
 #include <dirent.h>
+
+/* @ Similar al open() para los files */
 DIR *opendir(const char *dirname);
+
+/* @ Similar al read() de los files, excepto que te devuelve un puntero a struct que contiene
+el nombre de la carpeta en el elemento char *d_name */
 struct dirent *readdir(DIR *dirp);
 int closedir(DIR *dirp);
 
@@ -70,12 +77,21 @@ pid_t wait4(pid_t pid, int *_Nullable wstatus, int options, struct rusage *_Null
 #include <signal.h>
 /* @ Cuando se ejecuta la señal, se delega a la handler */
 sighandler_t signal(int signum, sighandler_t handler);
+
+/* @ Examina y cambia la acción asociada a la señal
+@ sigaction act: define cómo actúa la señal, puede ser NULL, en tal caso, no cambia nada. Mirar
+struct abajo.
+@ sigaction oact: aquí es donde se almacena la información de la señal antes de cambiar, puede
+ser NULL, en tal caso no se almacena nada */
 int sigaction(int sig, const struct sigaction *restrict act, struct sigaction *restrict oact);
 int sigemptyset(sigset_t *set);
 int sigaddset(sigset_t *set, int signo);
+
+/* @ Send a signal to a process */
 int kill(pid_t pid, int sig);
 
 #include <sys/stat.h>
+/* Get file information */
 int stat(const char *restrict path, struct stat *restrict statbuf);
 int fstat(int fd, struct stat *statbuf);
 int lstat(const char *restrict path, struct stat *restrict statbuf);
@@ -94,10 +110,12 @@ char *readline(const char *prompt);
 void add_history(const char *line);
 void rl_clear_history();
 
-/* @ Indica al sistema que estás en una nueva línea, like, cuando has insertado un comando y pones enter. No entiendo muy bien esto, pero podrían surgir problemas si no se pone*/
+/* @ Indica al sistema que estás en una nueva línea, like, cuando has insertado un comando y pones
+enter. No entiendo muy bien esto, pero podrían surgir problemas si no se pone*/
 int rl_on_new_line();
 
-/* @ Reemplazar la línea actual con lo que sea que tenga text; el clear_undo es para indicar si hay que limpiar el historial */
+/* @ Reemplazar la línea actual con lo que sea que tenga text; el clear_undo es para indicar si hay
+que limpiar el historial */
 void rl_replace_line(const char *text, int clear_undo);
 
 /* @ Vuelve a mostrar el prompt */
@@ -119,8 +137,7 @@ int tcgetattr(int fildes, struct termios *termios_p);
 
 ## Guidelines generales
 
-### Programa detallado (https://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html)
-
+### Detalles detallados (https://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html)
 
 ### Notas de lo que no hace falta gestionar
 * "The readline() function can cause memory leaks. You don’t have to fix them."
@@ -180,6 +197,17 @@ int  main(void)
 	return 0;
 }
 ```
+
+#### struct sigaction
+```c
+struct sigaction {
+	void       (*sa_handler)(int); // similar al handler de la función signal
+	sigset_t   sa_mask; // define el set de signals que se usa. sa_mask must be set by using one or more of the signal set manipulation functions: sigemptyset(), sigfillset(), sigaddset(), or sigdelset()
+	int        sa_flags; // cambia el comportamiento de las señales. Ejemplo: SA_SIGINFO Tells the system to use the signal action specified by sa_sigaction instead of sa_handler.
+	void       (*sa_sigaction)(int, siginfo_t *, void *); // 
+};
+```
+Para más información porque es denso y pesado, y quiero llorar: https://www.ibm.com/docs/en/zos/2.5.0?topic=functions-sigaction-examine-change-signal-action
 
 ### Gestionar redirecciones
 Todas las permitaciones tipo
