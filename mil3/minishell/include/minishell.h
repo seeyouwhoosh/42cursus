@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:46:16 by xwu               #+#    #+#             */
-/*   Updated: 2025/11/03 21:54:50 by xwu              ###   ########.fr       */
+/*   Updated: 2025/11/09 22:35:16 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@
 typedef struct s_cmds
 {
 	char	*cmd;
-	char	**options; //hay veces que son más de una letra
-	char	*args; // problema: hay a veces que las opciones afectan al siguiente argumento solo
+	char	*args;
 }			t_cmds;
 
 

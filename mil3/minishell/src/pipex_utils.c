@@ -6,83 +6,54 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/31 22:58:22 by xwu               #+#    #+#             */
-/*   Updated: 2025/11/03 20:57:43 by xwu              ###   ########.fr       */
+/*   Updated: 2025/11/09 22:59:47 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include <unistd.h>
+#include <fcntl.h>
 
-char	*get_path(char *cmd, char **env)
+int	ft_open(const char *filename, char mode)
 {
+	int	fd;
+
+	fd = -1;
+	if (mode == 'r')
+		fd = open(filename, O_RDONLY);
+	else if (mode == 'w')
+		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	else if (mode == 'a')
+		fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0777);
+	if (fd < 0)
+	{
+		perror(filename);
+		exit (EXIT_FAILURE);
+	}
+	return (fd);
+}
+
+void	*ft_realloc(void *ptr, size_t old_size, size_t size)
+{
+	char	*dest;
+	char	*cptr;
 	size_t	i;
-	char	**split_paths;
-	char	*pathplus;
-	char	*path;
 
-	i = -1;
-	while (env[++i] && !ft_strnstr(env[i], "PATH=", 5))
-		;
-	split_paths = ft_split(env[i] + 5, ':');
-	if (!split_paths)
+	if (!size)
+	{
+		free(ptr);
 		return (NULL);
+	}
+	cptr = (char *)ptr;
+	dest = malloc(size);
+	if (!dest)
+		return (NULL);
+	if (!ptr)
+		return (dest);
 	i = -1;
-	while (split_paths[++i])
-	{
-		pathplus = ft_strjoin(split_paths[i], "/");
-		path = ft_strjoin(pathplus, cmd);
-		free(pathplus);
-		if (!access(path, X_OK))
-			return (ft_freesplit(split_paths), path);
-		free(path);
-	}
-	ft_freesplit(split_paths);
-	write(2, cmd, ft_strlen(cmd));
-	write(2, ": Command not found\n", 20);
-	return (NULL);
-}
-
-void	exec(char *cmd, char **env)
-{
-	char	*path;
-	char	**split_cmd;
-
-	split_cmd = ft_split(cmd, ' ');
-	path = get_path(split_cmd[0], env);
-	if (!path)
-	{
-		ft_freesplit(split_cmd);
-		free(path);
-		return ;
-	}
-	if (execve(path, split_cmd, env))
-	{
-		perror(path);
-		ft_freesplit(split_cmd);
-		free(path);
-	}
-}
-
-void	here_doc_put(char *limiter, int fd)
-{
-	char	*input;
-	char	*new_limiter;
-	
-	new_limiter = ft_strjoin(limiter, "\n");
-	write(1, "\e[1;1mhere_doc> \e[0;0m", 22);
-	input = get_next_line(0);
-	while (input)
-	{
-		if (!ft_strncmp(input, new_limiter, ft_strlen(input)))
-		{
-			free(new_limiter);
-			free(input);
-			exit(0);
-		}
-		write(fd, input, ft_strlen(input));
-		free(input);
-		write(1, "\e[1;1mhere_doc> \e[0;0m", 22);
-		input = get_next_line(0);
-	}
+	while (++i < old_size && i < size)
+		dest[i] = cptr[i];
+	free(ptr);
+	return (dest);
 }
 
 void	get_line(int fd, char **line, size_t size)
@@ -129,4 +100,49 @@ char	*get_next_line(int fd)
 	if (!line)
 		return (NULL);
 	return (line);
+}
+
+void	here_doc_put(char *limiter, int fd)
+{
+	char	*input;
+	char	*new_limiter;
+	
+	new_limiter = ft_strjoin(limiter, "\n");
+	write(1, "\e[1;1mhere_doc> \e[0;0m", 22);
+	input = get_next_line(0);
+	while (input)
+	{
+		if (!ft_strcmp(input, new_limiter))
+		{
+			free(new_limiter);
+			free(input);
+			exit(0);
+		}
+		write(fd, input, ft_strlen(input));
+		free(input);
+		write(1, "\e[1;1mhere_doc> \e[0;0m", 22);
+		input = get_next_line(0);
+	}
+}
+
+void	here_doc(char *limiter)
+{
+	pid_t	read;
+	int		fd[2];
+
+	if (pipe(fd))
+		return (perror("Pipe failed"));
+	read = fork();
+	if (!read)
+	{
+		close(fd[0]);
+		here_doc_put(limiter, fd[1]);
+		dup2(fd[1], STDOUT_FILENO);
+	}
+	else if (read > 0)
+	{
+		close(fd[1]);
+		dup2(fd[0], STDIN_FILENO);
+		waitpid(read, NULL, 0);
+	}
 }

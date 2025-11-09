@@ -13,6 +13,7 @@
 #include "minishell.h"
 
 #include "libft_utils.c"
+#include "pipex_utils.c"
 
 int	all_whitespace(char	*s)
 {
@@ -48,7 +49,7 @@ char	*get_path(char *cmd, char **env)
 	i = -1;
 	while (env[++i] && !ft_strnstr(env[i], "PATH=", 5))
 		;
-	split_paths = ft_split_sep(env[i] + 5, ':');
+	split_paths = ft_split(env[i] + 5, ":");
 	if (!split_paths)
 		return (NULL);
 	i = -1;
@@ -72,7 +73,7 @@ void	exec(char *cmd, char **env)
 	char	*path;
 	char	**split_cmd;
 
-	split_cmd = ft_split(cmd);
+	split_cmd = ft_split(cmd, " \t");
 	path = get_path(split_cmd[0], env);
 	if (!path)
 	{
@@ -93,13 +94,50 @@ int	process_args(char *line, char **env)
 	char		**tokens;
 	int			pid;
 	t_cmdtab	cmdtab;
+	t_cmds		cmds;
+	size_t		i;
+	char		*arg;
+	char		*temp;
+	char		*temp2;
 
-	tokens = ft_split(line);
-	while (*tokens)
+	cmdtab.cmds = &cmds;
+	tokens = ft_split(line, " \t");
+	i = -1;
+	while (tokens[i])
 	{
-		if (ft_strcmp(*tokens, "|") || ft_strcmp(*tokens, ">") || ft_strcmp(*tokens, "<"))
+		if (charset_in_str(tokens[i], "><"))
+		{
+			if (!ft_strcmp(tokens[i], "<<"))
+				here_doc(tokens [i + 1]);
+			else if (!ft_strcmp(tokens[i], "<"))
+				cmdtab.infile = ft_open(tokens[i + 1], 'r');
+			else if (!ft_strcmp(tokens[i], ">>"))
+				cmdtab.outfile = ft_open(tokens[i + 1], 'a');
+			else if (!ft_strcmp(tokens[i], ">"))
+				cmdtab.outfile = ft_open(tokens[i + 1], 'w');
+		}
+		else
+		{
+			if (!access(tokens[i], X_OK))
+				cmdtab.cmds->cmd = tokens[i++];
+			
+			arg = NULL;
+			while (charset_in_str(tokens[i], "|;"))
+			{
+				temp = arg;
+				arg = ft_strjoin(arg, tokens[i]);
+				free(temp);
+				temp2 = arg;
+				arg = ft_strjoin(tokens[i], " ");
+				free(temp2);
+				i++;
+			}
+			cmdtab.cmds->args = arg;
+		}
+		i++;
 	}
-	(void)tokens;
+	line = ft_strjoin(cmdtab.cmds->cmd, " ");
+	line = ft_strjoin(cmdtab.cmds->cmd, cmdtab.cmds->args);
 	pid = fork();
 	if (!pid)
 	{
