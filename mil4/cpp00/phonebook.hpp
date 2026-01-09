@@ -2,6 +2,8 @@
 # define PHONEBOOK_HPP
 # include <string>
 # include <iostream>
+# include <iomanip>
+
 
 class Contact
 {
@@ -9,7 +11,7 @@ class Contact
 	Contact();
 	~Contact();
 
-	std::string	info[11];
+	std::string	info[5];
 };
 
 class Phonebook
@@ -23,8 +25,9 @@ class Phonebook
 
 	Contact	contacts[8];
 
-	void search_contact();
-	void add_contact();
+	void	search_contact();
+	void	add_contact();
+	int		display_contacts();
 };
 
 #endif // PHONEBOOK_HPP
