@@ -1,18 +1,10 @@
 #ifndef PHONEBOOK_HPP
 # define PHONEBOOK_HPP
+# include "Contact.hpp"
 # include <string>
 # include <iostream>
 # include <iomanip>
-
-
-class Contact
-{
-	public:
-	Contact();
-	~Contact();
-
-	std::string	info[5];
-};
+# include <cctype>
 
 class Phonebook
 {

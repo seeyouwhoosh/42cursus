@@ -63,9 +63,6 @@ BOBJ_DIR	= obj_bonus
 BOBJECTS	= $(addprefix $(BOBJ_DIR)/, $(BSOURCES:.c=.o))
 
 
-all: deps $(OBJECTS) $(NAME)
-
-
 # Libraries and other dependencies
 deps: $(LIBFT) $(PRINTF) $(MLX)
 

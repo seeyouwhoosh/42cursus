@@ -1,11 +1,6 @@
-#include "phonebook.hpp"
+#include "Phonebook.hpp"
 
-Contact::Contact()
-{
-	for (size_t i = 0; i < 5; i++)
-		info[i] = "";
-}
-Contact::~Contact(){}
+
 Phonebook::Phonebook()
 {
 	_slot_number = -1;
@@ -55,7 +50,6 @@ int	Phonebook::display_contacts()
 	return (i);
 }
 
-
 void	Phonebook::search_contact()
 {
 	int				j;
@@ -97,6 +91,16 @@ void	Phonebook::search_contact()
 	}
 }
 
+int	allblank(std::string str)
+{
+	for (size_t i = 0; i < str.length(); i++)
+	{
+		if (!std::isblank(str[i]))
+			return (0);
+	}
+	return (1);
+}
+
 void	Phonebook::add_contact()
 {
 	_slot_number = (_slot_number + 1) % 8;
@@ -112,7 +116,7 @@ void	Phonebook::add_contact()
 			std::cout << "\nIt's fine... Bye!" << std::endl;
 			exit(0);
 		};
-		while (contacts[_slot_number].info[i].empty())
+		while (contacts[_slot_number].info[i].empty() || allblank(contacts[_slot_number].info[i]))
 		{
 			std::cout << "\nHEY, a contact info can't be blank. You must know. Try again.\n";
 			std::cout << fields[i] + ": ";

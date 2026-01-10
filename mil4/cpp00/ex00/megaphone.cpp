@@ -1,6 +1,5 @@
 #include <iostream>
-#include <ctype.h>
-#include <locale.h>
+#include <cctype>
 
 int main(int ac, char **av)
 {
@@ -20,7 +19,7 @@ int main(int ac, char **av)
 		while (av[j][++i])
 		{
 			if (islower(av[j][i]))
-				std::cout << (char)toupper(av[j][i]);
+				std::cout << (char)std::toupper(av[j][i]);
 			else
 				std::cout << av[j][i];
 		}
