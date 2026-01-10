@@ -62,7 +62,7 @@ void	Phonebook::search_contact()
 	j = -1;
 	while (1)
 	{
-		std::cerr << "Whose information do you want to display (insert index): ";
+		std::cerr << "\nWhose information do you want to display (insert index): ";
 		if (!std::getline(std::cin, temp))
 		{
 			std::cout << "\nIt's fine... Bye!" << std::endl;
