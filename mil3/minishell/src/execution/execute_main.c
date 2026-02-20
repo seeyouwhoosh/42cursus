@@ -1,0 +1,35 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute_main.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/05 01:51:44 by xwu               #+#    #+#             */
+/*   Updated: 2026/02/12 20:45:31 by xwu              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+int	execute_all(t_cmdtab *cmdtab)
+{
+	size_t	i;
+	int		heredoc_code;
+
+	i = -1;
+	heredoc_code = manage_heredoc(cmdtab);
+	if (heredoc_code < 0)
+	{
+		cmdtab->exit_code = -heredoc_code;
+		free_cmds(cmdtab);
+		return (1);
+	}
+	while (cmdtab->n_cmds > ++i + 1)
+		cmdtab->exit_code = exec_cmd(cmdtab->cmds + i, cmdtab);
+	cmdtab->exit_code = exec_last_cmd(cmdtab->cmds + i, cmdtab);
+	free_cmds(cmdtab);
+	ft_dup(cmdtab->stdin_fd, STDIN_FILENO);
+	ft_dup(cmdtab->stdout_fd, STDOUT_FILENO);
+	return (cmdtab->exit_code);
+}

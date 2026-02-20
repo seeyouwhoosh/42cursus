@@ -17,14 +17,21 @@ RM			= rm -rf
 
 # Libs
 LINKER		= -lreadline
+LIBFT_DIR	= include/libft
+LIBFT		= $(LIBFT_DIR)/libft.a
+LINKER		+= -lft -L$(LIBFT_DIR)
 
 # Includes
 INCLUDE_DIR	= include
-INCLUDES	= -I$(INCLUDE_DIR) \
+INCLUDES	= -I$(INCLUDE_DIR) -I$(LIBFT_DIR)
 
 # Sources
 SRC_DIR		= src
-SOURCES		= main.c
+SOURCES		= main.c utils.c main_utils.c signal.c frees.c \
+	builtin/cd.c builtin/echo.c builtin/env_utils.c builtin/env_utils2.c builtin/env.c builtin/exit.c builtin/export.c builtin/pwd.c builtin/unset.c \
+	execution/builtin.c execution/execute_main.c execution/execute_utils.c execution/execute_utils2.c execution/here_doc.c execution/redirection.c \
+	parsing/parse_main.c parsing/parse_utils.c parsing/parse_utils2.c parsing/parse_utils3.c parsing/opening.c parsing/redirections.c \
+	gnl/get_next_line_utils.c gnl/get_next_line.c
 
 # Objects
 OBJ_DIR		= obj
@@ -39,20 +46,31 @@ BSOURCES	=
 BOBJ_DIR	= obj_bonus
 BOBJECTS	= $(addprefix $(BOBJ_DIR)/, $(BSOURCES:.c=.o))
 
+ifeq ($(shell uname), Darwin)
+	LINKER	+= -L/opt/homebrew/opt/readline/lib
+	INCLUDES+= -I/opt/homebrew/opt/readline/include
+endif
 
 all: $(OBJECTS) $(NAME)
 
 
 # Main program
-all: $(NAME)
+all: $(LIBFT) $(OBJECTS) $(NAME)
 
-$(NAME): $(OBJECTS)
+$(LIBFT):
+	make bonus -C $(LIBFT_DIR)
+
+$(NAME): $(LIBFT) $(OBJECTS)
 	@echo "$(BBLUE)$(NAME)$(NC): Creating $(GREEN)$@$(NC)..."
-	$(CC) $(CFLAGS) -o $@ $(OBJECTS) $(LINKER)
+	$(CC) $(CFLAGS) $(OBJECTS) $(LINKER) -o $@
 	@echo "$(BBLUE)$(NAME)$(NC): $(GREEN)$(NAME)$(NC) created"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
+	@mkdir -p $(OBJ_DIR)/builtin
+	@mkdir -p $(OBJ_DIR)/execution
+	@mkdir -p $(OBJ_DIR)/parsing
+	@mkdir -p $(OBJ_DIR)/gnl
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@ 
 
 
@@ -64,17 +82,19 @@ bonus: $(BOBJECTS)
 
 $(BOBJ_DIR)/%.o: $(BOBJ_DIR)/%.c
 	@mkdir -p $(BOBJ_DIR)
-	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 
 # Cleaning targets
 clean:
-	@$(RM) $(OBJ_DIR)
+	$(RM) $(OBJ_DIR)
+	make -C $(LIBFT_DIR) clean
 	@$(RM) $(BOBJ_DIR)
 	@echo "$(BBLUE)$(NAME)$(NC): Objects cleaned"
 
 fclean: clean
-	@$(RM) $(NAME)
+	$(RM) $(NAME)
+	make -C $(LIBFT_DIR) fclean
 	@echo "$(BBLUE)$(NAME)$(NC): Fully cleaned"
 
 re: fclean all
