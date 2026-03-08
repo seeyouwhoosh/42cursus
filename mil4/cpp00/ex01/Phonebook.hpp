@@ -5,6 +5,7 @@
 # include <iostream>
 # include <iomanip>
 # include <cctype>
+# include <cstdlib>
 
 class Phonebook
 {
@@ -22,4 +23,7 @@ class Phonebook
 	int		display_contacts();
 };
 
+unsigned long	ft_stoul(std::string str);
+int				allblank(std::string str);
+int				allprintable(std::string str);
 #endif // PHONEBOOK_HPP

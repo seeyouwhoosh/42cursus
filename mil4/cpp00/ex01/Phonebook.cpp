@@ -1,6 +1,5 @@
 #include "Phonebook.hpp"
 
-
 Phonebook::Phonebook()
 {
 	_slot_number = -1;
@@ -68,16 +67,7 @@ void	Phonebook::search_contact()
 			std::cout << "\nIt's fine... Bye!" << std::endl;
 			exit(0);;
 		}
-		try
-		{
-			std::stoul(temp);
-		}
-		catch (...)
-		{
-			std::cerr << "Write positive numbers, geez" << std::endl;
-			continue;
-		}
-		j = std::stoul(temp);
+		j = ft_stoul(temp);
 		if (j < 0 || j > max)
 			std::cerr << "Please, put something sensible!" << std::endl;
 		else
@@ -89,16 +79,6 @@ void	Phonebook::search_contact()
 		std::cout << fields[i] << ": ";
 		std::cout << contacts[j].info[i] << std::endl;
 	}
-}
-
-int	allblank(std::string str)
-{
-	for (size_t i = 0; i < str.length(); i++)
-	{
-		if (!std::isblank(str[i]))
-			return (0);
-	}
-	return (1);
 }
 
 void	Phonebook::add_contact()
@@ -116,9 +96,9 @@ void	Phonebook::add_contact()
 			std::cout << "\nIt's fine... Bye!" << std::endl;
 			exit(0);
 		};
-		while (contacts[_slot_number].info[i].empty() || allblank(contacts[_slot_number].info[i]))
+		while (!allprintable(contacts[_slot_number].info[i]) || (contacts[_slot_number].info[i].empty() || allblank(contacts[_slot_number].info[i])))
 		{
-			std::cout << "\nHEY, a contact info can't be blank. You must know. Try again.\n";
+			std::cout << "\nHEY, a contact info can't be THAT. Try again.\n";
 			std::cout << fields[i] + ": ";
 			if (!std::getline(std::cin, contacts[_slot_number].info[i]))
 			{
