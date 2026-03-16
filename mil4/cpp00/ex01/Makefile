@@ -14,7 +14,7 @@ CFLAGS		= -Wall -Werror -Wextra -std=c++98
 RM			= rm -rf
 
 # Sources
-SOURCES		= main.cpp Contact.cpp Phonebook.cpp
+SOURCES		= main.cpp Contact.cpp Phonebook.cpp Phonebook_utils.cpp
 
 # Objects
 OBJECTS		= $(SOURCES:.cpp=.o)
