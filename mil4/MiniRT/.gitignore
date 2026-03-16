@@ -1,0 +1,5 @@
+*.o
+*.out
+miniRT
+test*
+*.a
