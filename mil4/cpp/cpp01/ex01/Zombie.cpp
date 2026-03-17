@@ -9,7 +9,7 @@ Zombie::Zombie(const std::string& n)
 
 void	Zombie::setName(const std::string& n)
 {
-	this->name = n;
+	name = n;
 }
 
 
