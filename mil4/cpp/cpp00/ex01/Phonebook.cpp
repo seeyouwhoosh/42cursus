@@ -46,7 +46,6 @@ int	Phonebook::display_contacts()
 				std::cout << std::endl;
 		}
 	}
-	std::cout << i << std::endl;
 	return (i - 1);
 }
 
