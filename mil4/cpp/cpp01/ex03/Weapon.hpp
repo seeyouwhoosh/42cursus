@@ -12,7 +12,7 @@ class Weapon
 		~Weapon();
 
 		std::string	getType();
-		void	setType(const std::string &newtype);
+		void		setType(const std::string& newtype);
 };
 
 #endif //WEAPON_HPP
