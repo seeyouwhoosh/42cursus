@@ -10,8 +10,6 @@ The project is completed using an interactive training interface where multiple 
 
 By completing NetPractice, students gain a solid understanding of essential networking concepts and how they are applied in real-world scenarios.
 
----
-
 ## Instructions
 
 ### Running the Training Interface
@@ -31,7 +29,6 @@ This will launch the interactive environment in your browser or local interface,
 
 * Each level presents a network diagram with hosts, routers, and switches.
 * Your task is to:
-
   * Assign valid IP addresses
   * Configure subnet masks
   * Set correct default gateways
