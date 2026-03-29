@@ -27,7 +27,7 @@ inception/
 Comando para facilitar la vida, gracias
 ```sh
 mkdir -p inception/{secrets,srcs/requirements/{mariadb/{conf,tools},nginx/{conf,tools},wordpress/{conf,tools}}} \
-&& touch inception/Makefile inception/secrets/{credentials.txt,db_password.txt,db_root_password.txt} inception/srcs/{docker-compose.yml,.env} inception/srcs/requirements/{mariadb,nginx,wordpress}/{Dockerfile,.dockerignore}
+&& touch inception/Makefile inception/secrets/{db_password.txt,db_root_password.txt} inception/srcs/{docker-compose.yml,.env} inception/srcs/requirements/{mariadb,nginx,wordpress}/{Dockerfile,.dockerignore}
 ```
 
 ## Instalar Docker
@@ -87,9 +87,46 @@ docker run -d -p 8080:80 --name my-nginx nginx
 # -p: puerto público:privado
 ```
   
-**Docker-compose** es una herramienta para correr varios contenedores de manera más rápida (de lo contrario, habría que correr `docker build` y `docker compose` para cada aplicación. Se aplica el comando `docker-compose` sobre un archivo .yml  
+**Docker-compose** es una herramienta para correr varios contenedores de manera más rápida (de lo contrario, habría que correr `docker build` y `docker compose` para cada aplicación. Se aplica el comando `docker-compose` sobre un archivo .yml. YAML es [whitespace-sensitive y no acepta tabs](https://fixed.docs.upsun.com/learn/overview/yaml/what-is-yaml.html). 
 
-  
+La plantilla del docker-compose de este proyecto (no todos los campos son necesarios):
+
+```yml
+services:
+  mariadb: 
+    build: # para hacer que docker-compose buildee la imagen antes de correr
+      context: # el dockerfile suele estar aquí, solo basta poner esto; si no, se usa para buscar sus archivos dependientes
+      dockerfile: # el dockerfile
+    image: #formato: imagen:versión
+    ports:
+      #- "público:privado"
+    container_name: 
+    depends_on:
+      #- wordpress
+    networks:
+    volumes: # Si quieres que los datos persistan incluso cuando el contenedor no está corriendo
+      - mariadb_data:/var/www/html
+    env_file: #alternativa para usar env (${VAR}): "environment:"
+      .env
+    secrets:
+      #-db_passwords
+    restart: on-failure 
+
+volumes: 
+  mariadb_data:
+    driver:
+    driver_opts:
+      type:
+      o: 
+      device: 
+
+secrets: # Docker tiene su propio gestor de contraseñas e información sensible
+  #db_passwords:
+    #file: .txt
+```
+
+* [Infomación sobre restart](https://github.com/compose-spec/compose-spec/blob/main/spec.md#restart)
+
 **The benefit of Docker compared to VMs**  
 
 | Aspect         | Docker Containers    | Virtual Machines    |
@@ -125,6 +162,82 @@ docker network ls
 docker network inspect inception-network
 ```
 
+Y como los contenedores van a estar en esa network, lo declaramos en nuestro docker-compose.yml.
+
+```yml
+networks:
+  inception-network:
+    driver: bridge
+```
+
+## MariaDB
+
+MariaDB es una herramienta para gestionar bases de datos relacionales (lo que sea que sea eso), en fin, se usa para estructurar información. Es un fork de MySQL, sigue siendo muy compatible.
+
+**Dockerfile**
+```Dockerfile
+# Imagen base que usaremos para construir la imagen de la aplicación (penúltima versión: 11, bullseye). Más ejemplos de bases: python, w
+FROM debian:bullseye
+
+RUN apt update
+RUN apt install -y mariadb-server mariadb-client
+
+# chown changes ownership -R recursivamente de mysql del grupo mysql para que pueda modificar /var/run/mysqld
+RUN mkdir -p /var/run/mysqld /var/lib/mysql \
+    && chown -R mysql:mysql /var/run/mysqld /var/lib/mysql  \
+    && chmod 777 /var/run/mysqld
+
+EXPOSE 3306
+
+COPY conf/mariadb.conf /etc/mysql/mariadb.conf.d/50-server.cnf
+COPY conf/dump.sql /usr/local/bin/
+COPY conf/mariadb.sh /usr/local/bin/
+
+RUN chmod +x /usr/local/bin/mariadb.sh
+
+ENTRYPOINT [ "/usr/local/bin/mariadb.sh" ]
+CMD ["mysqld"]
+```
+
+**Configuration file**
+
+Tras buscar en /etc/mysql, en my.cnf, he puesto las configuraciones que he encontrado que parecen útiles
+```ini
+[mysqld]
+bind-address = 0.0.0.0 # escucha todas las network interfaces
+port = 3306
+skip-networking = false # habilita escuchar desde puerto y aceptar conexiones
+socket = /var/run/mysqld/mysqld.sock # permite a una aplicación conectarse a una base de datos para enviar consultas y recibir resultados
+datadir = /var/lib/mysql # directorio de all database files
+# pid-file = /var/run/mysqld/mysqld.pid
+```
+
+**Initialization script**
+```sh
+#!/bin/bash
+
+set -e
+
+# Initialize MySQL data directory if it doesn't exist
+if [ ! -d "/var/lib/mysql/mysql" ]; then
+    mysql_install_db --user=mysql --datadir=/var/lib/mysql > /dev/null
+fi
+
+mariadb -u root << EOF
+CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};
+CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';
+
+ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
+GRANT ALL ON *.* TO 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';
+
+FLUSH PRIVILEGES;
+EOF
+
+mariadb -u root ${MYSQL_DATABASE} < /usr/local/bin/dump.sql
+
+exec "$@"
+```
+
 ## Nginx
 Nginx es:
 * **Servidor web**: almacena los archivos de un sitio web (.html, .css, imágenes y así) y los envía a los usuarios a través de internet mediante el protocolo HTTP/HTTPS 
@@ -141,7 +254,6 @@ Para implementar el TLS (también el SSL), se usa **OpenSSL**, que es gratis y o
 
 **Dockerfile**
 ```Dockerfile
-# Imagen base que usaremos para construir la imagen de la aplicación (penúltima versión: 11, bullseye)
 FROM debian:bullseye
 
 # Corre comandos durante el proceso de build
@@ -350,88 +462,6 @@ echo "Starting PHP-FPM..."
 exec php-fpm8.2 -F
 ```
 
-## MariaDB
-
-**Dockerfile**
-```Dockerfile
-FROM debian:bullseye
-
-RUN apt update
-RUN apt install -y mariadb-server
-
-# chown changes ownership -R recursivamente de mysql del grupo mysql para que pueda modificar /var/run/mysqld
-RUN mkdir -p /var/run/mysqld \
-    && chown -R mysql:mysql /var/run/mysqld \
-    && chmod 755 /var/run/mysqld
-
-EXPOSE 3306
-
-COPY conf/mariadb.conf /etc/mysql/mariadb.conf.d/50-server.cnf
-COPY tools/mariadb.sh /usr/local/bin/
-
-RUN chmod +x /usr/local/bin/mariadb.sh
-
-ENTRYPOINT [ "/usr/local/bin/mariadb.sh" ]
-```
-
-**Configuration file**
-```conf
-[mysqld]
-bind-address = 0.0.0.0 # escucha todas las network interfaces
-port = 3306
-socket = /var/run/mysqld/mysqld.sock # permite a una aplicación conectarse a una base de datos para enviar consultas y recibir resultados
-datadir = /var/lib/mysql # directorio de all database files
-log-error = /var/log/mysql/error.log
-pid-file = /var/run/mysqld/mysqld.pid
-```
-
-**Initialization script**
-```sh
-#!/bin/bash
-
-set -e
-
-echo "MariaDB: Initializating..."
-
-# Initialize MySQL data directory if it doesn't exist
-if [ ! -d "/var/lib/mysql/mysql" ]; then
-    mysql_install_db --user=mysql --datadir=/var/lib/mysql > /dev/null
-fi
-
-# Start the server (no networking for setup)
-echo "MariaDB: Starting temporary server for setup..."
-mysqld --skip-networking --socket=/run/mysqld/mysqld.sock --user=mysql &
-pid="$!"
-
-# Wait for MariaDB to be ready
-echo "MariaDB: Waiting to be ready..."
-until mysqladmin --socket=/run/mysqld/mysqld.sock ping >/dev/null 2>&1; do
-    sleep 1
-done
-echo "MariaDB: MariaDB is ready!"
-
-# Run setup SQL: create database and users
-echo "MariaDB: Running setup SQL..."
-mysql --socket=/run/mysqld/mysqld.sock -u root << EOF
-ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
-CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};
-CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';
-GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'%';
-FLUSH PRIVILEGES;
-EOF
-
-# Shut down temporary server
-echo "MariaDB: Shutting down temporary server..."
-mysqladmin --socket=/run/mysqld/mysqld.sock -u root -p"${MYSQL_ROOT_PASSWORD}" shutdown
-
-# Wait for shutdown
-wait "$pid" || true
-
-# Start MariaDB normally (with networking)
-echo "MariaDB: Initialization complete. Starting server..."
-exec mysqld --user=mysql --datadir=/var/lib/mysql --socket=/run/mysqld/mysqld.sock
-```
-
 ## Docker-compose
 
 ```yaml
@@ -593,4 +623,6 @@ re: fclean all
 
 ## Páginas de referencia
 * https://docs.docker.com/get-started/docker-concepts/building-images/writing-a-dockerfile/
-* 
+* https://dev.to/alejiri/docker-nginx-wordpress-mariadb-tutorial-inception42-1eok
+* https://github.com/caroldaniel/42sp-cursus-inception/blob/main/guides/Mandatory-en.md#MariaDB 
+* https://github.com/TFHD/Inception/tree/main
