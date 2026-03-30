@@ -105,7 +105,7 @@ services:
       #- wordpress
     networks:
     volumes: # Si quieres que los datos persistan incluso cuando el contenedor no está corriendo
-      - mariadb_data:/var/www/html
+      - mariadb_data:/var/lib/mysql #nombre:dónde
     env_file: #alternativa para usar env (${VAR}): "environment:"
       .env
     secrets:
@@ -113,10 +113,10 @@ services:
     restart: on-failure 
 
 volumes: 
-  mariadb_data:
-    driver:
-    driver_opts:
-      type:
+  mariadb_data: #nombre del volumen
+    driver: # tipo de volumen
+    driver_opts: # opciones avancadas de lo de arriba
+      type: 
       o: 
       device: 
 
@@ -176,66 +176,326 @@ MariaDB es una herramienta para gestionar bases de datos relacionales (lo que se
 
 **Dockerfile**
 ```Dockerfile
-# Imagen base que usaremos para construir la imagen de la aplicación (penúltima versión: 11, bullseye). Más ejemplos de bases: python, w
-FROM debian:bullseye
+# Imagen base que usaremos para construir la imagen de la aplicación (penúltima versión: 12, bookworm). Más ejemplos de bases: python, w
+FROM debian:bookworm
 
 RUN apt update
 RUN apt install -y mariadb-server mariadb-client
 
+# Creamos los directorios necesarios
 # chown changes ownership -R recursivamente de mysql del grupo mysql para que pueda modificar /var/run/mysqld
 RUN mkdir -p /var/run/mysqld /var/lib/mysql \
     && chown -R mysql:mysql /var/run/mysqld /var/lib/mysql  \
-    && chmod 777 /var/run/mysqld
+    && chmod 755 /var/run/mysqld
 
 EXPOSE 3306
 
+# Copiamos el el archivo de configuración y el script de inicialización
 COPY conf/mariadb.conf /etc/mysql/mariadb.conf.d/50-server.cnf
+COPY tools/mariadb.sh /usr/local/bin/
+
+# archivo.sql son todos los settings y datos de wordpress cuando lo hayamos setupeado. Esto solo se genera una vez después de setupear la página web
 COPY conf/dump.sql /usr/local/bin/
-COPY conf/mariadb.sh /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/mariadb.sh
 
 ENTRYPOINT [ "/usr/local/bin/mariadb.sh" ]
-CMD ["mysqld"]
+CMD ["mysqld", "--user=mysql"]
 ```
 
 **Configuration file**
-
 Tras buscar en /etc/mysql, en my.cnf, he puesto las configuraciones que he encontrado que parecen útiles
 ```ini
-[mysqld]
+[mysqld] # Options read by mysqld, including both MariaDB Server and MySQL Server.
 bind-address = 0.0.0.0 # escucha todas las network interfaces
 port = 3306
 skip-networking = false # habilita escuchar desde puerto y aceptar conexiones
 socket = /var/run/mysqld/mysqld.sock # permite a una aplicación conectarse a una base de datos para enviar consultas y recibir resultados
 datadir = /var/lib/mysql # directorio de all database files
 # pid-file = /var/run/mysqld/mysqld.pid
+user = root
 ```
 
 **Initialization script**
 ```sh
 #!/bin/bash
+MYSQL_PASSWORD=$(cat "$MYSQL_PASSWORD_FILE")
+MYSQL_ROOT_PASSWORD=$(cat "$MYSQL_ROOT_PASSWORD_FILE")
 
 set -e
 
 # Initialize MySQL data directory if it doesn't exist
 if [ ! -d "/var/lib/mysql/mysql" ]; then
-    mysql_install_db --user=mysql --datadir=/var/lib/mysql > /dev/null
-fi
+  echo "MariaDB: Initializing database..."
+  mysql_install_db --user=mysql --datadir=/var/lib/mysql > /dev/null
 
-mariadb -u root << EOF
+  echo "MariaDB: Starting temporary MariaDB..."
+  mysqld_safe --datadir=/var/lib/mysql --skip-networking & # & significa empezarlo en segundo plano y sin conectarlo a la red 
+
+  # mariadb-admin ping mira si está vivo el servidor
+  until mariadb-admin ping --silent; do
+    sleep 1
+  done
+
+  mariadb -u root << EOF
+ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
 CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};
 CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';
-
-ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
-GRANT ALL ON *.* TO 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';
+GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'%';
 
 FLUSH PRIVILEGES;
 EOF
 
-mariadb -u root ${MYSQL_DATABASE} < /usr/local/bin/dump.sql
+  echo "MariaDB: Stopping temporary MariaDB..."
+  mariadb -u root -p${MYSQL_ROOT_PASSWORD} ${MYSQL_DATABASE} < /usr/local/bin/dump.sql
+  mariadb-admin -u root -p${MYSQL_ROOT_PASSWORD} shutdown
+fi
 
+echo "MariaDB: Starting MariaDB..."
 exec "$@"
+```
+
+* `mysql_safe`: intenta iniciar el ejecutable llamado "mysqld" (mySQL para el servidor). Es más seguro que hacer directamente `mysqld`, porque cuando ocurre un error, crea un error log y lo reintenta
+  * `--datadir` Path to data directory
+  * `> /dev/null` kinda like shut up, talk to the wall
+* [`mariadb-admin`](https://mariadb.com/docs/server/clients-and-utilities/administrative-tools/mariadb-admin)
+
+**Para comprobar que funciona**
+```sh
+docker build -t mariadb-test .
+docker run -it -p 3306:3306 \ -e MYSQL_DATABASE=wordpress \ -e MYSQL_USER=wpuser \ -e MYSQL_ROOT_PASSWORD_FILE=secrets/db_root_password.txt \ -e MYSQL_PASSWORD_FILE=secrets/db_password.txt \ mariadb-test
+```
+
+Si funciona, pone "Listening for connections" o algo así
+
+Si abres otra terminal y pones
+```sh
+mariadb -h localhost -P 3306 -u wpuser -p
+```
+Tras poner la contraseña (`wppass`), debería no pasar nada.
+
+Las variables de entorno las colocamos en `.env`
+
+```env
+MYSQL_DATABASE=wordpress
+MYSQL_USER=wpuser
+MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db_root_password
+MYSQL_PASSWORD_FILE=/run/secrets/db_password
+```
+
+Y las contraseñas en los respectivos archivos en /secrets
+```sh
+echo "wppass" > ../secrets/db_root_password.txt
+echo "rootpass" > ../secrets/db_password.txt
+
+chmod 600 ../secrets/*
+```
+
+**Actualizar el docker-compose**
+```yaml
+networks:
+  inception-network:
+    driver: bridge
+
+services:
+  mariadb:
+    build: 
+      context: requirements/mariadb
+    container_name: mariadb
+    networks:
+      - inception-network
+    volumes:
+      - mariadb_data:/var/lib/mysql #montada allí
+    env_file:
+      - .env
+    secrets:
+      - db_root_password
+      - db_password
+    restart: always
+
+volumes:
+  mariadb_data:
+    driver: local #almacenamiento local
+    driver_opts:
+      type: none
+      o: bind # share a directory from the host's filesystem into the container
+      device: /home/${USER}/data/mariadb # usa este sitio para guardar los datos
+
+secrets: #esto luego se copia a la carpeta /run/secrets
+  db_root_password:
+    file: ../secrets/db_root_password.txt
+  db_password:
+    file: ../secrets/db_password.txt
+```
+
+Una vez hecho esto, debería funcionar con el comando `docker compose up`
+
+## Wordpress
+
+Wordpress es un sistema escrito en PHP que se usa junto a MySQL o MariaDB para hacer cosas en la web, principalmente páginas web, newsletters, foros, LMS, tiendas y así.
+
+Los requisitos para correr Wordpress:
+* PHP 8.3 or greater
+* MariaDB 10.6 or greater OR MySQL 8.0 or greater
+* Nginx or Apache with mod_rewrite module
+* HTTPS support
+
+So yeah, al parecer estamos haciendo todo esto para hacer web-server.
+
+**Dockerfile**
+```Dockerfile
+FROM debian:bookworm
+
+RUN apt update && apt install -y \
+    php-fpm \ 
+    php-mysql \
+    curl \
+    wget \
+    unzip \
+
+RUN ln -s /usr/sbin/php-fpm8.4 /usr/local/bin/php-fpm
+
+# Create WordPress directory
+RUN mkdir -p /var/www/html
+WORKDIR /var/www/html
+RUN chown -R www-data:www-data /var/www/html
+
+EXPOSE 9000
+
+COPY conf/www.conf /etc/php/8.2/fpm/pool.d/
+COPY tools/wordpress.sh /usr/local/bin/
+
+
+RUN chmod +x /usr/local/bin/wordpress.sh
+
+ENTRYPOINT [ "/usr/local/bin/wordpress.sh" ]
+
+CMD ["php-fpm8.4", "-F"]
+```
+
+**Configuration file**
+```conf
+[www]
+user = www-data
+group = www-data
+listen = 9000
+listen.owner = www-data
+listen.group = www-data
+pm = dynamic
+pm.max_children = 5
+pm.start_servers = 2
+pm.min_spare_servers = 1
+pm.max_spare_servers = 3
+```
+
+**Initialization script**
+```sh
+#!/bin/bash
+set -e
+
+cd /var/www/html
+
+# Secretos
+if [ -f "$MYSQL_PASSWORD_FILE" ]; then
+    MYSQL_PASSWORD=$(cat "$MYSQL_PASSWORD_FILE")
+fi
+
+# Descargar WordPress tal cuál te dice su página: https://developer.wordpress.org/advanced-administration/before-install/howto-install/
+if [ ! -f wp-config.php ]; then
+    echo "WordPress: Downloading..."
+
+    wget https://wordpress.org/latest.tar.gz
+    tar -xzf latest.tar.gz
+    mv wordpress/* .
+    rm -rf wordpress latest.tar.gz
+
+    echo "WordPress: Configuring..."
+
+    cp wp-config-sample.php wp-config.php
+
+    sed -i "s/database_name_here/${MYSQL_DATABASE}/" wp-config.php
+    sed -i "s/username_here/${MYSQL_USER}/" wp-config.php
+    sed -i "s/password_here/${MYSQL_PASSWORD}/" wp-config.php
+    sed -i "s/localhost/${MYSQL_HOST}/" wp-config.php
+
+    chown -R www-data:www-data /var/www/html
+fi
+
+# Esperar a MariaDB
+until mysqladmin ping -hmariadb --silent; do
+    echo "Waiting for MariaDB..."
+    sleep 2
+done
+
+echo "WordPress: Starting PHP-FPM..."
+exec "$@"
+```
+
+**Actualizar el docker-compose**
+```yaml
+networks:
+  inception-network:
+    driver: bridge
+
+services:
+  mariadb:
+    build: 
+      context: requirements/mariadb
+    container_name: mariadb
+    networks:
+      - inception-network
+    volumes:
+      - mariadb_data:/var/lib/mysql #montada allí
+    env_file:
+      - .env
+    secrets:
+      - db_root_password
+      - db_password
+    restart: always
+  wordpress:
+    build: requirements/wordpress
+    container_name: wordpress
+    depends_on:
+      - mariadb
+    networks:
+      - inception-network
+    volumes:
+      - wordpress_data:/var/www/html
+    env_file:
+        - .env
+    secrets:
+      - db_password
+    restart: always
+
+volumes:
+  mariadb_data:
+    driver: local #almacenamiento local
+    driver_opts:
+      type: none
+      o: bind # share a directory from the host's filesystem into the container
+      device: /home/${USER}/data/mariadb # usa este sitio para guardar los datos
+  wordpress_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/${USER}/data/wordpress
+
+secrets: #esto luego se copia a la carpeta /run/secrets
+  db_root_password:
+    file: ../secrets/db_root_password.txt
+  db_password:
+    file: ../secrets/db_password.txt
+```
+
+**Actualizar el .env**
+
+```env
+MYSQL_DATABASE=wordpress
+MYSQL_USER=wpuser
+MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db_root_password
+MYSQL_PASSWORD_FILE=/run/secrets/db_password
+MYSQL_HOST=mariadb
 ```
 
 ## Nginx
@@ -254,7 +514,7 @@ Para implementar el TLS (también el SSL), se usa **OpenSSL**, que es gratis y o
 
 **Dockerfile**
 ```Dockerfile
-FROM debian:bullseye
+FROM debian:bookworm
 
 # Corre comandos durante el proceso de build
 RUN apt update
@@ -343,125 +603,6 @@ server {
 }
 ``` 
 
-## Wordpress
-
-
-**Dockerfile**
-```Dockerfile
-FROM debian:bullseye
-
-RUN apt update
-RUN apt install -y php8.2-fpm \
-  php8.2-mysql \
-  php8.2-curl \
-  php8.2-gd \
-  php8.2-intl \
-  php8.2-mbstring \
-  php8.2-soap \
-  php8.2-xml \
-  php8.2-zip \
-  wget \
-  curl \
-  && ln -s /usr/sbin/php-fpm8.2 /usr/local/bin/php-fpm \
-
-# Create WordPress directory
-WORKDIR /var/www/html
-
-# chown changes ownership -R recursivamente de mysql del grupo mysql para que pueda modificar /var/run/mysqld
-RUN mkdir -p /var/run/mysqld \
-    && chown -R mysql:mysql /var/run/mysqld \
-    && chmod 755 /var/run/mysqld
-
-EXPOSE 9000
-
-COPY conf/www.conf /etc/php/8.2/fpm/pool.d/
-COPY tools/wordpress.sh /usr/local/bin/
-
-RUN chmod +x /usr/local/bin/wordpress.sh
-
-ENTRYPOINT [ "/usr/local/bin/wordpress.sh" ]
-```
-
-**Configuration file**
-```conf
-[www]
-user = www-data
-group = www-data
-listen = 9000
-listen.owner = www-data
-listen.group = www-data
-pm = dynamic
-pm.max_children = 5
-pm.start_servers = 2
-pm.min_spare_servers = 1
-pm.max_spare_servers = 3
-```
-
-**Initialization script**
-```sh
-#!/bin/bash
-set -e
-
-WP_PATH="/var/www/html"
-
-# Read password from secret file
-if [ -n "$WORDPRESS_DB_PASSWORD_FILE" ] && [ -f "$WORDPRESS_DB_PASSWORD_FILE" ]; then
-    WORDPRESS_DB_PASSWORD=$(cat "$WORDPRESS_DB_PASSWORD_FILE")
-    export WORDPRESS_DB_PASSWORD
-fi
-
-echo "Setting up WordPress..."
-
-# Download and configure WordPress if not present
-if [ ! -f "$WP_PATH/wp-config.php" ]; then
-    echo "Downloading WordPress..."
-    wget -q https://wordpress.org/latest.tar.gz -O /tmp/wordpress.tar.gz
-    tar -xzf /tmp/wordpress.tar.gz -C /tmp
-    rm /tmp/wordpress.tar.gz
-
-    # Copy only missing files (avoid overwriting existing content)
-    cp -rn /tmp/wordpress/* "$WP_PATH" || true
-    rm -rf /tmp/wordpress
-
-    # Fetch security salts from WordPress API
-    WP_SALTS=$(wget -qO- https://api.wordpress.org/secret-key/1.1/salt/)
-
-    # Create wp-config.php
-    cat > "$WP_PATH/wp-config.php" << EOF
-<?php
-define('DB_NAME', '${WORDPRESS_DB_NAME}');
-define('DB_USER', '${WORDPRESS_DB_USER}');
-define('DB_PASSWORD', '${WORDPRESS_DB_PASSWORD}');
-define('DB_HOST', '${WORDPRESS_DB_HOST}');
-define('DB_CHARSET', 'utf8');
-define('DB_COLLATE', '');
-
-\$table_prefix = '${WORDPRESS_TABLE_PREFIX:-wp_}';
-
-${WP_SALTS}
-
-define('WP_DEBUG', false);
-
-if ( !defined('ABSPATH') )
-    define('ABSPATH', __DIR__ . '/');
-
-require_once ABSPATH . 'wp-settings.php';
-EOF
-
-    # Set secure permissions
-    find "$WP_PATH" -type d -exec chmod 750 {} \;
-    find "$WP_PATH" -type f -exec chmod 640 {} \;
-    chown -R www-data:www-data "$WP_PATH"
-
-    echo "WordPress setup complete."
-else
-    echo "WordPress already initialized, skipping setup."
-fi
-
-echo "Starting PHP-FPM..."
-exec php-fpm8.2 -F
-```
-
 ## Docker-compose
 
 ```yaml
@@ -469,31 +610,23 @@ networks:
   inception-network:
     driver: bridge
 
-
 services:
   mariadb:
     build: 
       context: requirements/mariadb
-    image: mariadb:inception
     container_name: mariadb
     networks:
       - inception-network
     volumes:
-      - mariadb_data:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD_FILE: /run/secrets/db_password
+      - mariadb_data:/var/lib/mysql #montada allí
+    env_file:
+      - .env
     secrets:
       - db_root_password
       - db_password
     restart: always
-
   wordpress:
-    build:
-      context: requirements/wordpress
-    image: wordpress:inception
+    build: requirements/wordpress
     container_name: wordpress
     depends_on:
       - mariadb
@@ -501,16 +634,11 @@ services:
       - inception-network
     volumes:
       - wordpress_data:/var/www/html
-    environment:
-      WORDPRESS_DB_HOST: mariadb
-      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
-      WORDPRESS_DB_USER: ${MYSQL_USER}
-      WORDPRESS_DB_PASSWORD_FILE: /run/secrets/db_password
-      WORDPRESS_TABLE_PREFIX: wp_
+    env_file:
+        - .env
     secrets:
       - db_password
     restart: always
-
   nginx:
     build:
       context: requirements/nginx
@@ -528,11 +656,11 @@ services:
 
 volumes:
   mariadb_data:
-    driver: local
+    driver: local #almacenamiento local
     driver_opts:
       type: none
-      o: bind
-      device: /home/${USER}/data/mariadb
+      o: bind # share a directory from the host's filesystem into the container
+      device: /home/${USER}/data/mariadb # usa este sitio para guardar los datos
   wordpress_data:
     driver: local
     driver_opts:
@@ -540,7 +668,7 @@ volumes:
       o: bind
       device: /home/${USER}/data/wordpress
 
-secrets:
+secrets: #esto luego se copia a la carpeta /run/secrets
   db_root_password:
     file: ../secrets/db_root_password.txt
   db_password:
@@ -566,14 +694,6 @@ WORDPRESS_DB_HOST=mariadb
 WORDPRESS_TABLE_PREFIX=wp_
 ```
 
-En /secrets
-```sh
-echo "root" > secrets/db_root_password.txt
-echo "pass" > secrets/db_password.txt
-
-chmod 600 secrets/*
-```
-
 ## Makefile
 
 ```Makefile
@@ -588,9 +708,13 @@ all: build up
 # Create data directories
 $(DATA_DIR)/mariadb:
     mkdir -p $(DATA_DIR)/mariadb
+    sudo chown -R $USER:$USER /home/$USER/data/mariadb
+    chmod 755 /home/$USER/data/mariadb
 
 $(DATA_DIR)/wordpress:
     mkdir -p $(DATA_DIR)/wordpress
+    sudo chown -R $USER:$USER /home/$USER/data/wordpress
+    chmod 755 /home/$USER/data/wordpress
 
 # Build images
 build: $(DATA_DIR)/mariadb $(DATA_DIR)/wordpress
@@ -623,6 +747,7 @@ re: fclean all
 
 ## Páginas de referencia
 * https://docs.docker.com/get-started/docker-concepts/building-images/writing-a-dockerfile/
+
 * https://dev.to/alejiri/docker-nginx-wordpress-mariadb-tutorial-inception42-1eok
 * https://github.com/caroldaniel/42sp-cursus-inception/blob/main/guides/Mandatory-en.md#MariaDB 
 * https://github.com/TFHD/Inception/tree/main
