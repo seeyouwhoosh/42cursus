@@ -1,0 +1,33 @@
+networks:
+  inception-network:
+    driver: bridge
+
+services:
+  mariadb:
+    build: 
+      context: requirements/mariadb
+    container_name: mariadb
+    networks:
+      - inception-network
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    env_file:
+      - .env
+    secrets:
+      - db_root_password
+      - db_password
+    restart: always
+
+volumes:
+  mariadb_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/${USER}/data/mariadb
+
+secrets:
+  db_root_password:
+    file: ../secrets/db_root_password.txt
+  db_password:
+    file: ../secrets/db_password.txt

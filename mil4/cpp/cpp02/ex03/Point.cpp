@@ -4,9 +4,9 @@ Point::Point(void): x(Fixed()), y(Fixed()) {}
 
 Point::Point(const Fixed x, const Fixed y) : x(x), y(y) {}
 
-Point::Point(const Point &other)
+Point::Point(const Point &other): x(other.x), y(other.y)
 {
-	*this = other;
+	
 }
 
 Point &Point::operator=(const Point &other) 
