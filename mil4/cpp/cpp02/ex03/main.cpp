@@ -1,18 +1,36 @@
 #include <iostream>
 #include "Fixed.hpp"
+#include "Point.hpp"
 
 #include <iostream>
 int main( void )
 {
-	Fixed		a;
-	Fixed const	b(Fixed(5.05f) * Fixed(2));
+	const Point	a(Fixed(0), Fixed(0));
+	const Point	b(Fixed(3), Fixed(0));
+	const Point	c(Fixed(0), Fixed(4));
 
-	std::cout << a << std::endl;
-	std::cout << ++a << std::endl;
-	std::cout << a << std::endl;
-	std::cout << a++ << std::endl;
-	std::cout << a << std::endl;
-	std::cout << b << std::endl;
-	std::cout << Fixed::max( a, b ) << std::endl;
+	Point	point1(Fixed(-1), Fixed(-1));
+	bsp(a, b, c, point1);
+
+	std::cout << "Point not in the triangle: " << bsp(a, b, c, point1) << "\n";
+
+	Point	point2(Fixed(0), Fixed(0));
+	std::cout << "Point not in the triangle: " << bsp(a, b, c, point2) << "\n";
+
+	Point	point3(Fixed(0), Fixed(3));
+	std::cout << "Point not in the triangle: " << bsp(a, b, c, point3) << "\n";
+
+	Point	point4(Fixed(3), Fixed(3));
+	std::cout << "Point not in the triangle: " << bsp(a, b, c, point4) << "\n";
+
+	Point	point5(Fixed(1), Fixed(1));
+	std::cout << "Point in the triangle: " << bsp(a, b, c, point5) << "\n";
+	
+	Point	point6(Fixed(2), Fixed(2));
+	std::cout << "Point in the triangle: " << bsp(a, b, c, point5) << "\n";
+
+	Point	point7(Fixed(2.9f), Fixed(0.1f));
+	std::cout << "Point in the triangle: " << bsp(a, b, c, point6) << "\n";
+
 	return 0;
 }
