@@ -22,6 +22,11 @@ Fixed	Point::dotProd(const Point a, const Point b)
 	return (Fixed(a.x * b.x + a.y * b.x));
 }
 
+Fixed	Point::crossProd(Point vec1, Point vec2)
+{
+	return (Fixed(vec1.x * vec2.y - vec1.y * vec2.x));
+}
+
 Point Point::operator-(const Point &other) const
 {
 	Point	a(this->x - other.x, this->y - other.y);

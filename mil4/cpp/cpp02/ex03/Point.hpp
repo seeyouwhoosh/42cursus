@@ -16,6 +16,7 @@ public:
 	~Point();
 	
 	static Fixed	dotProd(const Point a, const Point b);
+	static Fixed	crossProd(const Point vec1, const Point vec2);
 	const Fixed		&get_x() const;
 	const Fixed		&get_y() const;
 };
