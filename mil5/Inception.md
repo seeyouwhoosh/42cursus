@@ -334,8 +334,8 @@ secrets: #esto luego se copia a la carpeta /run/secrets
 ```env
 MYSQL_DATABASE=wordpress
 MYSQL_USER=wpuser
-MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db_root_password
-MYSQL_PASSWORD_FILE=/run/secrets/db_password
+MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db_root_password.txt
+MYSQL_PASSWORD_FILE=/run/secrets/db_password.txt
 MYSQL_HOST=mariadb
 ```
 
@@ -565,8 +565,42 @@ fclean: clean
 re: fclean all
 ```
 
+## Algunos conceptos
 
-## Conceptos teóricos que aparecen
+### Bind mounts y named volumes
+
+In general, --mount is preferred. The main difference is that the --mount flag is more explicit and supports all the available options.
+
+If you use --volume to bind-mount a file or directory that does not yet exist on the Docker host, Docker automatically creates the directory on the host for you. It's always created as a directory.
+
+--mount does not automatically create a directory if the specified mount path does not exist on the host.
+
+En la práctica, en el docker-compose, que hagas esto:
+```yaml
+services:
+  mariadb:
+    volumes:
+      - db_data:/var/lib/mysql
+
+  wordpress:
+    volumes:
+      - wp_data:/var/www/html
+
+volumes:
+  db_data:
+  wp_data:
+```
+en vez de esto (se supone que los _data son carpetas en el host):
+```yaml
+services:
+  mariadb:
+    volumes:
+      - ./mariadb_data:/var/lib/mysql
+
+  wordpress:
+    volumes:
+      - ./wordpress_data:/var/www/html
+```
 
 ## Páginas de referencia
 * https://docs.docker.com/get-started/docker-concepts/building-images/writing-a-dockerfile/
