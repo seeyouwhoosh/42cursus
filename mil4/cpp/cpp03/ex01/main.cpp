@@ -1,8 +1,8 @@
 #include "ScavTrap.hpp"
-#include "ClapTrap.hpp"
 
 int	main()
 {
+/* 
 	ClapTrap	Jaimito("Jaimito");
 
 	Jaimito.attack("himself");
@@ -13,17 +13,20 @@ int	main()
 	{
 		Jaimito.beRepaired(1);
 	}
-	Jaimito.attack("himself");
+	Jaimito.attack("himself"); 
+*/
 
 	ScavTrap	Pepito("Pepito");
 	Pepito.guardGate();
 	Pepito.attack("Jaimito");
-	Pepito.takeDamage(50);
-	Pepito.takeDamage(50);
-	Pepito.takeDamage(50);
-	for (size_t i = 0; i < 50; i++)
+	Pepito.takeDamage(99);
+	for (size_t i = 0; i < 49; i++)
 	{
 		Pepito.beRepaired(1);
 	}
 	Pepito.attack("himself");
+	Pepito.beRepaired(1);
+	Pepito.takeDamage(100);
+	Pepito.attack("himself");
+	Pepito.beRepaired(1);
 }

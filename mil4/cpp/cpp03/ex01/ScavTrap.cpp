@@ -1,5 +1,13 @@
 #include "ScavTrap.hpp"
 
+ScavTrap::ScavTrap() : ClapTrap()
+{
+	this->hitPts = 100;
+	this->energyPts = 50;
+	this->attackDmg = 20;
+	std::cout << "A ferocious default ScavTrap named has appeared!\n";
+}
+
 ScavTrap::ScavTrap(const std::string name) : ClapTrap(name)
 {
 	this->hitPts = 100;
@@ -30,6 +38,11 @@ ScavTrap &ScavTrap::operator=(const ScavTrap &other)
 
 void ScavTrap::attack(const std::string& target)
 {
+	if (this->hitPts == 0)
+	{
+		std::cout << "ScavTrap " + this->name + " is already K.O. and can't do anything else!\n";
+		return ;
+	}
 	if (this->energyPts > 0)
 	{
 		std::cout << "ScavTrap " + this->name + " attacks ferociusly " + target + ", causing " << this->attackDmg << " points of damage!\n";

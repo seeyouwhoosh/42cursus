@@ -11,6 +11,7 @@ class ClapTrap
 		size_t		attackDmg;
 
 	public:
+		ClapTrap();
 		ClapTrap(std::string name);
 		ClapTrap(const ClapTrap &other);
 		~ClapTrap();

@@ -31,6 +31,11 @@ ClapTrap &ClapTrap::operator=(const ClapTrap &other)
 
 void ClapTrap::attack(const std::string& target)
 {
+	if (this->hitPts == 0)
+	{
+		std::cout << "ClapTrap " + this->name + "is already K.O. and can't do anything else!\n";
+		return ;
+	}
 	if (this->energyPts > 0)
 	{
 		std::cout << "ClapTrap " + this->name + " attacks " + target + ", causing " << this->attackDmg << " points of damage!\n";
@@ -48,26 +53,31 @@ void ClapTrap::takeDamage(unsigned int amount)
 	if (this->hitPts > 0)
 	{
 		std::cout << "ClapTrap " + this->name + " received " << amount << " points of damage!\n";
-		this->hitPts -= amount;
-	}
+		if (this->hitPts <= amount)
+			this->hitPts = 0;
+		else
+			this->hitPts -= amount;	}
 	else
 	{
-		std::cout << "ClapTrap " + this->name + "is already K.O. and can't received any more damage!\n";
-		this->hitPts = 0;
+		std::cout << "ClapTrap " + this->name + " is already K.O. and can't received any more damage!\n";
 	}
 }
 
 void ClapTrap::beRepaired(unsigned int amount)
 {
+	if (this->hitPts == 0)
+	{
+		std::cout << "ClapTrap " + this->name + " is already K.O. and can't do anything else!\n";
+		return ;
+	}
 	if (this->energyPts > 0)
 	{
-		std::cout << "ClapTrap " + this->name + " has repaired itself and has ecovered " << amount << " hit points!\n";
+		std::cout << "ClapTrap " + this->name + " has repaired itself and has recovered " << amount << " hit points!\n";
 		this->hitPts += amount;
 		this->energyPts--;
 	}
 	else
 	{
 		std::cout << "ClapTrap " + this->name + " wants to repair itself, but has no energy points left!\n";
-		this->energyPts = 0;
 	}
 }
