@@ -8,7 +8,7 @@ Los requisitos para correr Wordpress:
 * Nginx or Apache with mod_rewrite module
 * HTTPS support
 
-Siguiendo el [tutorial de ubuntu](https://ubuntu.com/tutorials/install-and-configure-wordpress)
+Siguiendo el [tutorial Wordpress](https://codex.wordpress.org/es:Instalando_WordPress)
 
 **Dockerfile**
 ```Dockerfile
