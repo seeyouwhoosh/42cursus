@@ -14,4 +14,6 @@ class FragTrap: virtual public ClapTrap
 		FragTrap &operator=(const FragTrap &other);
 
 		void highFivesGuys(void);
+
+		virtual void getMyStats();
 };

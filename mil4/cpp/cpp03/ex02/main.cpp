@@ -4,6 +4,7 @@ int	main()
 {
 	FragTrap	Pepito("Pepito");
 
+	Pepito.getMyStats();
 	Pepito.attack("Jaimito");
 	Pepito.takeDamage(99);
 	for (size_t i = 0; i < 49; i++)

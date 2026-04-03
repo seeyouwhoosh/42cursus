@@ -82,3 +82,8 @@ void ClapTrap::beRepaired(unsigned int amount)
 		std::cout << "ClapTrap " + this->name + " wants to repair itself, but has no energy points left!\n";
 	}
 }
+
+void ClapTrap::getMyStats()
+{
+	std::cout << "ClapTrap " + this->name + " has the following stats:\nHit Points: " << this->hitPts << "\nEnergy Points: " << this->energyPts << "\nAttack damage Points: " << this->attackDmg << "\n";
+}

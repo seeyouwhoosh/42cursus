@@ -56,3 +56,8 @@ void ScavTrap::guardGate()
 {
 	std::cout << "ScavTrap " + this->name + " is guarding ferociusly the gate!\n";
 }
+
+void ScavTrap::getMyStats()
+{
+	std::cout << "ScavTrap " + this->name + " has the following stats:\nHit Points: " << this->hitPts << "\nEnergy Points: " << this->energyPts << "\nAttack damage Points: " << this->attackDmg << "\n";
+}

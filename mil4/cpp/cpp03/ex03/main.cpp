@@ -4,6 +4,7 @@ int	main()
 {
 	DiamondTrap	Pepito("Pepito");
 
+	Pepito.getMyStats();
 	Pepito.whoAmI();
 	Pepito.getMyStats();
 	Pepito.attack("Jaimito");

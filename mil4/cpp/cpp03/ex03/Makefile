@@ -8,7 +8,7 @@ GREEN		= \033[0;32m
 NC			= \033[0m
 
 # Compiler
-NAME		= FragTrap
+NAME		= DiamondTrap
 CC			= c++
 CFLAGS		= -Wall -Werror -Wextra -std=c++98
 RM			= rm -rf

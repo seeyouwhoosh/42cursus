@@ -46,3 +46,7 @@ void FragTrap::highFivesGuys(void)
 		std::cout << "Ermmm, what? I guess not (*\'ᆺ\'*)ﾉ\n";
 }
 
+void FragTrap::getMyStats()
+{
+	std::cout << "FragTrap " + this->name + " has the following stats:\nHit Points: " << this->hitPts << "\nEnergy Points: " << this->energyPts << "\nAttack damage Points: " << this->attackDmg << "\n";
+}
