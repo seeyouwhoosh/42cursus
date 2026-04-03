@@ -1,5 +1,4 @@
-
-## MariaDB
+# MariaDB
 
 MariaDB es una herramienta para gestionar bases de datos relacionales (lo que sea que sea eso), en fin, se usa para estructurar información. Es un fork de MySQL, sigue siendo muy compatible.
 
@@ -79,6 +78,7 @@ skip-networking = false # habilita escuchar desde puerto y aceptar conexiones
 ```
 
 **Dockerfile**
+
 Siendo honesta, no tengo ni la menor idea de dónde saca la gente este Dockerfile (que ya ni sé de quién es, porque lo he ido reemplazando). Pero bueno, del archivo de configuración se puede sacar algunas conclusiones.
 
 ```Dockerfile
@@ -128,7 +128,7 @@ set -e
 # Initialize MySQL data directory if it doesn't exist
 if [ ! -d "/var/lib/mysql/mysql" ]; then
   echo "MariaDB: Initializing database..."
-  mysql_install_db --user=mysql --datadir=/var/lib/mysql --skip-test-db > /dev/null
+  mysql_install_db --user=mysql --datadir=/var/lib/mysql > /dev/null
 
 # Con el & significa empezarlo en segundo plano; y sin aceptar conexiones red todavía, porque solo lo estamos setupeando
   echo "MariaDB: Starting temporary MariaDB..."
@@ -173,7 +173,7 @@ _Notas_
 Más información en [los docs](https://mariadb.com/docs/server/reference/sql-statements/account-management-sql-statements)
 
 ```sh
-# Modifica la contraseña actula del usuario root conectado mediante el socket local
+# Modifica la contraseña actual del usuario root conectado mediante el socket local
 ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
 
 # grants all available privileges on the given priviledge level y con el GRANT OPTION, give users the ability to grant privileges to other users at the given privilege level
@@ -187,6 +187,7 @@ FLUSH PRIVILEGES;
 ```
 
 **Para comprobar que funciona individualmente**
+
 [Página útil](https://www.cyberciti.biz/faq/how-to-show-list-users-in-a-mysql-mariadb-database/)
 
 ```sh
@@ -199,7 +200,7 @@ docker run -it \
   -e MYSQL_DATABASE=wordpress \
   -e MYSQL_USER=wpuser \
   -e MYSQL_PASSWORD_FILE=/run/secrets/db_password.txt \
-  mariadb:10.11
+  mariadb-test
 ```
 
 Si funciona, pone "Listening for connections" o algo así
@@ -209,6 +210,8 @@ Si abres otra terminal y pones
 mariadb -h localhost -P 3306 -u wpuser -p
 ```
 Tras poner la contraseña (`wppass`), debería no pasar nada.
+
+## Cambios en los archivos globales
 
 Las variables de entorno las colocamos en `.env`
 
@@ -228,6 +231,7 @@ chmod 600 ../secrets/*
 ```
 
 **Actualizar el docker-compose**
+
 ```yaml
 networks:
   inception-network:

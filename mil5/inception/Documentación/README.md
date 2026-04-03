@@ -147,5 +147,6 @@ https://www.php.net/docs.php
 AI tools were used in this project for:
 * Structuring the README.md according to 42 requirements
 * Improving readability and formatting of documentation
+* Summarize concept definitions like the different types of networks in Docker
 
 No AI was used to generate core implementation code or configuration logic.
