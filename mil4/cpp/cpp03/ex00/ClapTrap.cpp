@@ -34,7 +34,7 @@ void ClapTrap::attack(const std::string& target)
 {
 	if (this->hitPts == 0)
 	{
-		std::cout << "ClapTrap " + this->name + "is already K.O. and can't do anything else!\n";
+		std::cout << "ClapTrap " + this->name + " is already K.O. and can't do anything else!\n";
 		return ;
 	}
 	if (this->energyPts > 0)

@@ -21,7 +21,7 @@ ScavTrap::~ScavTrap()
 	std::cout << "ScavTrap " + name + " has perished ferociously!\n";
 }
 
-ScavTrap::ScavTrap(const ScavTrap &other)
+ScavTrap::ScavTrap(const ScavTrap &other): ClapTrap(other.name)
 {
 	*this = other;
 }

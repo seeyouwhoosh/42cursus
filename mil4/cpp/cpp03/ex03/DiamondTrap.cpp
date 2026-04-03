@@ -1,7 +1,7 @@
 #include "DiamondTrap.hpp"
 #include <iostream>
 
-DiamondTrap::DiamondTrap() : ClapTrap()
+DiamondTrap::DiamondTrap() : ClapTrap(), FragTrap(), ScavTrap()
 {
 	this->hitPts = 100;
 	this->energyPts = 50;
@@ -9,7 +9,7 @@ DiamondTrap::DiamondTrap() : ClapTrap()
 	std::cout << "A ferocious and cheerful default DiamondTrap named has appeared!\n";
 }
 
-DiamondTrap::DiamondTrap(const std::string name) : ClapTrap(name + "_clap_name")
+DiamondTrap::DiamondTrap(const std::string name) : ClapTrap(name + "_clap_name"), FragTrap(name + "_clap_name"), ScavTrap(name + "_clap_name")
 {
 	this->name = name;
 	this->hitPts = FragTrap::hitPts;
@@ -23,7 +23,7 @@ DiamondTrap::~DiamondTrap()
 	std::cout << "DiamondTrap " + this->name + " has perished ferocious and cheerfully!\n";
 }
 
-DiamondTrap::DiamondTrap(const DiamondTrap &other)
+DiamondTrap::DiamondTrap(const DiamondTrap &other) : ClapTrap(other.name), FragTrap(other.name), ScavTrap(other.name)
 {
 	*this = other;
 }
@@ -44,4 +44,9 @@ void DiamondTrap::whoAmI()
 void DiamondTrap::getMyStats()
 {
 	std::cout << "DiamondTrap " + this->name + " has the following stats:\nHit Points: " << this->hitPts << "\nEnergy Points: " << this->energyPts << "\nAttack damage Points: " << this->attackDmg << "\n";
+}
+
+void DiamondTrap::attack(const std::string& target)
+{
+	ScavTrap::attack(target);
 }

@@ -21,12 +21,12 @@ FragTrap::~FragTrap()
 	std::cout << "FragTrap " + name + " has perished cheerfully!\n";
 }
 
-FragTrap::FragTrap(const FragTrap &other)
+FragTrap::FragTrap(const FragTrap &other) : ClapTrap(other.name)
 {
 	*this = other;
 }
 
-FragTrap &FragTrap::operator=(const FragTrap &other)
+FragTrap &FragTrap::operator=(const FragTrap &other) 
 {
 	this->name = other.name;
 	this->hitPts = other.hitPts;
@@ -37,13 +37,7 @@ FragTrap &FragTrap::operator=(const FragTrap &other)
 
 void FragTrap::highFivesGuys(void)
 {
-	std::string	answer;
-	std::cout << "FragTrap " + this->name + " said: \"GUYS! Can I have a high five? (*'▽'*)ﾉ\" [Y/n]\n";
-	std::cin >> answer;
-	if (answer == "y" || answer == "Y")
-		std::cout << "YAY, HAVE A HIGH FIVEヾ(*^▽^*)ﾉ\n";
-	else
-		std::cout << "Ermmm, what? I guess not (*\'ᆺ\'*)ﾉ\n";
+	std::cout << "FragTrap " + this->name + " said: \"GUYS! HAVE A HIGH FIVEヾ(*^▽^*)ﾉ\n \" [Y/n]\n";
 }
 
 void FragTrap::getMyStats()
