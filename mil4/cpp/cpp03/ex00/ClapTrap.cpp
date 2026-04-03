@@ -1,6 +1,11 @@
 #include "ClapTrap.hpp"
 #include <iostream>
 
+ClapTrap::ClapTrap() : name("Default"), hitPts(10), energyPts(10), attackDmg(0)
+{
+	std::cout << "A wild default ClapTrap called has appeared!\n";
+}
+
 ClapTrap::ClapTrap(std::string name) : name(name), hitPts(10), energyPts(10), attackDmg(0)
 {
 	std::cout << "A wild ClapTrap called " + name + " has appeared!\n";
@@ -13,9 +18,7 @@ ClapTrap::~ClapTrap()
 
 ClapTrap::ClapTrap(const ClapTrap &other)
 {
-	this->hitPts = other.hitPts;
-	this->energyPts = other.energyPts;
-	this->attackDmg = other.attackDmg;
+	*this = other;
 }
 
 ClapTrap &ClapTrap::operator=(const ClapTrap &other)
@@ -24,4 +27,47 @@ ClapTrap &ClapTrap::operator=(const ClapTrap &other)
 	this->energyPts = other.energyPts;
 	this->attackDmg = other.attackDmg;
 	return (*this);
+}
+
+void ClapTrap::attack(const std::string& target)
+{
+	if (this->energyPts > 0)
+	{
+		std::cout << "ClapTrap " + this->name + " attacks " + target + ", causing " << this->attackDmg << " points of damage!\n";
+		this->energyPts--;
+	}
+	else
+	{
+		std::cout << "ClapTrap " + this->name + " wants to attack " + target + " to deal " << this->attackDmg << " points of damage but has no energy points left!\n";
+		this->energyPts = 0;
+	}
+}
+
+void ClapTrap::takeDamage(unsigned int amount)
+{
+	if (this->hitPts > 0)
+	{
+		std::cout << "ClapTrap " + this->name + " received " << amount << " points of damage!\n";
+		this->hitPts -= amount;
+	}
+	else
+	{
+		std::cout << "ClapTrap " + this->name + "is already K.O. and can't received any more damage!\n";
+		this->hitPts = 0;
+	}
+}
+
+void ClapTrap::beRepaired(unsigned int amount)
+{
+	if (this->energyPts > 0)
+	{
+		std::cout << "ClapTrap " + this->name + " has repaired itself and has ecovered " << amount << " hit points!\n";
+		this->hitPts += amount;
+		this->energyPts--;
+	}
+	else
+	{
+		std::cout << "ClapTrap " + this->name + " wants to repair itself, but has no energy points left!\n";
+		this->energyPts = 0;
+	}
 }

@@ -2,7 +2,7 @@
 
 Point::Point(void): x(Fixed()), y(Fixed()) {}
 
-Point::Point(const Fixed x, const Fixed y) : x(x), y(y) {}
+Point::Point(const float x, const float y) : x(Fixed(x)), y(Fixed(y)) {}
 
 Point::Point(const Point &other): x(other.x), y(other.y)
 {
@@ -29,7 +29,7 @@ Fixed	Point::crossProd(Point vec1, Point vec2)
 
 Point Point::operator-(const Point &other) const
 {
-	Point	a(this->x - other.x, this->y - other.y);
+	Point	a(this->x.toFloat() - other.x.toFloat(), this->y.toFloat() - other.y.toFloat());
 	return (a);
 }
 
