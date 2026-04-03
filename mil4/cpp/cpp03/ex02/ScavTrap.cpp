@@ -23,13 +23,12 @@ ScavTrap::~ScavTrap()
 
 ScavTrap::ScavTrap(const ScavTrap &other)
 {
-	this->hitPts = other.hitPts;
-	this->energyPts = other.energyPts;
-	this->attackDmg = other.attackDmg;
+	*this = other;
 }
 
 ScavTrap &ScavTrap::operator=(const ScavTrap &other)
 {
+	this->name = other.name;
 	this->hitPts = other.hitPts;
 	this->energyPts = other.energyPts;
 	this->attackDmg = other.attackDmg;

@@ -23,13 +23,12 @@ FragTrap::~FragTrap()
 
 FragTrap::FragTrap(const FragTrap &other)
 {
-	this->hitPts = other.hitPts;
-	this->energyPts = other.energyPts;
-	this->attackDmg = other.attackDmg;
+	*this = other;
 }
 
 FragTrap &FragTrap::operator=(const FragTrap &other)
 {
+	this->name = other.name;
 	this->hitPts = other.hitPts;
 	this->energyPts = other.energyPts;
 	this->attackDmg = other.attackDmg;

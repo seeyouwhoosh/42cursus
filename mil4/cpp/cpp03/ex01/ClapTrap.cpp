@@ -23,6 +23,7 @@ ClapTrap::ClapTrap(const ClapTrap &other)
 
 ClapTrap &ClapTrap::operator=(const ClapTrap &other)
 {
+	this->name = other.name;
 	this->hitPts = other.hitPts;
 	this->energyPts = other.energyPts;
 	this->attackDmg = other.attackDmg;
