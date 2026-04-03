@@ -14,7 +14,7 @@ CFLAGS		= -Wall -Werror -Wextra -std=c++98
 RM			= rm -rf
 
 # Sources
-SOURCES		= main.cpp Animal.cpp Cat.cpp Dog.cpp WrongAnimal.cpp WrongCat.cpp 
+SOURCES		= main.cpp Animal.cpp Cat.cpp Dog.cpp Brain.cpp
 
 # Objects
 OBJECTS		= $(SOURCES:.cpp=.o)

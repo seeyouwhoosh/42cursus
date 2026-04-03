@@ -3,18 +3,13 @@
 
 class Brain
 {
-	protected:
-		std::string	ideas[100];
-	public:
+private:
+public:
+	std::string	ideas[100];
+	Brain();
+	Brain(const	Brain &other);
+	~Brain();
 
-		Brain();
-		~Brain();
+	Brain	&operator=(const Brain &other);
 };
 
-Brain::Brain(/* args */)
-{
-}
-
-Brain::~Brain()
-{
-}

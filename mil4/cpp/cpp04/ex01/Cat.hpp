@@ -1,17 +1,21 @@
 #pragma once
 #include "Animal.hpp"
+#include "Brain.hpp"
 
 class Cat: public Animal
 {
-	private:
-		
-	public:
-		Cat();
-		Cat(const Cat &other);
-		~Cat();
+private:
+	Brain	*brain;
 
-		Cat	&operator=(const Cat &other);
-		void	makeSound() const;
+public:
+	Cat();
+	Cat(const Cat &other);
+	~Cat();
 
+	Cat	&operator=(const Cat &other);
+	void	makeSound() const;
+
+	void		setIdea(size_t i, std::string idea);
+	std::string	&getIdea(size_t i);
 };
 
