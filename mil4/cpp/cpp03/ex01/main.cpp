@@ -17,6 +17,7 @@ int	main()
 */
 
 	ScavTrap	Pepito("Pepito");
+
 	Pepito.guardGate();
 	Pepito.attack("Jaimito");
 	Pepito.takeDamage(99);
