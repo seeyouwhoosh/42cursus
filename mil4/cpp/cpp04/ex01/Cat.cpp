@@ -9,6 +9,7 @@ Cat::Cat() : Animal()
 
 Cat::Cat(const Cat &other) : Animal(other)
 {
+	std::cout << "A copy cat has appeared\n";
 	*this = other;
 }
 

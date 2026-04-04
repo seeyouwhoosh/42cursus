@@ -6,8 +6,9 @@ Cat::Cat() : Animal()
 	std::cout << "A cat has appeared\n";
 }
 
-Cat::Cat(const Cat &other) : Animal()
+Cat::Cat(const Cat &other) : Animal(other)
 {
+	std::cout << "A copy cat has appeared\n";
 	*this = other;
 }
 

@@ -7,6 +7,7 @@ Brain::Brain()
 
 Brain::Brain(const Brain &other)
 {
+	std::cout << "A brain copy has been generated\n";
 	*this = other;
 }
 

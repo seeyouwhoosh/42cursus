@@ -7,6 +7,7 @@ AAnimal::AAnimal() : type("Unidentified")
 
 AAnimal::AAnimal(const AAnimal &other)
 {
+	std::cout << "An unidentified AAnimal copy has appeared\n";
 	*this = other;
 }
 

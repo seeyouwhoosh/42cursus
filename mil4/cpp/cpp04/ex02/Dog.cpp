@@ -9,6 +9,7 @@ Dog::Dog() : AAnimal()
 
 Dog::Dog(const Dog &other) : AAnimal(other)
 {
+	std::cout << "A copy dog has appeared\n";
 	*this = other;
 }
 

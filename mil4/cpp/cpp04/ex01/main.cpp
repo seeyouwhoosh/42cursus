@@ -49,5 +49,6 @@ int main()
 	Hypatia.setIdea(0, "I am a very original Cat");
 	std::cout << "Platon idea: " + Platon.getIdea(0) + "\n";
 	std::cout << "Hypatia idea: " + Hypatia.getIdea(0) + "\n";
+	std::cout << "\n";
 	return (0);
 }

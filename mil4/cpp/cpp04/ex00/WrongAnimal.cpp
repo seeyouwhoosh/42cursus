@@ -7,12 +7,13 @@ WrongAnimal::WrongAnimal() : type("Unidentified")
 
 WrongAnimal::WrongAnimal(const WrongAnimal &other)
 {
+	std::cout << "A disturbing unidentified animal copy has appeared\n";
 	*this = other;
 }
 
 WrongAnimal::~WrongAnimal()
 {
-	std::cout << "An disturbing unidentified animal has disappeared\n";
+	std::cout << "A disturbing unidentified animal has disappeared\n";
 }
 
 WrongAnimal &WrongAnimal::operator=(const WrongAnimal &other)

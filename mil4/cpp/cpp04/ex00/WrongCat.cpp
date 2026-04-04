@@ -6,8 +6,9 @@ WrongCat::WrongCat() : WrongAnimal()
 	std::cout << "A disturbing cat has appeared\n";
 }
 
-WrongCat::WrongCat(const WrongCat &other) : WrongAnimal()
+WrongCat::WrongCat(const WrongCat &other) : WrongAnimal(other)
 {
+	std::cout << "A disturbing copy cat has appeared\n";
 	*this = other;
 }
 
