@@ -50,5 +50,11 @@ int main()
 	std::cout << "Platon idea: " + Platon.getIdea(0) + "\n";
 	std::cout << "Hypatia idea: " + Hypatia.getIdea(0) + "\n";
 	std::cout << "\n";
+
+	Cat	Garikoitz;
+
+	Garikoitz = Hypatia;
+	Garikoitz = Platon;
+
 	return (0);
 }

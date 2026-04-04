@@ -15,17 +15,24 @@ Cat::Cat(const Cat &other) : Animal(other)
 
 Cat::~Cat()
 {
+	
 	delete this->brain;
 	std::cout << "A cat has disappeared\n";
 }
 
-Cat &Cat::operator=(const Cat &other)
+Brain* Cat::getBrain() const
+{
+	return this->brain;
+}
+
+Animal& Cat::operator=(const Animal& other)
 {
 	if (this == &other)
-		return (*this);
-	Animal::operator=(other);
-	this->brain = new Brain(*other.brain);
-	return (*this);
+		return *this;
+	
+	this->type = "Cat";
+	*this->brain = *other.getBrain();
+	return *this;
 }
 
 void	Cat::makeSound() const

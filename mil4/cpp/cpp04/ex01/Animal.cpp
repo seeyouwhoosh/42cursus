@@ -5,6 +5,11 @@ Animal::Animal() : type("Unidentified")
 	std::cout << "An unidentified animal has appeared\n";
 }
 
+Animal::Animal(std::string type) : type(type)
+{
+	std::cout << "An unidentified animal has appeared\n";
+}
+
 Animal::Animal(const Animal &other)
 {
 	std::cout << "An unidentified animal copy has appeared\n";
@@ -30,4 +35,9 @@ void	Animal::makeSound() const
 std::string	Animal::getType() const
 {
 	return (this->type);
+}
+
+Brain* Animal::getBrain() const
+{
+	return NULL;
 }

@@ -12,10 +12,11 @@ public:
 	Dog(const Dog &other);
 	~Dog();
 
-	Dog &operator=(const Dog &other);
+	Animal &operator=(const Animal &other);
 	void	makeSound() const;
 
 	void		setIdea(size_t i, std::string idea);
 	std::string	&getIdea(size_t i);
+	Brain		*getBrain() const;
 };
 

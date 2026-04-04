@@ -19,13 +19,19 @@ Dog::~Dog()
 	std::cout << "A dog has disappeared\n";
 }
 
-Dog &Dog::operator=(const Dog &other)
+Brain* Dog::getBrain() const
+{
+	return this->brain;
+}
+
+Animal& Dog::operator=(const Animal& other)
 {
 	if (this == &other)
-		return (*this);
-	Animal::operator=(other);
-	this->brain = new Brain(*other.brain);
-	return (*this);
+		return *this;
+	
+	this->type = "Dog";
+	*this->brain = *other.getBrain();
+	return *this;
 }
 
 void	Dog::makeSound() const

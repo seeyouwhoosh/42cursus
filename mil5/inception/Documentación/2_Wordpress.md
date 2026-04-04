@@ -8,53 +8,13 @@ Los requisitos para correr Wordpress:
 * Nginx or Apache with mod_rewrite module
 * HTTPS support
 
-Siguiendo el [tutorial Wordpress](https://codex.wordpress.org/es:Instalando_WordPress)
+Siguiendo el [tutorial Wordpress](https://codex.wordpress.org/es:Instalando_WordPress) o también como te dice su página: https://developer.wordpress.org/advanced-administration/before-install/howto-install/
 
-**Dockerfile**
-```Dockerfile
-FROM debian:bookworm
+Trabajaremos en el directorio `/var/www/html` del contenedor, que es el directorio predeterminado para aloar archivos de sitios webs gestionados por Nginx.
 
-RUN apt update && apt install -y \
-    php-fpm \ 
-    php-mysql \
-    curl \
-    wget \
-    unzip \
-
-RUN ln -s /usr/sbin/php-fpm8.4 /usr/local/bin/php-fpm
-
-# Create WordPress directory
-RUN mkdir -p /var/www/html
-WORKDIR /var/www/html
-RUN chown -R www-data:www-data /var/www/html
-
-EXPOSE 9000
-
-COPY conf/www.conf /etc/php/8.2/fpm/pool.d/
-COPY tools/wordpress.sh /usr/local/bin/
-
-
-RUN chmod +x /usr/local/bin/wordpress.sh
-
-ENTRYPOINT [ "/usr/local/bin/wordpress.sh" ]
-
-CMD ["php-fpm8.4", "-F"]
-```
-
-**Configuration file**
-```conf
-[www]
-user = www-data
-group = www-data
-listen = 9000
-listen.owner = www-data
-listen.group = www-data
-pm = dynamic
-pm.max_children = 5
-pm.start_servers = 2
-pm.min_spare_servers = 1
-pm.max_spare_servers = 3
-```
+La forma de instalarse wordpress es:
+1. Descargarse el zip de la página web
+2. Descomprimir el zip 
 
 **Initialization script**
 ```sh
@@ -63,12 +23,10 @@ set -e
 
 cd /var/www/html
 
-# Secretos
 if [ -f "$MYSQL_PASSWORD_FILE" ]; then
-    MYSQL_PASSWORD=$(cat "$MYSQL_PASSWORD_FILE")
+  MYSQL_PASSWORD=$(cat "$MYSQL_PASSWORD_FILE")
 fi
 
-# Descargar WordPress tal cuál te dice su página: https://developer.wordpress.org/advanced-administration/before-install/howto-install/
 if [ ! -f wp-config.php ]; then
     echo "WordPress: Downloading..."
 
@@ -98,6 +56,52 @@ done
 echo "WordPress: Starting PHP-FPM..."
 exec "$@"
 ```
+
+**Dockerfile**
+```Dockerfile
+FROM debian:bookworm
+
+RUN apt update && apt install -y \
+    php-fpm \ 
+    php-mysql \
+    curl \
+    wget \
+    unzip \
+
+RUN ln -s /usr/sbin/php-fpm8.4 /usr/local/bin/php-fpm
+
+RUN mkdir -p /var/www/html
+WORKDIR /var/www/html
+RUN chown -R www-data:www-data /var/www/html
+
+EXPOSE 9000
+
+COPY conf/www.conf /etc/php/8.2/fpm/pool.d/
+COPY tools/wordpress.sh /usr/local/bin/
+
+
+RUN chmod +x /usr/local/bin/wordpress.sh
+
+ENTRYPOINT [ "/usr/local/bin/wordpress.sh" ]
+
+CMD ["php-fpm", "-F"]
+```
+
+**Configuration file**
+```conf
+[www]
+user = www-data
+group = www-data
+listen = 9000
+listen.owner = www-data
+listen.group = www-data
+pm = dynamic
+pm.max_children = 5
+pm.start_servers = 2
+pm.min_spare_servers = 1
+pm.max_spare_servers = 3
+```
+
 
 **Actualizar el docker-compose**
 ```yaml
