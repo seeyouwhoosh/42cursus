@@ -12,7 +12,7 @@ public:
 	Cat(const Cat &other);
 	~Cat();
 
-	Animal	&operator=(const Animal &other);
+	Cat	&operator=(const Cat &other);
 	void	makeSound() const;
 
 	void		setIdea(size_t i, std::string idea);

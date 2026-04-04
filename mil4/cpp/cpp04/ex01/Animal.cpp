@@ -36,8 +36,3 @@ std::string	Animal::getType() const
 {
 	return (this->type);
 }
-
-Brain* Animal::getBrain() const
-{
-	return NULL;
-}

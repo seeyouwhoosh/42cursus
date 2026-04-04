@@ -24,7 +24,7 @@ Brain* Dog::getBrain() const
 	return this->brain;
 }
 
-Animal& Dog::operator=(const Animal& other)
+Dog& Dog::operator=(const Dog& other)
 {
 	if (this == &other)
 		return *this;
