@@ -11,5 +11,5 @@ public:
 	~Brain();
 
 	Brain	&operator=(const Brain &other);
-};
 
+};

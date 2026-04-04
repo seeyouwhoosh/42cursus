@@ -10,6 +10,7 @@ Cat::Cat() : Animal()
 Cat::Cat(const Cat &other) : Animal(other)
 {
 	std::cout << "A copy cat has appeared\n";
+	this->brain = new Brain(*other.brain);
 	*this = other;
 }
 
@@ -19,18 +20,12 @@ Cat::~Cat()
 	std::cout << "A cat has disappeared\n";
 }
 
-Brain* Cat::getBrain() const
-{
-	return this->brain;
-}
-
 Cat& Cat::operator=(const Cat& other)
 {
 	if (this == &other)
 		return *this;
-
 	this->type = "Cat";
-	*this->brain = *other.getBrain();
+	*this->brain = *other.brain;
 	return *this;
 }
 

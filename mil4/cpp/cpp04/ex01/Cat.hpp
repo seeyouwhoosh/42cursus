@@ -17,6 +17,5 @@ public:
 
 	void		setIdea(size_t i, std::string idea);
 	std::string	&getIdea(size_t i);
-	Brain		*getBrain() const;
 };
 

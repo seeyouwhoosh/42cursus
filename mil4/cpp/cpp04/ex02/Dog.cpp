@@ -10,6 +10,7 @@ Dog::Dog() : AAnimal()
 Dog::Dog(const Dog &other) : AAnimal(other)
 {
 	std::cout << "A copy dog has appeared\n";
+	this->brain = new Brain(*other.brain);
 	*this = other;
 }
 
@@ -19,14 +20,13 @@ Dog::~Dog()
 	std::cout << "A dog has disappeared\n";
 }
 
-Dog &Dog::operator=(const Dog &other)
+Dog& Dog::operator=(const Dog& other)
 {
 	if (this == &other)
-		return (*this);
-	delete this->brain;
-	AAnimal::operator=(other);
-	this->brain = new Brain(*other.brain);
-	return (*this);
+		return *this;
+	this->type = "Dog";
+	*this->brain = *other.brain;
+	return *this;
 }
 
 void	Dog::makeSound() const

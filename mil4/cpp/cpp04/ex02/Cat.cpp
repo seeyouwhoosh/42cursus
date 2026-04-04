@@ -10,6 +10,7 @@ Cat::Cat() : AAnimal()
 Cat::Cat(const Cat &other) : AAnimal(other)
 {
 	std::cout << "A copy cat has appeared\n";
+	this->brain = new Brain(*other.brain);
 	*this = other;
 }
 
@@ -19,14 +20,13 @@ Cat::~Cat()
 	std::cout << "A cat has disappeared\n";
 }
 
-Cat &Cat::operator=(const Cat &other)
+Cat& Cat::operator=(const Cat& other)
 {
 	if (this == &other)
-		return (*this);
-	delete this->brain;
-	AAnimal::operator=(other);
-	this->brain = new Brain(*other.brain);
-	return (*this);
+		return *this;
+	this->type = "Cat";
+	*this->brain = *other.brain;
+	return *this;
 }
 
 void	Cat::makeSound() const

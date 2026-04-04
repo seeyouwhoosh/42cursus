@@ -7,8 +7,8 @@ Brain::Brain()
 
 Brain::Brain(const Brain &other)
 {
-	std::cout << "A brain copy has been generated\n";
 	*this = other;
+	std::cout << "A copy brain has been generated\n";
 }
 
 Brain	&Brain::operator=(const Brain &other)
