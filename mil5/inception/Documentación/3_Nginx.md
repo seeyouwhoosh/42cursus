@@ -16,31 +16,28 @@ Para implementar el TLS (también el SSL), se usa **OpenSSL**, que es gratis y o
 ```Dockerfile
 FROM debian:bookworm
 
-# Corre comandos durante el proceso de build
 RUN apt update
 RUN apt install -y nginx openssl
 RUN mkdir -p /etc/nginx/ssl
 
-# Informa qué puerto está escuchando el contenedor cuando se ejecute
 EXPOSE 443
 
-# Copia los archivos y directorios de ARG1 a ARG2
 COPY conf/nginx.conf /etc/nginx/nginx.conf
-COPY tools/nginx_start.sh /usr/local/bin/
+COPY tools/entrypoint.sh /usr/local/bin/
 
-RUN chmod +x /usr/local/bin/nginx_start.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# Corre el ejecutable cuando inicia el contenedor
-ENTRYPOINT [ "/usr/local/bin/nginx_start.sh" ]
+ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
 ```
 
-Ahora, en `/nginx/tools` creamos el archivo `nginx_start.sh` para que genere el coso el certificado
-
 **Initialization script**
+
+Ahora, en `/nginx/tools` creamos el archivo `entrypoint.sh` para que genere el coso el certificado
+
+
 ```sh
 #!/bin/bash
 
-## Por si ocurre algún error
 set -e
 
 if [ ! -f /etc/ssl/certs/nginx.crt ]; then
@@ -103,6 +100,31 @@ server {
 }
 ``` 
 
+```ini
+
+
+```
+server {
+    listen 80;
+    server_name localhost;
+
+    root /var/www/html;
+    index index.php index.html;
+
+    location / {
+        try_files $uri $uri/ /index.php?$args;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php8.4-fpm.sock;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+}
+```
 ## Docker-compose
 
 ```yaml

@@ -15,7 +15,7 @@ docker pull mariadb:10.6
 docker run --name mariadbtest -e MYSQL_ROOT_PASSWORD=mypass -p 3306:3306 -d mariadb:10.6
 ```
 
-Haz `docker ps` para saber si está corriendo. Luego, puedes intentar entrar a la terminal del contenedor (que en este caso será la misma terminal que Debian porque nuestra imagen base es Debian) escribiendo `docker exec -it mariadbtest bash`
+Haz `docker ps` para saber si está corriendo. Luego, puedes intentar entrar a la terminal del contenedor (que en este caso será la misma terminal que Debian porque nuestra imagen base es Debian) escribiendo `docker exec -it mariadbtest bash` 
 
 Ahora, para conectarte directamente a mariadb del contenedor estando fuera de este, necesitas saber qué dirección IP tiene, porque recuerda que los contenedores están en una red bridge, se conectan entre sí y con el host, pero no es la red localhost.
 
@@ -24,6 +24,11 @@ De hecho, si intentas conectarte te dará un error `ERROR 2002 (HY000): Can't co
 En fin, corre esto para hacer una especie de grep y encontrar en qué red está cuando esté corriendo
 ```sh
 docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mariadbtest
+```
+
+Ó puedes buscarlo manualmente con
+```sh
+docker network inspect inception-network
 ```
 
 Y luego haz `mysql -h 172.17.0.2 -u root -p --skip-ssl` (la contraseña establecida en el ejemplo es "mypass"). ¿Funciona? Yay.
@@ -82,7 +87,7 @@ skip-networking = false # habilita escuchar desde puerto y aceptar conexiones
 Siendo honesta, no tengo ni la menor idea de dónde saca la gente este Dockerfile (que ya ni sé de quién es, porque lo he ido reemplazando). Pero bueno, del archivo de configuración se puede sacar algunas conclusiones.
 
 ```Dockerfile
-# Imagen base que usaremos para construir la imagen de la aplicación (penúltima versión: 12, bookworm). Más ejemplos de bases: python
+# Imagen base que usaremos para construir la imagen de la aplicación (penúltima versión: 12, bookworm, porque la última estable es trixie, y quien te diga que no, que me pelee). Más ejemplos de bases: python
 FROM debian:bookworm
 
 RUN apt update
@@ -188,7 +193,7 @@ FLUSH PRIVILEGES;
 
 **Para comprobar que funciona individualmente**
 
-[Página útil](https://www.cyberciti.biz/faq/how-to-show-list-users-in-a-mysql-mariadb-database/)
+[Página útil para ver los usuarios, los hosts y cosas así](https://www.cyberciti.biz/faq/how-to-show-list-users-in-a-mysql-mariadb-database/)
 
 ```sh
 docker build -t mariadb-test .
@@ -268,5 +273,31 @@ secrets: #esto luego se copia a la carpeta /run/secrets
     file: ../secrets/db_password.txt
 ```
 
-Una vez hecho esto, debería funcionar con el comando `docker compose up`
-does 
+Una vez hecho esto, debería funcionar con el comando `docker compose up`.
+
+## Cómo loggearse a la database
+
+Para empezar, si has estado atento a la sección [segunda o así](###-Cómo-funciona-más-o-menos-esto) ya sabes dos formas de entrar a la database, elige la que funcione (el primero es la forma segura):
+
+* **Entrando al contenedor**: 
+1. Escribe `docker -it mariadb bash` en la terminal
+2. Dentro del contenedor, escribe `mariadb -u root -h localhost -d wordpress -p`
+
+* **Sin entrar al contenedor**: 
+1. Instala mariadb si aún no lo has hecho: `sudo apt install mariadb-server mariadb-client`
+2. Saca la IP interna del contenedor haciendo `docker inspect <container id> | grep "IPAddress"`
+3. Conéctate haciendo `mariadb -u wpuser -h <IPadress> -d wordpress -p`
+
+Estando dentro, si en mariadb no está indexado "wordpress" como base de datos, haz `use wordpress` (realmente debería estar indexado, si no lo está, entra en pánico. Pongo el comando por si pasa algo). Luego, para mostrar las cosas (entre corchetes lo opcional):
+
+```mariadb
+show [full] tables
+[from database_name];
+```
+
+Y para ver el contenido:
+
+```mariadb
+select select_list
+from table_name;
+```
