@@ -240,6 +240,7 @@ chmod 600 ../secrets/*
 ```yaml
 networks:
   inception-network:
+    name: inception-network
     driver: bridge
 
 services:

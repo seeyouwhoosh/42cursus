@@ -198,10 +198,12 @@ Prácticamente es como la del Mariadb.
 ```yaml
 networks:
   inception-network:
+    name: inception-network
     driver: bridge
 
 services:
   mariadb:
+    image: mariadb
     build: 
       context: requirements/mariadb
     container_name: mariadb
@@ -216,7 +218,9 @@ services:
       - db_password
     restart: always
   wordpress:
-    build: requirements/wordpress
+    image: wordpress
+    build:
+      context: requirements/wordpress
     container_name: wordpress
     depends_on:
       - mariadb

@@ -1,7 +1,10 @@
 # Inception
-## Preparar los directorios  
 
-```
+> [😡] Antes de que intentes copiar el comando de abajo e ir copiando y pegando los contenidos de los archivos, hay una forma mucho más rápida de mover toda la carpeta del ordenador a la máquina virtual. Solo necesitas que se pueda acceder a la máquina virtual mediante ssh. Lo pongo [abajo](##-Yo-poner-archivos), porque... es el orden cronológico de hacer las cosas
+
+## Preparar los directorios
+
+```ssh
 inception/  
 ├── Makefile  
 ├── secrets/  
@@ -24,6 +27,7 @@ inception/
             ├── conf/  
             └── tools/  
 ```
+
 Comando para facilitar la vida, gracias
 ```sh
 mkdir -p inception/{secrets,srcs/requirements/{mariadb/{conf,tools},nginx/{conf,tools},wordpress/{conf,tools}}} \
@@ -333,12 +337,25 @@ fclean: clean
 re: fclean all
 ```
 
-## Algunos conceptos
+## Yo poner archivos (final)
+Vamos a usar FTP, ~~free to play~~, File Transfer Protocol, pero actually SFTP, que es más secure y más conveniente porque corre como un subsistema del SSH y así no tenemos que abrir más puertos, basta usar el que hemos abierto para el SSH.
 
+Entonces, en una terminal en el ordenador (no la máquina virtual), preferiblemente en el directorio en el que tengas todos los archivos, haces:
+
+```sh
+ftp localhost -P 4241 # Estoy suponiendo que tus nombres de usuario en ambos sitios son iguales, si no, haz "username@localhost"
+mkdir inception
+put -r inception
+```
+
+**Más comandos relevantes por si necesitaras ajustar algo**
+Comandos básicos como `cd`, `ls`, `mkdir` son para la máquina remota, mientras que si le pones una 'l' delante (`lcd`, `lls`...) es para tu maquina local, tiene sentido, ¿no?
+* **`bye`**: to exit the FTP environment (same as quit)
+* **`delete`**: to delete (remove) a file in the current remote directory (same as rm in UNIX)
+* **`get`**: to copy one file from the remote machine to the local machine
 
 ## Páginas de referencia
 * https://docs.docker.com/get-started/docker-concepts/building-images/writing-a-dockerfile/
-
 * https://dev.to/alejiri/docker-nginx-wordpress-mariadb-tutorial-inception42-1eok
 * https://github.com/caroldaniel/42sp-cursus-inception/blob/main/guides/Mandatory-en.md#MariaDB 
 * https://github.com/TFHD/Inception/tree/main

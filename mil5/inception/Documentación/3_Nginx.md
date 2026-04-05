@@ -34,19 +34,18 @@ ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
 
 Ahora, en `/nginx/tools` creamos el archivo `entrypoint.sh` para que genere el coso el certificado
 
-
 ```sh
 #!/bin/bash
 
 set -e
 
-if [ ! -f /etc/ssl/certs/nginx.crt ]; then
+if [ ! -f /etc/nginx/ssl/nginx.crt ]; then
     echo "Nginx: Generating self-signed SSL certificate"
 
     openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-    -keyout /etc/ssl/private/nginx.key \
-    -out /etc/ssl/certs/nginx.crt \
-    -subj "/C=ES/ST=Bizkaia/L=Urduliz/O=42/CN=xwu.42.fr"
+    -keyout /etc/nginx/ssl/nginx.key \
+    -out /etc/nginx/ssl/nginx.crt \
+    -subj "/C=ES/ST=Bizkaia/L=Urduliz/O=42/CN=$DOMAIN_NAME"
 
     chmod 600 /etc/nginx/ssl/nginx.key
     chmod 644 /etc/nginx/ssl/nginx.crt
@@ -72,38 +71,12 @@ Explicación de la línea rara esta de `openssl req` , que genera el certificado
 * `-subj`: información del certificado, `"/C=COUNTRY/ST=State/L=LOCALIDAD/O=Organization/CN=Domain_name"`
 
 **Configuration file**
-```ini
-server {
-    listen 443 ssl;
-    listen [::]:443 ssl;
-    server_name xwu.42.fr;
 
-    ssl_certificate /etc/ssl/certs/nginx.crt;
-    ssl_certificate_key /etc/ssl/private/nginx.key;
-    ssl_protocols TLSv1.3;
+En `/etc/nginx/sites-available` nos podemos encontrar con un archivo `default` que tiene lo básico, lo usaremos de plantilla ([documentación](https://nginx.org/en/docs/http/configuring_https_servers.html)):
 
-    index index.php;
-    root /var/www/html;
-    location / {
-        try_files $uri $uri/ /index.php$is_args$args;
-    }
-    location ~ \.php$ {
-        try_files $uri =404;
-        fastcgi_split_path_info ^(.+\.php)(/.+)$;
-        fastcgi_pass wordpress:9000;
-        fastcgi_index index.php;
-        include fastcgi_params;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        fastcgi_param PATH_INFO $fastcgi_path_info;
-        fastcgi_read_timeout 300;
-    }
-}
-``` 
 
 ```ini
-
-
-```
+# Archivo default
 server {
     listen 80;
     server_name localhost;
@@ -125,22 +98,53 @@ server {
     }
 }
 ```
-## Docker-compose
+
+```ini
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl; # IPv6
+    server_name xwu.42.fr;
+
+    ssl_certificate /etc/ssl/certs/nginx.crt;
+    ssl_certificate_key /etc/ssl/private/nginx.key;
+    ssl_protocols TLSv1.2 TLSv1.3;
+
+    root /var/www/html; # raíz del repositorio de Wordpress (*)
+    index index.php; # archivo que se abre por defecto
+
+    location / { # Routing
+        try_files $uri $uri/ /index.php?$args; # Si existe $uri, ir a $uri, si no, ir a index.php
+    }
+
+    location ~ \.php$ { #Routing de archivos .php
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_pass wordpress:9000;
+    }
+}
+``` 
+
+*Notas*
+(*) Volumen compartido
+
+**Docker-compose**
 
 ```yaml
 networks:
   inception-network:
+    name: inception-network
     driver: bridge
 
 services:
   mariadb:
+    image: mariadb
     build: 
       context: requirements/mariadb
     container_name: mariadb
     networks:
       - inception-network
     volumes:
-      - mariadb_data:/var/lib/mysql #montada allí
+      - mariadb_data:/var/lib/mysql
     env_file:
       - .env
     secrets:
@@ -148,7 +152,9 @@ services:
       - db_password
     restart: always
   wordpress:
-    build: requirements/wordpress
+    image: wordpress
+    build:
+      context: requirements/wordpress
     container_name: wordpress
     depends_on:
       - mariadb
@@ -162,9 +168,9 @@ services:
       - db_password
     restart: always
   nginx:
+    image: nginx
     build:
       context: requirements/nginx
-    image: nginx:inception
     container_name: nginx
     depends_on:
       - wordpress
@@ -172,17 +178,17 @@ services:
       - inception-network
     volumes:
       - wordpress_data:/var/www/html
-    environment:
-      DOMAIN_NAME: ${DOMAIN_NAME}
+    env_file:
+        - .env
     restart: always
 
 volumes:
   mariadb_data:
-    driver: local #almacenamiento local
+    driver: local
     driver_opts:
       type: none
-      o: bind # share a directory from the host's filesystem into the container
-      device: /home/${USER}/data/mariadb # usa este sitio para guardar los datos
+      o: bind
+      device: /home/${USER}/data/mariadb
   wordpress_data:
     driver: local
     driver_opts:
@@ -190,10 +196,22 @@ volumes:
       o: bind
       device: /home/${USER}/data/wordpress
 
-secrets: #esto luego se copia a la carpeta /run/secrets
+secrets:
   db_root_password:
     file: ../secrets/db_root_password.txt
   db_password:
     file: ../secrets/db_password.txt
 
+```
+
+**Actualizar el .env**
+
+Añadir `DOMAIN_NAME=tulogin.42.fr` al final.
+```env
+MYSQL_DATABASE=wordpress
+MYSQL_USER=wpuser
+MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db_root_password.txt
+MYSQL_PASSWORD_FILE=/run/secrets/db_password.txt
+MYSQL_HOST=mariadb
+DOMAIN_NAME=xwu.42.fr
 ```

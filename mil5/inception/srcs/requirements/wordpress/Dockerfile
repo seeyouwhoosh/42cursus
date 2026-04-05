@@ -5,7 +5,7 @@ RUN apt update && apt install -y \
     php-mysql \
     curl \
     wget \
-    unzip \
+    unzip
 
 RUN ln -s /usr/sbin/php-fpm8.4 /usr/local/bin/php-fpm
 
@@ -16,7 +16,7 @@ RUN chown -R www-data:www-data /var/www/html
 EXPOSE 9000
 
 COPY conf/www.conf /etc/php/8.4/fpm/pool.d/
-COPY tools/wordpress.sh /usr/local/bin/
+COPY tools/entrypoint.sh /usr/local/bin/
 
 
 RUN chmod +x /usr/local/bin/entrypoint.sh
