@@ -48,6 +48,8 @@ services:
       - wordpress_data:/var/www/html
     env_file:
         - .env
+    ports:
+      - "443:443"
     restart: always
 
 volumes:

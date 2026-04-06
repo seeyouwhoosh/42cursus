@@ -326,7 +326,7 @@ down:
 # Clean containers and images
 clean:
     docker compose -f $(COMPOSE_FILE) down
-    docker system prune -af
+    docker system prune -af # limpia recursos que no se están usando, -a incluyendo imágenes y -f forced
 
 # Full clean including volumes
 fclean: clean

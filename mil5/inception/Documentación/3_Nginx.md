@@ -72,60 +72,58 @@ Explicación de la línea rara esta de `openssl req` , que genera el certificado
 
 **Configuration file**
 
-En `/etc/nginx/sites-available` nos podemos encontrar con un archivo `default` que tiene lo básico, lo usaremos de plantilla ([documentación](https://nginx.org/en/docs/http/configuring_https_servers.html)):
-
-
-```ini
-# Archivo default
-server {
-    listen 80;
-    server_name localhost;
-
-    root /var/www/html;
-    index index.php index.html;
-
-    location / {
-        try_files $uri $uri/ /index.php?$args;
-    }
-
-    location ~ \.php$ {
-        include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/run/php/php8.4-fpm.sock;
-    }
-
-    location ~ /\.ht {
-        deny all;
-    }
-}
-```
+En `/etc/nginx/sites-available` nos podemos encontrar con un archivo `default` que tiene lo básico, lo usaremos de plantilla ([documentación](https://nginx.org/en/docs/http/configuring_https_servers.html) y [este también](https://nginx.org/en/docs/beginners_guide.html#:~:text=considered%20a%20comment.-,Serving%20Static%20Content,-An%20important%20web)):
 
 ```ini
-server {
-    listen 443 ssl;
-    listen [::]:443 ssl; # IPv6
-    server_name xwu.42.fr;
-
-    ssl_certificate /etc/ssl/certs/nginx.crt;
-    ssl_certificate_key /etc/ssl/private/nginx.key;
-    ssl_protocols TLSv1.2 TLSv1.3;
-
-    root /var/www/html; # raíz del repositorio de Wordpress (*)
-    index index.php; # archivo que se abre por defecto
-
-    location / { # Routing
-        try_files $uri $uri/ /index.php?$args; # Si existe $uri, ir a $uri, si no, ir a index.php
-    }
-
-    location ~ \.php$ { #Routing de archivos .php
-        include fastcgi_params;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        fastcgi_pass wordpress:9000;
-    }
+user www-data;
+events {
+    worker_connections 1024;
 }
+
+http {
+    server {
+        listen 443 ssl;
+        listen [::]:443 ssl; # IPv6
+        server_name xwu.42.fr;
+
+        ssl_certificate /etc/ssl/certs/nginx.crt;
+        ssl_certificate_key /etc/ssl/private/nginx.key;
+        ssl_protocols TLSv1.2 TLSv1.3;
+
+        root /var/www/html; # raíz del repositorio de Wordpress, cuando alguien intente entrar a "tulogin.42.fr/patata", nginx buscaría en /var/www/html/patata del volumen (*)
+        index index.php; # archivo que se abre por defecto cuando intentas acceder a "tulogin.42.fr"
+
+        location / { # Nginx se queda primero con las locations con el prefijo más largo (por ejemplo, si fuera "tulogin.42.fr/patata/pata", coincide con /patata y /, pero /patata es más largo), así que este location es prácticamente siempre el último, el default case
+            try_files $uri $uri/ /index.php?$args; (**) intenta mirar el archivo exacto ("/var/www/html/patata"), luego, como directorio, y al final, como query
+        }
+
+        location ~ \.php$ { # Cuando sale ~, le prosigue regex; En este caso, lo que sea que termine en ".php"
+            include fastcgi_params; #incluimos las variables para comunicarse con php-fpm
+            fastcgi_pass wordpress:9000; # Sets the address of a FastCGI server
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name; #Si he buscado tulogin.42.fr/patata, tenemos que document_root es "/var/www/html" y el otro es /patata, pues esta directiva o así define la variable SCRIPT_FILENAME como /var/www/html/patata
+            fastcgi_param QUERY_STRING    $query_string; # Lo mismo para el query
+        }
+
+        location ~ /\.ht { # No access archivos ocultos like .htpasswd
+            deny all;
+        }
+    }
+  }
 ``` 
 
 *Notas*
-(*) Volumen compartido
+
+(*) **Volumen compartido**: So, en el docker compose hacemos que compartan un mismo volumen que convencionalmente los hemos montado en sitios con el mismo nombre ("/var/www/html"), so ambos pueden acceder
+
+
+(**) **URI** (Uniform Resource Identifier): Si cogemos un enlace cualquiera de internet (uno con más chicha), por ejemplo "https://example.org/test/test1?search=test-question#part2", podemos dividir sus partes:
+* scheme (protocolo): https
+* authority (dominio): example.org
+* path: test/test1
+* query: search=test-question
+* fragment: part2
+
+A esto lo llamamos URL (Uniform Resource Locator), que es un tipo específico de URI para páginas web, pues por ejemplo, la dirección de un correo electrónico "mailto:user@example.org" también es un URI, scheme: mailto y path: user@example.org
 
 **Docker-compose**
 
@@ -180,6 +178,8 @@ services:
       - wordpress_data:/var/www/html
     env_file:
         - .env
+    ports:
+      - "443:443"
     restart: always
 
 volumes:
