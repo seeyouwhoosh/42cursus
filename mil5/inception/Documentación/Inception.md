@@ -57,6 +57,9 @@ sudo apt update
 
 # Install the Docker packages
 sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+sudo groupadd docker
+sudo usermod -aG docker $USER
 ```
   
 Ejecutar `docker run hello-world` para ver si funciona  
@@ -166,7 +169,7 @@ docker network ls
 docker network inspect inception-network
 ```
 
-Y como los contenedores van a estar en esa network, lo declaramos en nuestro docker-compose.yml.
+Y como los contenedores van a estar en esa network, lo declaramos en nuestro docker-compose.yml (no hace falta que lo crees manualmente, el docker compose ya lo crea):
 
 ```yml
 networks:

@@ -1,7 +1,6 @@
 FROM debian:bookworm
 
-RUN apt update
-RUN apt install -y mariadb-server mariadb-client
+RUN apt update && apt install -y mariadb-server mariadb-client
 
 RUN mkdir -p /var/run/mysqld /var/lib/mysql \
     && chown -R mysql:mysql /var/run/mysqld /var/lib/mysql  \

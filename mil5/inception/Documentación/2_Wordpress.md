@@ -70,7 +70,7 @@ Prácticamente es como la del Mariadb.
 FROM debian:bookworm
 
 RUN apt update && apt install -y \
-    php-fpm \ 
+    php8.2-fpm \ 
     php-mysql \
     curl \
     wget \
@@ -122,7 +122,7 @@ group = www-data
 ; Note: This value is mandatory.
 
 #Este es literalmente el único cambio que hago (valor original "/run/php/php8.4-fpm.sock"), porque quiero escuchar a Nginx desde el puerto abierto y realmente, la única vía razonable (Nginx no puede acceder a los sockets porque están en contenedores distintos y tampoco tenemos una dirección IP fija para dar)
-listen = 9000
+listen = 0.0.0.0:9000
 
 ; Set permissions for unix socket, if one is used. In Linux, read/write
 ; permissions must be set in order to allow connections from a web server. Many

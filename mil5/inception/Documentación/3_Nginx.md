@@ -22,12 +22,15 @@ RUN mkdir -p /etc/nginx/ssl
 
 EXPOSE 443
 
-COPY conf/nginx.conf /etc/nginx/nginx.conf
+COPY conf/nginx.conf /etc/nginx/conf.d/default.conf
 COPY tools/entrypoint.sh /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
+
+# Execute using the configuration file as a global directive y stay in the background
+CMD ["nginx", "-g", "daemon off;"] 
 ```
 
 **Initialization script**
@@ -58,7 +61,7 @@ else
 fi
 
 echo "Starting Nginx..."
-exec nginx -g "daemon off;"
+exec "$@"
 ```
 
 Explicación de la línea rara esta de `openssl req` , que genera el certificado:
@@ -108,13 +111,23 @@ http {
             deny all;
         }
     }
-  }
+
+    server {
+        listen 80; # 
+        listen [::]:80;
+
+        server_name xwu.42.fr;
+
+        location / {
+            return 301 https://$host$request_uri; # (***)
+        }
+    }
+}
 ``` 
 
 *Notas*
 
 (*) **Volumen compartido**: So, en el docker compose hacemos que compartan un mismo volumen que convencionalmente los hemos montado en sitios con el mismo nombre ("/var/www/html"), so ambos pueden acceder
-
 
 (**) **URI** (Uniform Resource Identifier): Si cogemos un enlace cualquiera de internet (uno con más chicha), por ejemplo "https://example.org/test/test1?search=test-question#part2", podemos dividir sus partes:
 * scheme (protocolo): https
