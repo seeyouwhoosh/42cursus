@@ -9,8 +9,9 @@ RUN mkdir -p /var/run/mysqld /var/lib/mysql \
 EXPOSE 3306
 
 COPY conf/custom.conf /etc/mysql/mariadb.conf.d/99-custom.cnf
+RUN chmod 644 /etc/mysql/mariadb.conf.d/99-custom.cnf
 COPY tools/entrypoint.sh /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/entrypoint.sh
 ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
-CMD ["mysqld", "--user=mysql"]
+CMD ["mysqld", "--datadir=/var/lib/mysql"]
