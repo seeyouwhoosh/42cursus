@@ -8,8 +8,8 @@ RUN mkdir -p /var/run/mysqld /var/lib/mysql \
 
 EXPOSE 3306
 
-COPY conf/custom.conf /etc/mysql/mariadb.conf.d/99-custom.cnf
-RUN chmod 644 /etc/mysql/mariadb.conf.d/99-custom.cnf
+COPY conf/custom.conf /etc/mysql/mariadb.conf.d/50-server.cnf
+RUN chmod 644 /etc/mysql/mariadb.conf.d/50-server.cnf
 COPY tools/entrypoint.sh /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/entrypoint.sh
