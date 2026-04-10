@@ -5,7 +5,8 @@ RUN apt update && apt install -y \
     php-mysql \
     curl \
     wget \
-    unzip
+    unzip \
+    mariadb-client
 
 RUN mkdir -p /var/www/html
 WORKDIR /var/www/html
