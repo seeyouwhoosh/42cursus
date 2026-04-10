@@ -14,4 +14,4 @@ COPY tools/entrypoint.sh /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/entrypoint.sh
 ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
-CMD ["mysqld", "--datadir=/var/lib/mysql"]
+CMD ["mysqld", "--user=mysql", "--datadir=/var/lib/mysql"]

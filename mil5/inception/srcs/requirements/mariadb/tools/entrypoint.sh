@@ -42,4 +42,4 @@ wait "$pid" || true
 
 # Start MariaDB normally (with networking)
 echo "Initialization complete. Starting MariaDB..."
-exec "$@" mysqld 
+exec "$@"
