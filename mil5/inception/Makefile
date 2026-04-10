@@ -22,7 +22,7 @@ up:
 	if ! grep -q "127.0.0.1 ${USER}.42.fr" /etc/hosts; then
 		echo "127.0.0.1 ${USER}.42.fr" | sudo tee -a /etc/hosts > /dev/null
 	fi
-	docker compose -f $(COMPOSE_FILE) up -d
+	docker compose -f $(COMPOSE_FILE) up -d --build
 
 down:
 	docker compose -f $(COMPOSE_FILE) down

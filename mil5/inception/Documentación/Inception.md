@@ -206,7 +206,7 @@ services:
     secrets:
       - db_root_password
       - db_password
-    restart: always
+    restart: on-failure
   wordpress:
     build: requirements/wordpress
     container_name: wordpress
@@ -220,7 +220,7 @@ services:
         - .env
     secrets:
       - db_password
-    restart: always
+    restart: on-failure
   nginx:
     build:
       context: requirements/nginx
@@ -234,7 +234,7 @@ services:
       - wordpress_data:/var/www/html
     environment:
       DOMAIN_NAME: ${DOMAIN_NAME}
-    restart: always
+    restart: on-failure
 
 volumes:
   mariadb_data:

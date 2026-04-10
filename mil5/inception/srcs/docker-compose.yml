@@ -18,7 +18,7 @@ services:
     secrets:
       - db_root_password
       - db_password
-    restart: always
+    restart: on-failure
   wordpress:
     image: wordpress
     build:
@@ -34,7 +34,7 @@ services:
         - .env
     secrets:
       - db_password
-    restart: always
+    restart: on-failure
   nginx:
     image: nginx
     build:
@@ -50,7 +50,7 @@ services:
         - .env
     ports:
       - "443:443"
-    restart: always
+    restart: on-failure
 
 volumes:
   mariadb_data:
