@@ -362,3 +362,4 @@ Comandos básicos como `cd`, `ls`, `mkdir` son para la máquina remota, mientras
 * https://dev.to/alejiri/docker-nginx-wordpress-mariadb-tutorial-inception42-1eok
 * https://github.com/caroldaniel/42sp-cursus-inception/blob/main/guides/Mandatory-en.md#MariaDB 
 * https://github.com/TFHD/Inception/tree/main
+* https://github.com/gemartin99/Inception/blob/main/inception/srcs/requirements/mariadb/conf/mariadb.conf
