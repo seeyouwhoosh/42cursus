@@ -26,6 +26,8 @@ GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'%';
 FLUSH PRIVILEGES;
 EOF
 
+mariadb-import $MYSQL_DATABASE /usr/local/dump.sql
+
 echo "MariaDB: Stopping temporary MariaDB..."
 mysqladmin -uroot -p${MYSQL_ROOT_PASSWORD} shutdown
 
