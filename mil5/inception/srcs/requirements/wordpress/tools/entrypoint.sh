@@ -27,10 +27,9 @@ if [ ! -f wp-config.php ]; then
     chown -R www-data:www-data /var/www/html
 fi
 
-until mariadb-admin ping -hmariadb --silent; do
-    echo "WordPress: Waiting for MariaDB..."
-    sleep 2
-done
+echo "WordPress: Waiting for MariaDB..."
+sleep 4
+
 
 echo "WordPress: Starting PHP-FPM..."
 exec "$@"
