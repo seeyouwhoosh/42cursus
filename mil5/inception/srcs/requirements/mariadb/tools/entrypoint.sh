@@ -14,7 +14,7 @@ echo "MariaDB: Starting temporary MariaDB..."
 mysqld_safe --datadir=/var/lib/mysql --skip-networking &
 
 until mariadb-admin ping --silent; do
-sleep 1
+  sleep 1
 done
 
 mariadb -u root -h localhost << EOF
