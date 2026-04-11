@@ -1,9 +1,9 @@
 FROM debian:bookworm
 
-RUN apt update && apt install -y mariadb-server mariadb-client
+RUN apt update && apt install -y mariadb-server mariadb-client galera-4
 
-RUN mkdir -p /var/run/mysqld /var/lib/mysql \
-    && chown -R mysql:mysql /var/run/mysqld /var/lib/mysql  \
+RUN mkdir -p /var/run/mysqld /var/lib/mysql /var/log/mysql \
+    && chown -R mysql:mysql /var/run/mysqld /var/lib/mysql /var/log/mysql \
     && chmod 755 /var/run/mysqld
 
 EXPOSE 3306

@@ -1,45 +1,33 @@
 #!/bin/bash
 
-mkdir -p /var/log/mysql
-chown -R mysql:mysql /var/log/mysql
+MYSQL_PASSWORD=$(cat "$MYSQL_PASSWORD_FILE")
+MYSQL_ROOT_PASSWORD=$(cat "$MYSQL_ROOT_PASSWORD_FILE")
 
-echo "Starting MariaDB initialization..."
+set -e
 
-# Initialize MySQL data directory if it doesn't exist
 if [ ! -d "/var/lib/mysql/mysql" ]; then
-    echo "Initializing data directory..."
-    mariadb-install-db --user=mysql --datadir=/var/lib/mysql
+  echo "MariaDB: Initializing database..."
+  mysql_install_db --user=mysql --datadir=/var/lib/mysql > /dev/null
 fi
 
-# Start the server (no networking for setup)
-echo "Starting temporary MariaDB server for setup..."
-mysqld --skip-networking --socket=/run/mysqld/mysqld.sock --user=mysql &
-pid="$!"
+echo "MariaDB: Starting temporary MariaDB..."
+mysqld_safe --datadir=/var/lib/mysql --skip-networking &
 
-# Wait for MariaDB to be ready
-echo "Waiting for MariaDB to be ready..."
-until mysqladmin --socket=/run/mysqld/mysqld.sock ping; do
-    sleep 1
+until mariadb-admin ping --silent; do
+sleep 1
 done
-echo "MariaDB is ready!"
 
-# Run setup SQL: create database and users
-echo "Running setup SQL..."
-mysql --socket=/run/mysqld/mysqld.sock -u root << EOF
+mariadb -u root -h localhost << EOF
 ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' WITH GRANT OPTION;
 CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};
 CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';
 GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'%';
 FLUSH PRIVILEGES;
 EOF
 
-# Shut down temporary server
-echo "Shutting down temporary MariaDB..."
-mysqladmin --socket=/run/mysqld/mysqld.sock shutdown
+echo "MariaDB: Stopping temporary MariaDB..."
+mysqladmin -uroot -p${MYSQL_ROOT_PASSWORD} shutdown
 
-# Wait for shutdown
-wait "$pid" || true
-
-# Start MariaDB normally (with networking)
-echo "Initialization complete. Starting MariaDB..."
+echo "MariaDB: Starting MariaDB..."
 exec "$@"

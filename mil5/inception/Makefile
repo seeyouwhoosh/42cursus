@@ -19,8 +19,8 @@ build: $(DATA_DIR)/mariadb $(DATA_DIR)/wordpress
 	docker compose -f $(COMPOSE_FILE) build
 
 up:
-	if ! grep -q "127.0.0.1 ${USER}.42.fr" /etc/hosts; then
-		echo "127.0.0.1 ${USER}.42.fr" | sudo tee -a /etc/hosts > /dev/null
+	if ! grep -q "127.0.0.1 ${USER}.42.fr" /etc/hosts; then\
+		echo "127.0.0.1 ${USER}.42.fr" | sudo tee -a /etc/hosts > /dev/null;\
 	fi
 	docker compose -f $(COMPOSE_FILE) up -d
 
