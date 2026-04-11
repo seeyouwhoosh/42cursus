@@ -267,7 +267,7 @@ volumes:
       o: bind # share a directory from the host's filesystem into the container
       device: /home/${USER}/data/mariadb # usa este sitio para guardar los datos
 
-secrets: #esto luego se copia a la carpeta /run/secrets
+secrets: #esto luego se copia a la carpeta /run/secrets como db_root_password
   db_root_password:
     file: ../secrets/db_root_password.txt
   db_password:

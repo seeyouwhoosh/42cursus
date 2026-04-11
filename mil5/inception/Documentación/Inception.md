@@ -59,11 +59,12 @@ sudo apt update
 sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 sudo groupadd docker
-sudo usermod -aG docker $USER
+sudo usermod -aG docker $USER # Esto debería hacer que puedas correr el make sin sudo
 ```
-  
+
 Ejecutar `docker run hello-world` para ver si funciona  
-  
+
+**Comandos relevantes**
 ```sh
 # List images
 docker images
@@ -157,7 +158,7 @@ Crearemos nuestro custom network (que es del tipo bridged) porque
 2. No hay Dynamic Name System, es decir, si asociamos un nombre a una dirección IP, cuando cambie, este no cambiará la IP asociada
 3. Menos seguro en general porque están todos los contenedores amontonados en una misma red
 
-SO...
+Para crear y gestionar redes en docker: 
 ```sh
 # Create a custom network
 docker network create inception-network
