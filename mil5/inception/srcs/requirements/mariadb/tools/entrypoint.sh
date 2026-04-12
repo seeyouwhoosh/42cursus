@@ -26,6 +26,8 @@ GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'%';
 FLUSH PRIVILEGES;
 EOF
 
+mariadb -h localhost -p${MYSQL_ROOT_PASSWORD} wordpress < /usr/local/bin/dump.sql
+
 echo "MariaDB: Stopping temporary MariaDB..."
 mysqladmin -uroot -p${MYSQL_ROOT_PASSWORD} shutdown
 

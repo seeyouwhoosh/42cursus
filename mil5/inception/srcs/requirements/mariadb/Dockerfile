@@ -10,6 +10,7 @@ EXPOSE 3306
 
 COPY conf/custom.conf /etc/mysql/mariadb.conf.d/50-server.cnf
 RUN chmod 644 /etc/mysql/mariadb.conf.d/50-server.cnf
+COPY tools/dump.sql /usr/local/bin/
 COPY tools/entrypoint.sh /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/entrypoint.sh

@@ -16,11 +16,19 @@ $(DATA_DIR)/wordpress:
 	chmod 755 /home/${USER}/data/wordpress
 
 build: $(DATA_DIR)/mariadb $(DATA_DIR)/wordpress
+	@if [ ! -f srcs/.env ] || [ ! -s srcs/.env ] ; then\
+		echo "There is no .env file or empty\n";\
+		exit 1;\
+	fi
+	@if [ ! -d secrets ] || [ ! -f secrets/db_root_password.txt ] || [ ! -f secrets/db_password.txt ] || [ ! -s secrets/db_root_password.txt ] || [ ! -s secrets/db_password.txt ]; then\
+		echo "No docker secrets found or empty\n";\
+		exit 1;\
+	fi
 	docker compose -f $(COMPOSE_FILE) build
 
 up:
-	if ! grep -q "127.0.0.1 ${USER}.42.fr" /etc/hosts; then\
-		echo "127.0.0.1 ${USER}.42.fr" | sudo tee -a /etc/hosts > /dev/null;\
+	@if ! grep -q "127.0.0.1 xwu.42.fr" /etc/hosts; then\
+		echo "127.0.0.1 xwu.42.fr" | sudo tee -a /etc/hosts > /dev/null;\
 	fi
 	docker compose -f $(COMPOSE_FILE) up -d --build
 
