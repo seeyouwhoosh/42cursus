@@ -36,55 +36,34 @@ Y luego haz `mysql -h 172.17.0.2 -u root -p --skip-ssl` (la contraseña establec
 ## El setup en sí
 
 **Configuration file**
-Tras ejecutar la imagen prueba del inicio, he copiado directamente el archivo /etc/mysql/my.cnf. Dejo los comentarios originales.
+Tras ejecutar la imagen prueba del inicio, he copiado directamente el archivo /etc/mysql/mariadb.conf.d/50-server.cnf, que solo tenemos que cambiar para que escuche de más direcciones
 
 ```ini
-# MariaDB database server configuration file.
-#
-# You can copy this file to one of:
-# - "/etc/mysql/my.cnf" to set global options,
-# - "~/.my.cnf" to set user-specific options.
-#
-# One can use all long options that the program supports.
-# Run program with --help to get a list of available options and with
-# --print-defaults to see which it would actually understand and use.
-#
-# For explanations see
-# http://dev.mysql.com/doc/mysql/en/server-system-variables.html
-
-# This will be passed to all mysql clients
-# It has been reported that passwords should be enclosed with ticks/quotes
-# escpecially if they contain "#" chars...
-# Remember to edit /etc/mysql/debian.cnf when changing the socket location.
-[client]
-port            = 3306
-socket          = /var/run/mysqld/mysqld.sock
-
-# Here is entries for some specific programs
-# The following values assume you have at least 32M ram
-
-# [...]
-
-[mysqld] # Options read by mysqld, including both MariaDB Server and MySQL Server.
-#
-# * Basic Settings
-#
-user           = mysql
-pid-file        = /var/run/mysqld/mysqld.pid
-socket          = /var/run/mysqld/mysqld.sock # permite a una aplicación conectarse a una base de datos para enviar consultas y recibir resultados
-port            = 3306
-datadir         = /var/lib/mysql # directorio de all database files
-
-# [...] He borrado lo que era demasiado enveresado, porque eran para otros programas del mariadb y a nosotros prácticamente solo nos interesa las opciones de servidor. Adicionalmente, para los servicios de wordpress:
-
-bind-address = 0.0.0.0 # escucha todas las network interfaces
-skip-networking = false # habilita escuchar desde puerto y aceptar conexiones
-
+[mysqld]
+# [...] He borrado lo que era demasiado enveresado, porque eran para otros programas del mariadb y a nosotros prácticamente solo nos interesa las opciones de servidor. 
+user                    = mysql
+pid-file                = /run/mysqld/mysqld.pid
+socket                  = /run/mysqld/mysqld.sock # permite a una aplicación conectarse a una base de datos para enviar consultas y recibir resultados
+port                    = 3306
+basedir                 = /usr
+datadir                 = /var/lib/mysql # directorio de all database files
+tmpdir                  = /tmp
+lc-messages-dir         = /usr/share/mysql
+#Instead of skip-networking the default is now to listen only on
+#localhost which is more compatible and is not less secure.
+bind-address            = 0.0.0.0
+query_cache_size        = 16M
+log_error = /var/log/mysql/error.log
+expire_logs_days        = 10
+character-set-server  = utf8mb4
+collation-server      = utf8mb4_general_ci
 ```
 
 **Dockerfile**
 
 Siendo honesta, no tengo ni la menor idea de dónde saca la gente este Dockerfile (que ya ni sé de quién es, porque lo he ido reemplazando). Pero bueno, del archivo de configuración se puede sacar algunas conclusiones.
+
+(Por cierto, técnicamente no está completo, porque luego vamos a importar la base de datos configurada)
 
 ```Dockerfile
 # Imagen base que usaremos para construir la imagen de la aplicación (penúltima versión: 12, bookworm, porque la última estable es trixie, y quien te diga que no, que me pelee). Más ejemplos de bases: python
@@ -96,8 +75,8 @@ RUN apt install -y mariadb-server mariadb-client
 # Creamos los directorios necesarios (los que se piden arriba, vamos)
 # chown "changes ownership" -R "recursivamente" a mysql del grupo mysql (mysql es el usuario que pusimos en el conf) para que pueda modificar las dos carpetas
 # Que todos los demás no tengan permisos de escritura
-RUN mkdir -p /var/run/mysqld /var/lib/mysql \
-    && chown -R mysql:mysql /var/run/mysqld /var/lib/mysql  \
+RUN mkdir -p /var/run/mysqld /var/lib/mysql /var/log/mysql \
+    && chown -R mysql:mysql /var/run/mysqld /var/lib/mysql /var/log/mysql \
     && chmod 755 /var/run/mysqld
 
 # Indica qué puerto se expone la imagen
@@ -111,7 +90,7 @@ COPY tools/entrypoint.sh /usr/local/bin/
 # ENTRYPOINT y CMD definen los comandos que se ejecutan cuando corre un contenedor, esta es la sintaxis preferente y also, la que más sentido tiene. En caso de que haya ENTRYPOINT y CMD definidos, siempre se ejecuta el ENTRYPOINT primero con el CMD apendizado como argumentos (que es realmente el comando para inicializar la aplicación, ejecutado en el .sh)
 RUN chmod +x /usr/local/bin/entrypoint.sh
 ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
-CMD ["mysqld", "--user=mysql"]
+CMD ["mysqld", "--user=mysql", "--datadir=/var/lib/mysql"]
 ```
 
 **Initialization script**
