@@ -10,14 +10,15 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
   mysql_install_db --user=mysql --datadir=/var/lib/mysql > /dev/null
 fi
 
-echo "MariaDB: Starting temporary MariaDB..."
-mysqld_safe --datadir=/var/lib/mysql --skip-networking &
+if [ ! -d "/var/lib/mysql/wordpress" ]; then
+  echo "MariaDB: Starting temporary MariaDB..."
+  mysqld_safe --datadir=/var/lib/mysql --skip-networking &
 
-until mariadb-admin ping --silent; do
-  sleep 1
-done
+  until mariadb-admin ping --silent; do
+    sleep 1
+  done
 
-mariadb -u root -h localhost << EOF
+  mariadb -u root -h localhost << EOF
 ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' WITH GRANT OPTION;
 CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};
@@ -26,10 +27,11 @@ GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'%';
 FLUSH PRIVILEGES;
 EOF
 
-mariadb -h localhost -p${MYSQL_ROOT_PASSWORD} wordpress < /usr/local/bin/dump.sql
+  mariadb -h localhost -p${MYSQL_ROOT_PASSWORD} wordpress < /usr/local/bin/dump.sql
 
-echo "MariaDB: Stopping temporary MariaDB..."
-mysqladmin -uroot -p${MYSQL_ROOT_PASSWORD} shutdown
+  echo "MariaDB: Stopping temporary MariaDB..."
+  mysqladmin -uroot -p${MYSQL_ROOT_PASSWORD} shutdown
+fi
 
 echo "MariaDB: Starting MariaDB..."
 exec "$@"
