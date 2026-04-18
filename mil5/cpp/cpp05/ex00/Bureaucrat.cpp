@@ -1,20 +1,21 @@
 #include "Bureaucrat.hpp"
+#include <iostream>
 
 Bureaucrat::Bureaucrat() : name("Default")
 {
 	this->grade = 150;
 }
 
-Bureaucrat::Bureaucrat(std::string name, size_t grade): name(name)
+Bureaucrat::Bureaucrat(std::string name, unsigned int grade): name(name)
 {
 	if (grade > 150)
 	{
-		throw GradeTooLowException;
+		throw Bureaucrat::GradeTooLowException();
 		return ;
 	}
 	if (grade < 1)
 	{
-		throw GradeTooHighException;
+		throw Bureaucrat::GradeTooHighException();
 		return ;
 	}
 	this->grade = grade;
@@ -32,14 +33,18 @@ Bureaucrat &Bureaucrat::operator=(Bureaucrat &other)
 
 Bureaucrat::~Bureaucrat() {}
 
-void	Bureaucrat::GradeTooHighException()
+Bureaucrat::GradeTooHighException::GradeTooHighException() {}
+
+const char *Bureaucrat::GradeTooHighException::what() const
 {
-	this->strerr = "Grade is too high (maximum of 1)";
+	return "This grade is too high";
 }
 
-void	Bureaucrat::GradeTooLowException()
+Bureaucrat::GradeTooLowException::GradeTooLowException() {}
+
+const char *Bureaucrat::GradeTooLowException::what() const
 {
-	this->strerr = "Grade is too low (maximum of 150)";
+	return "This grade is too low";
 }
 
 const std::string	&Bureaucrat::getName() const
@@ -47,7 +52,7 @@ const std::string	&Bureaucrat::getName() const
 	return this->name;
 }
 
-size_t	Bureaucrat::getGrade() const
+unsigned int	Bureaucrat::getGrade() const
 {
 	return this->grade;
 }
@@ -56,7 +61,7 @@ void	Bureaucrat::incrementGrade()
 {
 	if (this->grade == 1)
 	{
-		throw GradeTooHighException;
+		throw Bureaucrat::GradeTooHighException();
 		return ;
 	}
 	this->grade--;
@@ -66,7 +71,7 @@ void	Bureaucrat::decrementGrade()
 {
 		if (this->grade == 150)
 	{
-		throw GradeTooLowException;
+		throw Bureaucrat::GradeTooLowException();
 		return ;
 	}
 	this->grade++;
@@ -74,6 +79,6 @@ void	Bureaucrat::decrementGrade()
 
 std::ostream	&operator<<(std::ostream &os, const Bureaucrat &burr)
 {
-	os << burr.getName() << ", bureaucrat grade " << burr.getGrade();
+	os << burr.getName() << ", bureaucrat grade: " << burr.getGrade();
 	return os;
 }

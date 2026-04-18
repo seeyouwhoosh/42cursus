@@ -2,24 +2,34 @@
 #include <string>
 #include <exception>
 
-class Bureaucrat: public std::exception
+class Bureaucrat
 {
 private:
 	const std::string	name;
-	size_t				grade;
+	unsigned int		grade;
 	std::string			strerr;
 public:
 	Bureaucrat();
-	Bureaucrat(std::string name, size_t grade);
+	Bureaucrat(std::string name, unsigned int grade);
 	Bureaucrat(Bureaucrat &other);
 	Bureaucrat &operator=(Bureaucrat &other);
 	~Bureaucrat();
 	
-	void	GradeTooHighException();
-	void	GradeTooLowException();
+	class GradeTooHighException: public std::exception
+	{
+	public:
+		GradeTooHighException();
+		const char *what() const throw();
+	};
+	class GradeTooLowException: public std::exception
+	{
+	public:
+		GradeTooLowException();
+		const char *what() const throw();
+	};
 	
 	const std::string	&getName() const;
-	size_t				getGrade() const;
+	unsigned int				getGrade() const;
 	void				incrementGrade();
 	void				decrementGrade();
 };
