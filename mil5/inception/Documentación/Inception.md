@@ -264,9 +264,47 @@ Ahora, mueve el archivo `dump.sql` al directorio del volumen, `var/lib/mysql`: `
 
 Y lo podremos encontrar en el directorio local (fuera del contenedor), en `/home/user/data/mariadb`. Movemos el archivo a la carpeta `tools` de MariaDB. Basta con inicializar la database de wordpress con nuestro contenido, luego modificamos nuestro Dockerfile y entryscript:
 
+```Dockerfile
+# [...]
+# Añadimos esta nueva línea: 
+COPY tools/dump.sql /usr/local/bin/
+# [...]
+```
 
+```sh
+if [ ! -d "/var/lib/mysql/wordpress" ]; then
+ # [...]
 
- 
+  mariadb -u root -h localhost << EOF
+ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' WITH GRANT OPTION;
+CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};
+CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';
+GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'%';
+FLUSH PRIVILEGES;
+EOF
+
+  mariadb -h localhost -p${MYSQL_ROOT_PASSWORD} wordpress < /usr/local/bin/dump.sql # <- Añadimos esta nueva línea
+
+  echo "MariaDB: Stopping temporary MariaDB..."
+  mysqladmin -uroot -p${MYSQL_ROOT_PASSWORD} shutdown
+fi
+
+# [...]
+```
+
+Por otro lado, si has añadido plugins, themes o cambios estéticos, copia los contenidos modificados de wordpress en `/home/user/data/wordpress`, que es donde está montado el volumen, a la carpeta `conf` del wordpress.
+
+Y modifica el Dockerfile acorde a la personalización, he aquí un ejemplo si he metido un theme distinto al predeterminado:
+
+```Dockerfile
+# [...]
+RUN mkdir -p /var/www/html/wordpress/wp-content/themes
+COPY conf/themes /var/www/html/wordpress/wp-content/themes
+RUN chmod -R 755 /var/www/html/wordpress/wp-content
+RUN chown -R www-data:www-data /var/www/html/wordpress/wp-content
+# [...]
+```
 
 ## Cómo queda el docker compose final
 

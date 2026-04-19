@@ -113,7 +113,9 @@ set -e
 if [ ! -d "/var/lib/mysql/mysql" ]; then
   echo "MariaDB: Initializing database..."
   mysql_install_db --user=mysql --datadir=/var/lib/mysql > /dev/null
+fi
 
+if [ ! -d "/var/lib/mysql/wordpress" ]; then
 # Con el & significa empezarlo en segundo plano; y sin aceptar conexiones red todavía, porque solo lo estamos setupeando
   echo "MariaDB: Starting temporary MariaDB..."
   mysqld_safe --datadir=/var/lib/mysql --skip-networking &
@@ -123,7 +125,7 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
     sleep 1
   done
 
-  mariadb -u root << EOF
+  mariadb -u root -h localhost << EOF
 ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' WITH GRANT OPTION;
 CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};
@@ -133,7 +135,7 @@ FLUSH PRIVILEGES;
 EOF
 
   echo "MariaDB: Stopping temporary MariaDB..."
-  mysqladmin shutdown
+  mysqladmin -uroot -p${MYSQL_ROOT_PASSWORD} shutdown
 fi
 
 echo "MariaDB: Starting MariaDB..."
