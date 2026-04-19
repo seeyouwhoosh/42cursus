@@ -87,7 +87,7 @@ http {
     server {
         listen 443 ssl;
         listen [::]:443 ssl; # IPv6
-        server_name xwu.42.fr;
+        server_name login.42.fr;
 
         ssl_certificate /etc/ssl/certs/nginx.crt;
         ssl_certificate_key /etc/ssl/private/nginx.key;
@@ -116,10 +116,10 @@ http {
         listen 80; # 
         listen [::]:80;
 
-        server_name xwu.42.fr;
+        server_name login.42.fr;
 
         location / {
-            return 301 https://$host$request_uri; # (***)
+            return 301 https://$host$request_uri;
         }
     }
 }
@@ -127,9 +127,11 @@ http {
 
 *Notas*
 
+Tristemente, no se puede expandir variables de entorno en la configuración de Nginx, (se puede, pero ese un poco tedioso), así que lo vamos a poner a pelo.
+
 (*) **Volumen compartido**: So, en el docker compose hacemos que compartan un mismo volumen que convencionalmente los hemos montado en sitios con el mismo nombre ("/var/www/html"), so ambos pueden acceder
 
-(**) **URI** (Uniform Resource Identifier): Si cogemos un enlace cualquiera de internet (uno con más chicha), por ejemplo "https://example.org/test/test1?search=test-question#part2", podemos dividir sus partes:
+(* *) **URI** (Uniform Resource Identifier): Si cogemos un enlace cualquiera de internet (uno con más chicha), por ejemplo "https://example.org/test/test1?search=test-question#part2", podemos dividir sus partes:
 * scheme (protocolo): https
 * authority (dominio): example.org
 * path: test/test1

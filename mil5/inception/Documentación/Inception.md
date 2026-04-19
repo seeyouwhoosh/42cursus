@@ -11,21 +11,21 @@ inception/
 │   ├── db_password.txt  
 │   └── db_root_password.txt  
 └── srcs/  
-    ├── docker-compose.yml  
-    ├── .env  
-    └── requirements/  
-        ├── mariadb/  
-        │   ├── Dockerfile  
-        │   ├── conf/  
-        │   └── tools/  
-        ├── nginx/  
-        │   ├── Dockerfile  
-        │   ├── conf/  
-        │   └── tools/  
-        └── wordpress/  
-            ├── Dockerfile  
-            ├── conf/  
-            └── tools/  
+		├── docker-compose.yml  
+		├── .env  
+		└── requirements/  
+				├── mariadb/  
+				│   ├── Dockerfile  
+				│   ├── conf/  
+				│   └── tools/  
+				├── nginx/  
+				│   ├── Dockerfile  
+				│   ├── conf/  
+				│   └── tools/  
+				└── wordpress/  
+						├── Dockerfile  
+						├── conf/  
+						└── tools/  
 ```
 
 Comando para facilitar la vida, gracias
@@ -75,15 +75,15 @@ docker ps
 # List all containers (including stopped)
 docker ps -a
 ```
-  
+	
 **How Docker and docker compose work** 
 
 **Docker** es un software con el que puedes crear mini máquinas virtuales (solo a nivel de app) llamados contenedores.  
-  
+	
 Los **contenedores** contienen todo lo necesario (las dependencias en su versión correcta, las variables de entorno necesarias…) para correr la app.  
-  
+	
 Para correr las apps en los contenedores, necesitas un ejecutable con todas las dependencias, el programa y tal. Y para compilar el ejecutable, llamado **imagen**, tenemos que hacer un Dockerfile.   
-  
+	
 ```sh
 # Comandos relevantes
 docker build
@@ -94,43 +94,43 @@ docker run -d -p 8080:80 --name my-nginx nginx
 # -d: detached, corre en segundo plano
 # -p: puerto público:privado
 ```
-  
+	
 **Docker-compose** es una herramienta para correr varios contenedores de manera más rápida (de lo contrario, habría que correr `docker build` y `docker compose` para cada aplicación. Se aplica el comando `docker-compose` sobre un archivo .yml. YAML es [whitespace-sensitive y no acepta tabs](https://fixed.docs.upsun.com/learn/overview/yaml/what-is-yaml.html). 
 
 La plantilla del docker-compose de este proyecto (no todos los campos son necesarios y he puesto algunos ejemplos y formatos como comentarios):
 
 ```yml
 services:
-  mariadb: 
-    build: # para hacer que docker-compose buildee la imagen antes de correr
-      context: # el dockerfile suele estar aquí, solo basta poner esto; si no, se usa para buscar sus archivos dependientes
-      dockerfile: # el dockerfile
-    image: #formato: imagen:versión
-    ports:
-      #- "público:privado"
-    container_name: 
-    depends_on:
-      #- wordpress
-    networks:
-    volumes: # Si quieres que los datos persistan incluso cuando el contenedor no está corriendo
-      - mariadb_data:/var/lib/mysql #nombre:dónde
-    env_file: #alternativa para usar env (${VAR}): "environment:"
-      .env
-    secrets:
-      #-db_passwords
-    restart: on-failure #restartea si el contenedor ha salido con error
+	mariadb: 
+		build: # para hacer que docker-compose buildee la imagen antes de correr
+			context: # el dockerfile suele estar aquí, solo basta poner esto; si no, se usa para buscar sus archivos dependientes
+			dockerfile: # el dockerfile
+		image: #formato: imagen:versión
+		ports:
+			#- "público:privado"
+		container_name: 
+		depends_on:
+			#- wordpress
+		networks:
+		volumes: # Si quieres que los datos persistan incluso cuando el contenedor no está corriendo
+			- mariadb_data:/var/lib/mysql #nombre:dónde
+		env_file: #alternativa para usar env (${VAR}): "environment:"
+			.env
+		secrets:
+			#-db_passwords
+		restart: on-failure #restartea si el contenedor ha salido con error
 
 volumes: 
-  mariadb_data: #nombre del volumen
-    driver: # tipo de volumen
-    driver_opts: # opciones avanzadas de lo de arriba
-      type: 
-      o: 
-      device: 
+	mariadb_data: #nombre del volumen
+		driver: # tipo de volumen
+		driver_opts: # opciones avanzadas de lo de arriba
+			type: 
+			o: 
+			device: 
 
 secrets: # Docker tiene su propio gestor de contraseñas e información sensible
-  #db_passwords:
-    #file: .txt
+	#db_passwords:
+		#file: .txt
 ```
 
 * [Infomación sobre restart](https://github.com/compose-spec/compose-spec/blob/main/spec.md#restart)
@@ -142,7 +142,7 @@ secrets: # Docker tiene su propio gestor de contraseñas e información sensible
 | Resource Usage | Share host OS kernel | Each VM has full OS |
 | Startup Time   | Seconds              | Minutes             |
 | Memory         | MB                   | GB                  |
-  
+	
 Por ejemplo, si en una máquina virtual quisieras correr un software que necesita Python 3.14 y otro que necesita Python 3.12, lo corres cada uno en su docker con sus dependencias correspondientes y no se matan entre sí.  
 
 ## Docker network
@@ -174,8 +174,8 @@ Y como los contenedores van a estar en esa network, lo declaramos en nuestro doc
 
 ```yml
 networks:
-  inception-network:
-    driver: bridge
+	inception-network:
+		driver: bridge
 ```
 
 ## Setup de servicios
@@ -186,112 +186,6 @@ El orden preferente es
 2. Wordpress
 3. Nginx
 
-## Cómo queda el docker compose final
-
-```yaml
-networks:
-  inception-network:
-    driver: bridge
-
-services:
-  mariadb:
-    build: 
-      context: requirements/mariadb
-    container_name: mariadb
-    networks:
-      - inception-network
-    volumes:
-      - mariadb_data:/var/lib/mysql
-    env_file:
-      - .env
-    secrets:
-      - db_root_password
-      - db_password
-    restart: on-failure
-  wordpress:
-    build: requirements/wordpress
-    container_name: wordpress
-    depends_on:
-      - mariadb
-    networks:
-      - inception-network
-    volumes:
-      - wordpress_data:/var/www/html
-    env_file:
-        - .env
-    secrets:
-      - db_password
-    restart: on-failure
-  nginx:
-    build:
-      context: requirements/nginx
-    image: nginx:inception
-    container_name: nginx
-    depends_on:
-      - wordpress
-    networks:
-      - inception-network
-    volumes:
-      - wordpress_data:/var/www/html
-    environment:
-      DOMAIN_NAME: ${DOMAIN_NAME}
-    restart: on-failure
-
-volumes:
-  mariadb_data:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /home/${USER}/data/mariadb
-  wordpress_data:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /home/${USER}/data/wordpress
-
-secrets:
-  db_root_password:
-    file: ../secrets/db_root_password.txt
-  db_password:
-    file: ../secrets/db_password.txt
-```
-
-### Bind mounts y named volumes
-
-In general, --mount is preferred. The main difference is that the --mount flag is more explicit and supports all the available options.
-
-If you use --volume to bind-mount a file or directory that does not yet exist on the Docker host, Docker automatically creates the directory on the host for you. It's always created as a directory.
-
---mount does not automatically create a directory if the specified mount path does not exist on the host.
-
-En la práctica, en el docker-compose, que hagas esto:
-```yaml
-services:
-  mariadb:
-    volumes:
-      - db_data:/var/lib/mysql
-
-  wordpress:
-    volumes:
-      - wp_data:/var/www/html
-
-volumes:
-  db_data:
-  wp_data:
-```
-en vez de esto (se supone que los *_data son carpetas en el host):
-```yaml
-services:
-  mariadb:
-    volumes:
-      - ./mariadb_data:/var/lib/mysql
-
-  wordpress:
-    volumes:
-      - ./wordpress_data:/var/www/html
-```
 
 ## Makefile
 
@@ -306,39 +200,179 @@ all: build up
 
 # Create data directories
 $(DATA_DIR)/mariadb:
-    mkdir -p $(DATA_DIR)/mariadb
-    sudo chown -R $USER:$USER /home/$USER/data/mariadb
-    chmod 755 /home/$USER/data/mariadb
+		mkdir -p $(DATA_DIR)/mariadb
+		sudo chown -R $USER:$USER /home/$USER/data/mariadb
+		chmod 755 /home/$USER/data/mariadb
 
 $(DATA_DIR)/wordpress:
-    mkdir -p $(DATA_DIR)/wordpress
-    sudo chown -R $USER:$USER /home/$USER/data/wordpress
-    chmod 755 /home/$USER/data/wordpress
+		mkdir -p $(DATA_DIR)/wordpress
+		sudo chown -R $USER:$USER /home/$USER/data/wordpress
+		chmod 755 /home/$USER/data/wordpress
 
 # Build images
 build: $(DATA_DIR)/mariadb $(DATA_DIR)/wordpress
-    docker compose -f $(COMPOSE_FILE) build
+		@if [ ! -f srcs/.env ] || [ ! -s srcs/.env ] ; then\
+			echo "There is no .env file or empty\n";\
+			exit 1;\
+		fi
+		@if [ ! -d secrets ] || [ ! -f secrets/db_root_password.txt ] || [ ! -f secrets/db_password.txt ] || [ ! -s secrets/db_root_password.txt ] || [ ! -s secrets/db_password.txt ]; then\
+			echo "No docker secrets found or empty\n";\
+			exit 1;\
+		fi
+		docker compose -f $(COMPOSE_FILE) build
 
 # Start services
 up:
-    docker compose -f $(COMPOSE_FILE) up -d
+		@if ! grep -q "127.0.0.1 $USER.42.fr" /etc/hosts; then\
+			echo "127.0.0.1 $USER.42.fr" | sudo tee -a /etc/hosts > /dev/null;\
+		fi
+		docker compose -f $(COMPOSE_FILE) up -d
 
 # Stop services
 down:
-    docker compose -f $(COMPOSE_FILE) down
+		docker compose -f $(COMPOSE_FILE) down
 
 # Clean containers and images
 clean:
-    docker compose -f $(COMPOSE_FILE) down
-    docker system prune -af # limpia recursos que no se están usando, -a incluyendo imágenes y -f forced
+		docker compose -f $(COMPOSE_FILE) down
+		docker system prune -af #limpia recursos que no se están usando, -a incluyendo imágenes y -f forced
 
 # Full clean including volumes
 fclean: clean
-    docker volume prune -f
-    sudo rm -rf $(DATA_DIR)
+		docker volume prune -f
+		sudo rm -rf $(DATA_DIR)
 
 # Rebuild everything
 re: fclean all
+```
+
+## Crear usuarios de Wordpress y personalizar la página
+
+Si ahora buildeas y corres los contenedores, cuando abras `localhost`o `login.42.fr`, se te aparecerá la página de instalación de Wordpress. Configúrala al gusto, teniendo en cuenta que el usuario admin no tenga cosas como `admin` en el nombre.
+
+Cuando termines de configurar, si no estas en `localhost/wp-admin`, entra allí. En usuarios, crea un nuevo usuario no admin. Para el resto de cosas, configura al gusto.
+
+Una vez esté todo, entra en el contenedor de MariaDB y exporta el contenido de la database con `mariadb-dump`
+
+```sh
+docker -it mariadb bash
+mariadb -u root -h localhost -d wordpress -prootpass
+mariadb-dump -u root -h localhost -d wordpress -prootpass > dump.sql
+```
+
+Ahora, mueve el archivo `dump.sql` al directorio del volumen, `var/lib/mysql`: `mv dump.sql /var/lib/mysql`
+
+Y lo podremos encontrar en el directorio local (fuera del contenedor), en `/home/user/data/mariadb`. Movemos el archivo a la carpeta `tools` de MariaDB. Basta con inicializar la database de wordpress con nuestro contenido, luego modificamos nuestro Dockerfile y entryscript:
+
+
+
+ 
+
+## Cómo queda el docker compose final
+
+```yaml
+networks:
+	inception-network:
+		driver: bridge
+
+services:
+	mariadb:
+		build: 
+			context: requirements/mariadb
+		container_name: mariadb
+		networks:
+			- inception-network
+		volumes:
+			- mariadb_data:/var/lib/mysql
+		env_file:
+			- .env
+		secrets:
+			- db_root_password
+			- db_password
+		restart: on-failure
+	wordpress:
+		build: requirements/wordpress
+		container_name: wordpress
+		depends_on:
+			- mariadb
+		networks:
+			- inception-network
+		volumes:
+			- wordpress_data:/var/www/html
+		env_file:
+				- .env
+		secrets:
+			- db_password
+		restart: on-failure
+	nginx:
+		build:
+			context: requirements/nginx
+		image: nginx:inception
+		container_name: nginx
+		depends_on:
+			- wordpress
+		networks:
+			- inception-network
+		volumes:
+			- wordpress_data:/var/www/html
+		environment:
+			DOMAIN_NAME: ${DOMAIN_NAME}
+		restart: on-failure
+
+volumes:
+	mariadb_data:
+		driver: local
+		driver_opts:
+			type: none
+			o: bind
+			device: /home/${USER}/data/mariadb
+	wordpress_data:
+		driver: local
+		driver_opts:
+			type: none
+			o: bind
+			device: /home/${USER}/data/wordpress
+
+secrets:
+	db_root_password:
+		file: ../secrets/db_root_password.txt
+	db_password:
+		file: ../secrets/db_password.txt
+```
+
+### Bind mounts y named volumes
+
+In general, --mount is preferred. The main difference is that the --mount flag is more explicit and supports all the available options.
+
+If you use --volume to bind-mount a file or directory that does not yet exist on the Docker host, Docker automatically creates the directory on the host for you. It's always created as a directory.
+
+--mount does not automatically create a directory if the specified mount path does not exist on the host.
+
+En la práctica, en el docker-compose, que hagas esto:
+```yaml
+services:
+	mariadb:
+		volumes:
+			- db_data:/var/lib/mysql
+
+	wordpress:
+		volumes:
+			- wp_data:/var/www/html
+
+volumes:
+	db_data:
+	wp_data:
+```
+en vez de esto (se supone que los *_data son carpetas en el host):
+```yaml
+services:
+	mariadb:
+		volumes:
+			- ./mariadb_data:/var/lib/mysql
+
+	wordpress:
+		volumes:
+			- ./wordpress_data:/var/www/html
 ```
 
 ## Yo poner archivos (final)

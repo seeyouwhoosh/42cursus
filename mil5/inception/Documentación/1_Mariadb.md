@@ -275,7 +275,7 @@ show [full] tables
 [from database_name];
 ```
 
-Y para ver el contenido:
+Y para ver el contenido (es probable que no haya nada ahora, si no has configurado el wordpress):
 
 ```mariadb
 select select_list
