@@ -1,12 +1,11 @@
 #include "Bureaucrat.hpp"
-#include <iostream>
 
 Bureaucrat::Bureaucrat() : name("Default")
 {
 	this->grade = 150;
 }
 
-Bureaucrat::Bureaucrat(std::string name, int grade): name(name), grade(150)
+Bureaucrat::Bureaucrat(const std::string name, int grade): name(name), grade(150)
 {
 	if (grade > 150)
 	{
@@ -21,7 +20,7 @@ Bureaucrat::Bureaucrat(std::string name, int grade): name(name), grade(150)
 	this->grade = grade;
 }
 
-Bureaucrat::Bureaucrat(Bureaucrat &other)
+Bureaucrat::Bureaucrat(Bureaucrat &other): name(other.name)
 {
 	*this = other;
 }

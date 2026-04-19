@@ -1,16 +1,16 @@
 #pragma once
 #include <string>
 #include <exception>
+#include <iostream>
 
 class Bureaucrat
 {
 private:
 	const std::string	name;
 	int		grade;
-	std::string			strerr;
 public:
 	Bureaucrat();
-	Bureaucrat(std::string name, int grade);
+	Bureaucrat(const std::string name, int grade);
 	Bureaucrat(Bureaucrat &other);
 	Bureaucrat &operator=(Bureaucrat &other);
 	~Bureaucrat();
