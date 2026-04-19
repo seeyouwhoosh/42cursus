@@ -313,72 +313,78 @@ RUN chown -R www-data:www-data /var/www/html/wordpress/wp-content
 
 ```yaml
 networks:
-	inception-network:
-		driver: bridge
+  inception-network:
+    name: inception-network
+    driver: bridge
 
 services:
-	mariadb:
-		build: 
-			context: requirements/mariadb
-		container_name: mariadb
-		networks:
-			- inception-network
-		volumes:
-			- mariadb_data:/var/lib/mysql
-		env_file:
-			- .env
-		secrets:
-			- db_root_password
-			- db_password
-		restart: on-failure
-	wordpress:
-		build: requirements/wordpress
-		container_name: wordpress
-		depends_on:
-			- mariadb
-		networks:
-			- inception-network
-		volumes:
-			- wordpress_data:/var/www/html
-		env_file:
-				- .env
-		secrets:
-			- db_password
-		restart: on-failure
-	nginx:
-		build:
-			context: requirements/nginx
-		image: nginx:inception
-		container_name: nginx
-		depends_on:
-			- wordpress
-		networks:
-			- inception-network
-		volumes:
-			- wordpress_data:/var/www/html
-		environment:
-			DOMAIN_NAME: ${DOMAIN_NAME}
-		restart: on-failure
+  mariadb:
+    image: mariadb
+    build: 
+      context: requirements/mariadb
+    container_name: mariadb
+    networks:
+      - inception-network
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    env_file:
+      - .env
+    secrets:
+      - db_root_password
+      - db_password
+    restart: on-failure
+  wordpress:
+    image: wordpress
+    build:
+      context: requirements/wordpress
+    container_name: wordpress
+    depends_on:
+      - mariadb
+    networks:
+      - inception-network
+    volumes:
+      - wordpress_data:/var/www/html
+    env_file:
+        - .env
+    secrets:
+      - db_password
+    restart: on-failure
+  nginx:
+    image: nginx
+    build:
+      context: requirements/nginx
+    container_name: nginx
+    depends_on:
+      - wordpress
+    networks:
+      - inception-network
+    volumes:
+      - wordpress_data:/var/www/html
+    env_file:
+        - .env
+    ports:
+      - "443:443"
+    restart: on-failure
 
 volumes:
-	mariadb_data:
-		driver: local
-		driver_opts:
-			type: none
-			o: bind
-			device: /home/${USER}/data/mariadb
-	wordpress_data:
-		driver: local
-		driver_opts:
-			type: none
-			o: bind
-			device: /home/${USER}/data/wordpress
+  mariadb_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/${USER}/data/mariadb
+  wordpress_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/${USER}/data/wordpress
 
 secrets:
-	db_root_password:
-		file: ../secrets/db_root_password.txt
-	db_password:
-		file: ../secrets/db_password.txt
+  db_root_password:
+    file: ../secrets/db_root_password.txt
+  db_password:
+    file: ../secrets/db_password.txt
 ```
 
 ### Bind mounts y named volumes

@@ -113,7 +113,7 @@ http {
     }
 
     server {
-        listen 80; # 
+        listen 80;
         listen [::]:80;
 
         server_name login.42.fr;
