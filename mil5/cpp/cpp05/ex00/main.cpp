@@ -6,34 +6,7 @@ int	main()
 	Bureaucrat pepito("Pepito", 1);
 	std::cout << pepito << "\n";
 
-
-	Bureaucrat pepito_twin;
-/*
-	try
-	{
-		Bureaucrat pepito_twin("Pepito's twin", -1);
-		std::cout << pepito_twin << "\n";
-
-	}
-	catch (const std::exception& e)
-	{
-		std::cerr << e.what() << '\n';
-		return 1;
-	}
-/*/
-	try
-	{
-		Bureaucrat pepito_twin("Pepito's twin", 151);
-		std::cout << pepito << "\n";
-
-	}
-	catch (const std::exception& e)
-	{
-		std::cerr << e.what() << '\n';
-	}
-//*/
-
-/*
+	/*
 	try
 	{
 		pepito.incrementGrade();
@@ -60,6 +33,31 @@ int	main()
 		return 1;
 	}
 //*/
-	std::cout << pepito_twin << "\n";
+
+/*
+	try
+	{
+		Bureaucrat pepito_twin("Pepito's twin", -1);
+		std::cout << pepito_twin << "\n";
+
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+		return 1;
+	}
+/*/
+	try
+	{
+		Bureaucrat pepito_twin("Pepito's twin", 151);
+		std::cout << pepito << "\n";
+
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+	}
+//*/
+
 	return 0;
 }

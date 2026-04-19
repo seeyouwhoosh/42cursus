@@ -4,6 +4,8 @@
 #include <iostream>
 #include "Bureaucrat.hpp"
 
+class Bureaucrat;
+
 class Form
 {
 private:
@@ -13,7 +15,7 @@ private:
 	const int			exec_grade;
 public:
 	Form();
-	Form(const std::string name, bool issigned, const int sign_grade, const int exec_grade);
+	Form(const std::string name, const int sign_grade, const int exec_grade);
 	Form(Form &other);
 	Form &operator=(Form &other);
 	~Form();
@@ -33,9 +35,9 @@ public:
 
 	const std::string	getName() const;
 	bool				getSignedStatus() const;
-	const int			getSignGrade() const;
-	const int			getExecGrade() const;
-	void				beSigned(Bureaucrat &burr);
+	int					getSignGrade() const;
+	int					getExecGrade() const;
+	void				beSigned(const Bureaucrat &burr);
 };
 
 std::ostream &operator<<(std::ostream &os, const Form &form);

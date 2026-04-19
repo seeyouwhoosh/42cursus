@@ -9,12 +9,12 @@ Bureaucrat::Bureaucrat(std::string name, int grade): name(name), grade(150)
 {
 	if (grade > 150)
 	{
-		throw Bureaucrat::GradeTooLowException();
+		throw GradeTooLowException();
 		return ;
 	}
 	if (grade < 1)
 	{
-		throw Bureaucrat::GradeTooHighException();
+		throw GradeTooHighException();
 		return ;
 	}
 	this->grade = grade;
@@ -75,6 +75,20 @@ void	Bureaucrat::decrementGrade()
 		return ;
 	}
 	this->grade++;
+}
+
+void	Bureaucrat::signForm(Form &form)
+{
+	try
+	{
+		form.beSigned(*this);
+		std::cout << this->name << " signed " << form.getName() << "\n";
+	}
+	catch(const std::exception& e)
+	{
+		std::cout << this->name << " couldn't signed " << form.getName() << " because " << e.what() << "\n";
+	}
+	
 }
 
 std::ostream	&operator<<(std::ostream &os, const Bureaucrat &burr)
