@@ -10,6 +10,6 @@ public:
 	PresidentialPardonForm(const std::string name);
 	~PresidentialPardonForm();
 
-	void		execute(Bureaucrat const &executor);
+	void		execute(Bureaucrat const &executor) const;
 };
 

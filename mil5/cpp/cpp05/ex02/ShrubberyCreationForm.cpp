@@ -6,22 +6,21 @@ ShrubberyCreationForm::ShrubberyCreationForm(const std::string name): AForm(name
 
 ShrubberyCreationForm::~ShrubberyCreationForm()
 {
-	if (file.is_open())
-		file.close();
 }
 
-void	ShrubberyCreationForm::execute(Bureaucrat const &executor)
+void	ShrubberyCreationForm::execute(Bureaucrat const &executor) const
 {
-	this->file.open(std::string(this->name).append("_shrubbery").c_str());
+	std::ofstream	file;
+	file.open(std::string(this->name).append("_shrubbery").c_str());
 	try
 	{
 		AForm::execute(executor);
-		file << "𖠰 ";
+		file << "𖠰";
 	}
-	catch (const std::exception& e)
+	catch (const AForm::FormNotSignedException& e)
 	{
-		file << "↟ ";
-		std::cerr << e.what() << '\n';
+		file << "↟";
+		throw e;
 	}
 	file.close();
 }

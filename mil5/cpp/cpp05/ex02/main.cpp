@@ -15,42 +15,31 @@ int main()
 
 		std::cout << shrub << "\n";
 		intern.signForm(shrub);
-		intern.executeForm(shrub); // debería fallar (grade bajo)
+		intern.executeForm(shrub);
 
 		boss.signForm(shrub);
-		boss.executeForm(shrub);   // debería funcionar
+		boss.executeForm(shrub);
 
+		ShrubberyCreationForm notSigned("garden");
+		boss.executeForm(notSigned);
 
 		std::cout << "\n=== ROBOTOMY TEST ===\n";
 		RobotomyRequestForm robot("Bender");
 
 		boss.signForm(robot);
 
-		for (int i = 0; i < 5; i++)
-			boss.executeForm(robot); // 50% success
+		for (int i = 0; i < 10; i++)
+			boss.executeForm(robot);
 
 
 		std::cout << "\n=== PRESIDENTIAL TEST ===\n";
-		PresidentialPardonForm president("Arthur Dent");
+		PresidentialPardonForm president("Potatoes");
 
-		intern.signForm(president); // debería fallar
+		intern.signForm(president);
 		boss.signForm(president);
 
 		intern.executeForm(president); // debería fallar
 		boss.executeForm(president);   // debería funcionar
-
-
-		std::cout << "\n=== NOT SIGNED TEST ===\n";
-		ShrubberyCreationForm notSigned("garden");
-		boss.executeForm(notSigned); // debería lanzar excepción
-
-
-		std::cout << "\n=== GRADE TOO LOW TEST ===\n";
-		Bureaucrat mid("Mid", 50);
-		PresidentialPardonForm hard("Someone");
-
-		mid.signForm(hard);      // debería fallar
-		mid.executeForm(hard);   // debería fallar
 	}
 	catch (std::exception &e)
 	{

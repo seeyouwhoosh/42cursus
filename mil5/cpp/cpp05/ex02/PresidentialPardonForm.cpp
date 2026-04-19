@@ -6,16 +6,17 @@ PresidentialPardonForm::PresidentialPardonForm(const std::string name): AForm(na
 
 PresidentialPardonForm::~PresidentialPardonForm() {}
 
-void	PresidentialPardonForm::execute(Bureaucrat const &executor)
+void	PresidentialPardonForm::execute(Bureaucrat const &executor) const
 {
 	try
 	{
 		AForm::execute(executor);
-		std::cout << this->name << "has been pardoned by Zaphod Beeblebrox\n";
+		std::cout << this->name << " has been pardoned by Zaphod Beeblebrox\n";
 	}
 	catch (const std::exception& e)
 	{
-		std::cerr << e.what() << " therefore ";
-		std::cout << this->name << "has NOT been pardoned by Zaphod Beeblebrox\n";
+		std::cout << this->name << " has NOT been pardoned by Zaphod Beeblebrox because ";
+		std::cerr << e.what() << "\n";
+		throw e;
 	}
 }
