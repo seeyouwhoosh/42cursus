@@ -14,7 +14,7 @@ CFLAGS		= -Wall -Werror -Wextra -std=c++98
 RM			= rm -rf
 
 # Sources
-SOURCES		= main.cpp Fixed.cpp
+SOURCES		= main.cpp Bureaucrat.cpp
 
 # Objects
 OBJECTS		= $(SOURCES:.cpp=.o)
