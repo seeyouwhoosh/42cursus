@@ -228,5 +228,5 @@ MYSQL_USER=wpuser
 MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db_root_password.txt
 MYSQL_PASSWORD_FILE=/run/secrets/db_password.txt
 MYSQL_HOST=mariadb
-DOMAIN_NAME=xwu.42.fr
+DOMAIN_NAME=login.42.fr
 ```

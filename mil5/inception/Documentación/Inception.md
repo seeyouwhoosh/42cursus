@@ -2,6 +2,9 @@
 
 > [😡] Antes de que intentes copiar el comando de abajo e ir copiando y pegando los contenidos de los archivos, hay una forma mucho más rápida de mover toda la carpeta del ordenador a la máquina virtual. Solo necesitas que se pueda acceder a la máquina virtual mediante ssh. Lo pongo [abajo](##-Yo-poner-archivos), porque... es el orden cronológico de hacer las cosas
 
+
+> [😡] Also, no te olviden de cambiar los `login` por tu proppio login
+
 ## Preparar los directorios
 
 ```ssh
