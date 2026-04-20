@@ -14,7 +14,7 @@ CFLAGS		= -Wall -Werror -Wextra -std=c++98
 RM			= rm -rf
 
 # Sources
-SOURCES		= main.cpp Bureaucrat.cpp AForm.cpp ShrubberyCreationForm.cpp RobotomyRequestForm.cpp PresidentialPardonForm.cpp
+SOURCES		= main.cpp Bureaucrat.cpp AForm.cpp ShrubberyCreationForm.cpp RobotomyRequestForm.cpp PresidentialPardonForm.cpp Intern.cpp
 
 # Objects
 OBJECTS		= $(SOURCES:.cpp=.o)

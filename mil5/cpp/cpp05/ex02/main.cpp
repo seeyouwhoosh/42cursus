@@ -10,36 +10,41 @@ int main()
 		Bureaucrat boss("Boss", 1);
 		Bureaucrat intern("Intern", 150);
 
-		std::cout << "\n=== SHRUBBERY TEST ===\n";
-		ShrubberyCreationForm shrub("home");
+		{
+			std::cout << "\n=== SHRUBBERY TEST ===\n";
+			ShrubberyCreationForm shrub("home");
 
-		std::cout << shrub << "\n";
-		intern.signForm(shrub);
-		intern.executeForm(shrub);
+			std::cout << shrub << "\n";
+			intern.signForm(shrub);
+			intern.executeForm(shrub);
 
-		boss.signForm(shrub);
-		boss.executeForm(shrub);
+			boss.signForm(shrub);
+			boss.executeForm(shrub);
 
-		ShrubberyCreationForm notSigned("garden");
-		boss.executeForm(notSigned);
+			ShrubberyCreationForm notSigned("garden");
+			boss.executeForm(notSigned);
+		}
 
-		std::cout << "\n=== ROBOTOMY TEST ===\n";
-		RobotomyRequestForm robot("Bender");
+		{
+			std::cout << "\n=== ROBOTOMY TEST ===\n";
+			RobotomyRequestForm robot("Bender");
 
-		boss.signForm(robot);
+			boss.signForm(robot);
 
-		for (int i = 0; i < 10; i++)
-			boss.executeForm(robot);
+			for (int i = 0; i < 10; i++)
+				boss.executeForm(robot);
+		}
 
+		{
+			std::cout << "\n=== PRESIDENTIAL TEST ===\n";
+			PresidentialPardonForm president("Potatoes");
 
-		std::cout << "\n=== PRESIDENTIAL TEST ===\n";
-		PresidentialPardonForm president("Potatoes");
+			intern.signForm(president);
+			boss.signForm(president);
 
-		intern.signForm(president);
-		boss.signForm(president);
-
-		intern.executeForm(president); // debería fallar
-		boss.executeForm(president);   // debería funcionar
+			intern.executeForm(president);
+			boss.executeForm(president);
+		}
 	}
 	catch (std::exception &e)
 	{

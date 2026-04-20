@@ -5,7 +5,7 @@ Bureaucrat::Bureaucrat() : name("Default")
 	this->grade = 150;
 }
 
-Bureaucrat::Bureaucrat(std::string name, int grade): name(name), grade(150)
+Bureaucrat::Bureaucrat(std::string name, int grade) : name(name), grade(150)
 {
 	if (grade > 150)
 	{

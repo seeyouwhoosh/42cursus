@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "AForm.hpp"
+#include <exception>
 
 class Intern
 {
@@ -13,5 +14,6 @@ public:
 	~Intern();
 
 	AForm	*makeForm(std::string name, std::string target);
+
 };
 

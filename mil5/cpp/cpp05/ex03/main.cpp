@@ -1,49 +1,41 @@
+#include <iostream>
+#include "Intern.hpp"
+#include "AForm.hpp"
 #include "Bureaucrat.hpp"
-#include "ShrubberyCreationForm.hpp"
-#include "RobotomyRequestForm.hpp"
-#include "PresidentialPardonForm.hpp"
 
 int main()
 {
-	try
+	Intern someRandomIntern;
+	AForm* form = NULL;
+
+	std::cout << "=== VALID FORMS ===" << std::endl;
 	{
+		form = someRandomIntern.makeForm("robotomy request", "Bender");
+		std::cout << *form << std::endl;
+
 		Bureaucrat boss("Boss", 1);
-		Bureaucrat intern("Intern", 150);
+		boss.signForm(*form);
+		boss.executeForm(*form);
 
-		std::cout << "\n=== SHRUBBERY TEST ===\n";
-		ShrubberyCreationForm shrub("home");
-
-		std::cout << shrub << "\n";
-		intern.signForm(shrub);
-		intern.executeForm(shrub);
-
-		boss.signForm(shrub);
-		boss.executeForm(shrub);
-
-		ShrubberyCreationForm notSigned("garden");
-		boss.executeForm(notSigned);
-
-		std::cout << "\n=== ROBOTOMY TEST ===\n";
-		RobotomyRequestForm robot("Bender");
-
-		boss.signForm(robot);
-
-		for (int i = 0; i < 10; i++)
-			boss.executeForm(robot);
-
-
-		std::cout << "\n=== PRESIDENTIAL TEST ===\n";
-		PresidentialPardonForm president("Potatoes");
-
-		intern.signForm(president);
-		boss.signForm(president);
-
-		intern.executeForm(president); // debería fallar
-		boss.executeForm(president);   // debería funcionar
+		delete form;
 	}
-	catch (std::exception &e)
+
+	std::cout << "\n=== ANOTHER VALID FORM ===" << std::endl;
 	{
-		std::cerr << "Exception: " << e.what() << std::endl;
+		form = someRandomIntern.makeForm("shrubbery creation", "home");
+		std::cout << *form << std::endl;
+
+		Bureaucrat worker("Worker", 1);
+		worker.signForm(*form);
+		worker.executeForm(*form);
+
+		delete form;
+	}
+
+	std::cout << "\n=== INVALID FORM ===" << std::endl;
+	{
+		form = someRandomIntern.makeForm("unknown form", "target");
+		delete form;
 	}
 
 	return 0;
