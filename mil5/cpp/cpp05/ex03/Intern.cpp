@@ -27,12 +27,6 @@ void	ft_strlower(std::string &str)
 		std::tolower(str[i]);
 }
 
-std::string	options[][2] = 
-{
-	{"robotomy", "request"},
-	{"presidential", "pardon"},
-	{"shrubbery", "creation"}
-};
 
 AForm	*createRobotomy(std::string target)
 {
@@ -49,16 +43,23 @@ AForm	*createShrubbery(std::string target)
 	return new ShrubberyCreationForm(target);
 }
 
-AForm	*(*formTypes[])(std::string) = {
-	createRobotomy,
-	createPresidential,
-	createShrubbery
-};
-
 AForm	*Intern::makeForm(std::string name, std::string target)
 {
 	if (name.empty() || target.empty())
 		return NULL;
+	
+	std::string	options[][2] = {
+		{"robotomy", "request"},
+		{"presidential", "pardon"},
+		{"shrubbery", "creation"}
+	};
+
+	AForm	*(*formTypes[])(std::string) = {
+		createRobotomy,
+		createPresidential,
+		createShrubbery
+	};
+
 	for (size_t i = 0; i < 3; i++)
 	{
 		if (name.find(options[i][0]) != std::string::npos && name.find(options[i][1]) != std::string::npos)

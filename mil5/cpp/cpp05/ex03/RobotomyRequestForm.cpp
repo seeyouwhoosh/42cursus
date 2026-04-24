@@ -1,5 +1,5 @@
 #include "RobotomyRequestForm.hpp"
-#include <random>
+#include <cstdlib>
 
 RobotomyRequestForm::RobotomyRequestForm(): AForm("Default", 72, 45) {}
 
@@ -16,12 +16,11 @@ const char *RobotomyRequestForm::NotLuckyEnough::what() const throw()
 
 void	RobotomyRequestForm::execute(Bureaucrat const &executor) const
 {
-	std::random_device	n;
 
 	try
 	{
-		AForm::execute(executor);
-		if (n() % 2)
+		AForm::isexecutable(executor);
+		if (rand() % 2)
 			throw NotLuckyEnough();
 		std::cout << "Brrrrr, " << this->name << " has been robotomized successfully\n";
 	}

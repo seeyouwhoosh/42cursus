@@ -10,7 +10,10 @@ int main()
 
 	std::cout << "=== VALID FORMS ===" << std::endl;
 	{
-		form = someRandomIntern.makeForm("robotomy request", "Bender");
+		form = someRandomIntern.makeForm("a robotomy request", "Bender");
+		if (!form)
+			return (delete form, 1);
+
 		std::cout << *form << std::endl;
 
 		Bureaucrat boss("Boss", 1);
@@ -22,7 +25,10 @@ int main()
 
 	std::cout << "\n=== ANOTHER VALID FORM ===" << std::endl;
 	{
-		form = someRandomIntern.makeForm("shrubbery creation", "home");
+		form = someRandomIntern.makeForm("a shrubbery creation", "home");
+		if (!form)
+			return (delete form, 1);
+
 		std::cout << *form << std::endl;
 
 		Bureaucrat worker("Worker", 1);
@@ -32,9 +38,24 @@ int main()
 		delete form;
 	}
 
+		std::cout << "\n=== ANOTHER VALID FORM 2 ===" << std::endl;
+	{
+		form = someRandomIntern.makeForm("a presidential pardon", "Pepito");
+		if (!form)
+			return (delete form, 1);
+		
+		std::cout << *form << std::endl;
+
+		Bureaucrat presi("President", 1);
+		presi.signForm(*form);
+		presi.executeForm(*form);
+
+		delete form;
+	}
+
 	std::cout << "\n=== INVALID FORM ===" << std::endl;
 	{
-		form = someRandomIntern.makeForm("unknown form", "target");
+		form = someRandomIntern.makeForm("an unknown form", "target");
 		delete form;
 	}
 

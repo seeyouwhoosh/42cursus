@@ -10,7 +10,7 @@ void	PresidentialPardonForm::execute(Bureaucrat const &executor) const
 {
 	try
 	{
-		AForm::execute(executor);
+		AForm::isexecutable(executor);
 		std::cout << this->name << " has been pardoned by Zaphod Beeblebrox\n";
 	}
 	catch (const std::exception& e)

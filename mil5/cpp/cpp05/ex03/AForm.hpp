@@ -13,6 +13,8 @@ protected:
 	bool				issigned;
 	const int			sign_grade;
 	const int			exec_grade;
+
+	void	isexecutable(Bureaucrat const &executor) const;
 public:
 	AForm();
 	AForm(const std::string name, const int sign_grade, const int exec_grade);

@@ -71,7 +71,7 @@ void	AForm::beSigned(const Bureaucrat &burr)
 		throw GradeTooLowException();
 }
 
-void	AForm::execute(Bureaucrat const &executor) const
+void	AForm::isexecutable(Bureaucrat const &executor) const
 {
 	if (!this->issigned)
 		throw FormNotSignedException();

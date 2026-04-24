@@ -1,5 +1,6 @@
 #pragma once
 #include "AForm.hpp"
+#include <cstdlib>
 
 class RobotomyRequestForm: public AForm
 {
