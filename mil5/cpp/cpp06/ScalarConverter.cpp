@@ -79,3 +79,7 @@ double	ScalarConverter::convert(std::string &literal)
 	}
 	return INFINITY;
 }
+
+/*
+https://stackoverflow.com/questions/332030/when-should-static-cast-dynamic-cast-const-cast-and-reinterpret-cast-be-used
+*/
