@@ -11,6 +11,14 @@ public:
 	ScalarConverter &operator=(ScalarConverter &other);
 	virtual ~ScalarConverter() = 0;
 
-	static <algún tipo>convert(std::string &literal);
+	static double	convert(std::string &literal);
 };
 
+enum scalar_types {
+	NONE,
+	INT,
+	FLOAT,
+	DOUBLE,
+	LIT_FLOAT,
+	LIT_DOUBLE,
+};
