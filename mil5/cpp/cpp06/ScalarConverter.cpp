@@ -18,66 +18,81 @@ ScalarConverter &ScalarConverter::operator=(ScalarConverter &other)
 
 /* ************************************************************************** */
 
-static double	single_case(char lit)
-{
-	if (!std::isprint(lit))
-	{
-		std::cerr << "Non-displayable character detected. Aborting\n";
-		return 0;
-	}
-	if (std::isdigit(lit))
-		return lit - '0';
-	else
-		return lit;
-}
-
-static short	identify_scalar_type(std::string &s)
+static e_type	identify_scalar_type(std::string &s)
 {
 	bool	dot = 0;
+	size_t	len = s.length();
 
-	if (s == "-inff" || s == "+inff" || s == "nanf")
-		return LIT_FLOAT;
-	if (s == "-inf" || s == "+inf" || s == "nan")
-		return LIT_DOUBLE;
-	if (!isdigit(s[0]) && (s[0] != '+' || s[0] != '-'))
-		return NONE;
-	for (size_t i = 1; i < s.length(); i++)
+	if (s == "-inff" || s == "+inff" || s == "nanf" || s == "-inf" || s == "+inf" || s == "nan")
+		return SPECIAL;
+
+	if ((len == 1 && !isdigit(s[0])) || \
+		(len == 3 && s[0] == '\'' && s[2] == '\''))
+		return CHAR;
+
+	for (size_t i = 0; i < len; i++)
 	{
+		if ((s[i] == '+' || s[i] == '-') && i == 0)
+			continue;
 		if (s[i] == '.' && !dot)
 		{
 			dot = 1;
 			continue;
 		}
-		if (!isdigit(s[i]) && dot)
+		if (!isdigit(s[i]) && !(i == len - 1 && s[i] == 'f' && dot))
 			return NONE;
 	}
 	if (!dot)
 		return INT;
+	else if (dot && s[len - 1] == 'f')
+		return FLOAT;
 	else
 		return DOUBLE;
 }
 
-double	ScalarConverter::convert(std::string &literal)
+void	convertChar(std::string &s)
 {
-	if (literal.length() == 1)
-		return single_case(literal[0]);
+	int	c;
 
-	short	type = identify_scalar_type(literal);
+	if (s.length() == 1)
+		c = s[0];
+	else
+		c = s[1];
+
+	std::cout << "char: ";
+	if (!std::isprint(c))
+		std::cout << "Not printable\n";
+	else
+	{
+		std::cout << "\'" << static_cast<char>(c) << "\'\n";
+		std::cout << "int: " << static_cast<int>(c) << "\n";
+		std::cout << "float: " << static_cast<float>(c) << ".0f" << "\n";
+		std::cout << "double: " << static_cast<double>(c) << ".0" << "\n";
+	}
+}
+
+void	ScalarConverter::convert(std::string &literal)
+{
+	e_type	type = identify_scalar_type(literal);
 	switch (type)
 	{
-	case NONE:
-		std::cout << "Not a number\n";
-		return 0;
+	case CHAR:
+		convertChar(literal);
+		break;
 	case INT:
-		return atoi(literal.c_str());
+		atoi(literal.c_str());
+		break;
 	case FLOAT:
-		return atof(literal.c_str());
+		atof(literal.c_str());
+		break;
 	case DOUBLE:
-		return atof(literal.c_str());
+		atof(literal.c_str());
+		break;
 	default:
+		std::cout << "Not a valid type\n";
 		break;
 	}
-	return INFINITY;
+	return;
 }
 
 /*
