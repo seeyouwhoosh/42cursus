@@ -61,7 +61,7 @@ void	convertChar(std::string &s)
 
 	std::cout << "char: ";
 	if (!std::isprint(c))
-		std::cout << "Not printable\n";
+		std::cout << "not printable\n";
 	else
 	{
 		std::cout << "\'" << static_cast<char>(c) << "\'\n";
