@@ -6,14 +6,5 @@ class C: public Base
 private:
 	
 public:
-	C();
-	~C();
+
 };
-
-C::C()
-{
-}
-
-C::~C()
-{
-}
