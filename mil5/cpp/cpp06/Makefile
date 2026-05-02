@@ -14,7 +14,7 @@ CFLAGS		= -Wall -Werror -Wextra -std=c++98
 RM			= rm -rf
 
 # Sources
-SOURCES		= main.cpp ScalarConverter.cpp
+SOURCES		= main.cpp ScalarConverter.cpp printers.cpp
 
 # Objects
 OBJECTS		= $(SOURCES:.cpp=.o)

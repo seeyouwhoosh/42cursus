@@ -1,5 +1,5 @@
 #include "ScalarConverter.hpp"
-#include <iostream>
+
 
 ScalarConverter::ScalarConverter() {}
 
@@ -59,16 +59,43 @@ void	convertChar(std::string &s)
 	else
 		c = s[1];
 
-	std::cout << "char: ";
-	if (!std::isprint(c))
-		std::cout << "not printable\n";
-	else
-	{
-		std::cout << "\'" << static_cast<char>(c) << "\'\n";
-		std::cout << "int: " << static_cast<int>(c) << "\n";
-		std::cout << "float: " << static_cast<float>(c) << ".0f" << "\n";
-		std::cout << "double: " << static_cast<double>(c) << ".0" << "\n";
-	}
+	printChar(c);
+	printInt(c);
+	printFloat(c);
+	printDouble(c);
+}
+
+void	convertInt(std::string &s)
+{
+	long	i = std::atol(s.c_str());
+
+
+	printChar(i);
+	printInt(i);
+	printFloat(i);
+	printDouble(i);
+}
+
+void	convertFloat(std::string &s)
+{
+	double	d = std::atof(s.c_str());
+	double	t = 0.00001;
+	bool	put_f = (static_cast<int>(d) == 0 ? 0 : std::abs(d - static_cast<int>(d)) < t);
+
+	printChar(d);
+	printInt(d);
+	printFloat(d);
+	std::cout << "double: " << static_cast<double>(d) << std::setprecision(15) << (put_f ? ".0" : "") << "\n";
+}
+
+void	convertDouble(std::string &s)
+{
+	double	d = std::atof(s.c_str());
+
+	printChar(d);
+	printInt(d);
+	printFloat(d);
+	printDouble(d);
 }
 
 void	ScalarConverter::convert(std::string &literal)
@@ -76,17 +103,20 @@ void	ScalarConverter::convert(std::string &literal)
 	e_type	type = identify_scalar_type(literal);
 	switch (type)
 	{
+	case SPECIAL:
+		printSpecial(literal);
+		break;
 	case CHAR:
 		convertChar(literal);
 		break;
 	case INT:
-		atoi(literal.c_str());
+		convertInt(literal);
 		break;
 	case FLOAT:
-		atof(literal.c_str());
+		convertFloat(literal);
 		break;
 	case DOUBLE:
-		atof(literal.c_str());
+		convertDouble(literal);
 		break;
 	default:
 		std::cout << "Not a valid type\n";
