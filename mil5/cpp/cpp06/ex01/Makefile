@@ -8,13 +8,13 @@ GREEN		= \033[0;32m
 NC			= \033[0m
 
 # Compiler
-NAME		= scalar_converter
+NAME		= serialize
 CC			= c++
 CFLAGS		= -Wall -Werror -Wextra -std=c++98
 RM			= rm -rf
 
 # Sources
-SOURCES		= main.cpp ScalarConverter.cpp printers.cpp
+SOURCES		= main.cpp Serializer.cpp 
 
 # Objects
 OBJECTS		= $(SOURCES:.cpp=.o)
