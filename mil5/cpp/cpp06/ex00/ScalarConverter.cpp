@@ -80,7 +80,7 @@ void	convertFloat(std::string &s)
 {
 	double	d = std::atof(s.c_str());
 	double	t = 0.00001;
-	bool	put_f = (static_cast<int>(d) == 0 ? 0 : std::abs(d - static_cast<int>(d)) < t);
+	bool	put_f = (d != 0 && static_cast<int>(d) == 0 ? 0 : std::abs(d - static_cast<int>(d)) < t);
 
 	printChar(d);
 	printInt(d);

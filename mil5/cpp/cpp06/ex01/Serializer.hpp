@@ -5,10 +5,9 @@
 class Serializer
 {
 private:
-	
-public:
 	Serializer();
 	Serializer(Serializer &other);
+public:
 	Serializer &operator=(Serializer &other);
 	virtual ~Serializer() = 0;
 

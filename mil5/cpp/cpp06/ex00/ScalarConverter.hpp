@@ -6,16 +6,14 @@
 #include <iomanip>
 #include <float.h>
 
-
 class ScalarConverter
 {
 private:
-	
-public:
 	ScalarConverter();
 	ScalarConverter(ScalarConverter &other);
+public:
 	ScalarConverter &operator=(ScalarConverter &other);
-	virtual ~ScalarConverter() = 0;
+	~ScalarConverter();
 
 	static void	convert(std::string &literal);
 };

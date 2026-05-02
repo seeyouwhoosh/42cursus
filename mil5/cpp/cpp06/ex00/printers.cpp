@@ -43,7 +43,7 @@ void	printInt(long i)
 void	printFloat(double d)
 {
 	double	t = 0.00001;
-	bool	put_f = (static_cast<int>(d) == 0 ? 0 : std::abs(d - static_cast<int>(d)) < t);
+	bool	put_f = (d != 0 && static_cast<int>(d) == 0 ? 0 : std::abs(d - static_cast<int>(d)) < t);
 
 	std::cout << "float: ";
 	if (d < -FLT_MAX || d > FLT_MAX)
@@ -55,7 +55,7 @@ void	printFloat(double d)
 void	printDouble(double d)
 {
 	double	t = 0.0000000000001;
-	bool	put_f = (static_cast<long>(d) == 0 ? 0 : std::abs(d - static_cast<long>(d)) < t);
+	bool	put_f = (d != 0 && static_cast<int>(d) == 0 ? 0 : std::abs(d - static_cast<int>(d)) < t);
 
 	std::cout << "double: ";
 	if (d < -DBL_MAX || d > DBL_MAX)
