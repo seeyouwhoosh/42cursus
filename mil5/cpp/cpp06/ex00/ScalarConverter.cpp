@@ -1,5 +1,5 @@
 #include "ScalarConverter.hpp"
-
+#include <sstream>
 
 ScalarConverter::ScalarConverter() {}
 
@@ -67,9 +67,28 @@ void	convertChar(std::string &s)
 
 void	convertInt(std::string &s)
 {
-	long	i = std::atol(s.c_str());
+	std::string a;
 
+	try
+	{
+		a = s.substr(s.find_first_not_of('0'));
+	}
+	catch (std::exception& e)
+	{
+		a = "0";
+	}
+	int	i = std::atol(a.c_str());
 
+	std::string number;
+	std::stringstream strstream;
+	strstream << i;
+	strstream >> number;
+
+	if (number != a)
+	{
+		std::cout << "Conversion not possible because of int overflow\n";
+		return;
+	}
 	printChar(i);
 	printInt(i);
 	printFloat(i);
