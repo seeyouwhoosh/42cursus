@@ -5,6 +5,13 @@
 
 int main(void)
 {
+	A a;
+	identify(a);
+	B b;
+	identify(b);
+	C c;
+	identify(c);
+
 	Base *ptr = generate();
 	Base &ref = *ptr;
 	identify(ptr);
