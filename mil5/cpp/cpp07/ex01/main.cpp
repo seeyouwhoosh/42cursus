@@ -36,7 +36,7 @@ int main()
 	}
 
 	std::cout << "TEST 3: CONSTANT NUMBERS\n";
-	const int	c[] = {1, 2, 3, 4, 5, 6};
+	int	const c[] = {1, 2, 3, 4, 5, 6};
 	iter(c, 6, p);
 	delete[] b;
 }
