@@ -34,10 +34,3 @@ public:
 	void			addNumber(std::vector<int>::iterator begin, std::vector<int>::iterator end);
 };
 
-Span::Span()
-{
-}
-
-Span::~Span()
-{
-}
