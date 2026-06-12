@@ -11,7 +11,7 @@ private:
 public:
 	Span();
 	Span(unsigned int N);
-	Span(const Span &other);
+	Span(Span &other);
 	Span	&operator=(Span &other);
 	~Span();
 
@@ -29,8 +29,8 @@ public:
 	};
 
 	void			addNumber(int n);
+	void			addNumber(std::vector<int>::iterator begin, std::vector<int>::iterator end);
 	unsigned int	shortestSpan();
 	unsigned int	longestSpan();
-	void			addNumber(std::vector<int>::iterator begin, std::vector<int>::iterator end);
 };
 
