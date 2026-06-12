@@ -11,8 +11,8 @@ private:
 public:
 	Span();
 	Span(unsigned int N);
-	Span(Span &other);
-	Span	&operator=(Span &other);
+	Span(const Span &other);
+	Span	&operator=(const Span &other);
 	~Span();
 
 	class FullSpanException: public std::exception
