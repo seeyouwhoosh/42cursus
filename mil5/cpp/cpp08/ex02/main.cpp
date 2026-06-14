@@ -1,4 +1,4 @@
-#include "easyfind.hpp"
+#include "MutantStack.hpp"
 #include <iostream>
 #include <vector>
 #include <list>
@@ -6,53 +6,34 @@
 
 int main()
 {
-	std::cout << "CREATING CONTAINERS OF INTS\n";
-	std::vector<int> v;
-	for (int i = 0; i < 100; i++)
-		v.push_back(i);
-	std::list<int> l;
-	for (int i = 0; i < 100; i++)
-		l.push_back(i);
-	std::deque<int> d;
-	for (int i = 0; i < 100; i++)
-		d.push_back(i);
+	MutantStack<int>	mstack;
 
-	std::cout << "TESTS\n";
+	mstack.push(5);
+	mstack.push(17);
 
-	std::cout << "Vectors\n";
-	try
-	{
-		std::cout << *easyfind(v, 0) << "\n";
-		std::cout << *easyfind(v, 42) << "\n";
-		std::cout << *easyfind(v, 100) << "\n";
-	}
-	catch (std::exception &e)
-	{
-		std::cout << e.what() << "\n";
-	}
-	std::cout << "Lists\n";
-	try
-	{
-		std::cout << *easyfind(l, 0) << "\n";
-		std::cout << *easyfind(l, 42) << "\n";
-		std::cout << *easyfind(l, 100) << "\n";
-	}
-	catch (std::exception &e)
-	{
-		std::cout << e.what() << "\n";
-	}
+	std::cout << mstack.top() << std::endl;
 
-	std::cout << "Deques\n";
-	try
-	{
-		std::cout << *easyfind(d, 0) << "\n";
-		std::cout << *easyfind(d, 42) << "\n";
-		std::cout << *easyfind(d, 100) << "\n";
-	}
-	catch (std::exception &e)
-	{
-		std::cout << e.what() << "\n";
-	}
+	mstack.pop();
 
-	return (0);
+	std::cout << mstack.size() << std::endl;
+
+	mstack.push(3);
+	mstack.push(5);
+	mstack.push(737);
+	mstack.push(23424242);
+	mstack.push(743237);
+	mstack.push(0);
+
+	MutantStack<int>::iterator it = mstack.begin();
+	MutantStack<int>::iterator ite = mstack.end();
+	++it;
+	--it;
+
+	while (it != ite)
+	{
+		std::cout << *it << std::endl;
+		it++;
+	}
+	std::stack<int> s(mstack);
+	return 0;
 }
