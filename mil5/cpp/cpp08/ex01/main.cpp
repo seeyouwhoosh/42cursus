@@ -1,6 +1,7 @@
 #include "Span.hpp"
 #include <iostream>
 #include <algorithm>
+#include <climits>
 
 int main()
 {
@@ -13,17 +14,26 @@ int main()
 	std::cout << sp.shortestSpan() << std::endl;
 	std::cout << sp.longestSpan() << std::endl; */
 
-	Span sp(100);
+	Span			sp(100);
+	int	n;
+	int	max = 0;
+	int	min = INT_MAX;
 
-	for (size_t i = 0; i < 100; i++)
+	for (size_t i = 0; i < 99; i++)
 	{
-		unsigned int n = std::rand();
+		n = std::rand();
+		max = n > max ? n : max;
+		min = min > n ? n : min;
 		sp.addNumber(n);
 		std::cout << n << "\n";
 	}
+	sp.addNumber(n);
+	std::cout << n << "\n";
 	std::cout << "----------------------------------------\n";
 
 	std::cout << sp.shortestSpan() << std::endl;
+	
+	std::cout << max << " - " << min << " = " << max - min << std::endl;
 	std::cout << sp.longestSpan() << std::endl;
 	
 	return (0);
