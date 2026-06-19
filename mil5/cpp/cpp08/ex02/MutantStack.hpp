@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   MutantStack.hpp                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/06/19 15:49:46 by xwu               #+#    #+#             */
+/*   Updated: 2026/06/19 15:49:46 by xwu              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #pragma once
 #include <stack>
 #include <deque>
@@ -10,16 +22,12 @@ private:
 
 public:
 	typedef typename std::stack<T>::container_type::iterator iterator;
-	typedef typename std::stack<T>::container_type::const_iterator const_iterator;
+	typedef typename std::stack<T>::container_type::reverse_iterator reverse_iterator;
 
-	iterator		begin();
-	iterator		end();
-	iterator		rbegin();
-	iterator		rend();
-	const_iterator	cbegin();
-	const_iterator	cend();
-	const_iterator	crbegin();
-	const_iterator	crend();
+	iterator				begin();
+	iterator				end();
+	reverse_iterator		rbegin();
+	reverse_iterator		rend();
 };
 
 #include "MutantStack.tpp"

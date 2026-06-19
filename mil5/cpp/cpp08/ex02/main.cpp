@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/06/19 15:49:39 by xwu               #+#    #+#             */
+/*   Updated: 2026/06/19 15:49:39 by xwu              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "MutantStack.hpp"
 #include <iostream>
 #include <vector>
@@ -20,7 +32,8 @@ int main()
 
 	std::cout << "Size: " << mstack.size() << std::endl;
 
-	std::cout << "ITERATOR\n";
+	std::cout << "ITERATOR TEST\n";
+
 	mstack.push(3);
 	mstack.push(5);
 	mstack.push(737);
@@ -40,13 +53,21 @@ int main()
 	std::cout << "Decrement: " << *it << "\n";
 
 	std::cout << "Printing all numbers" << "\n";
+	ite++;
 	while (it != ite)
 	{
 		std::cout << *it << std::endl;
 		it++;
 	}
 
+	std::cout << "Begin: " << *mstack.begin() << "\n";
+	std::cout << "End: " << *--mstack.end() << "\n";
+	std::cout << "Rbegin: " << *mstack.rbegin() << "\n";
+	std::cout << "Rend: " << *--mstack.rend() << "\n";
+
 	std::stack<int> s(mstack);
+	std::cout << s.top();
+
 	return 0;
 } 
 	

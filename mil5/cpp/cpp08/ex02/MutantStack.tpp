@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   MutantStack.tpp                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/06/19 15:49:42 by xwu               #+#    #+#             */
+/*   Updated: 2026/06/19 15:49:42 by xwu              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "MutantStack.hpp"
 
 template <typename T>
@@ -13,37 +25,13 @@ typename MutantStack<T>::iterator	MutantStack<T>::end()
 }
 
 template <typename T>
-typename MutantStack<T>::iterator	MutantStack<T>::rbegin()
+typename MutantStack<T>::reverse_iterator	MutantStack<T>::rbegin()
 {
 	return this->c.rbegin();
 }
 
 template <typename T>
-typename MutantStack<T>::iterator	MutantStack<T>::rend()
+typename MutantStack<T>::reverse_iterator	MutantStack<T>::rend()
 {
 	return this->c.rend();
-}
-
-template <typename T>
-typename MutantStack<T>::const_iterator	MutantStack<T>::cbegin()
-{
-	return this->c.cbegin();
-}
-
-template <typename T>
-typename MutantStack<T>::const_iterator	MutantStack<T>::cend()
-{
-	return this->c.cend();
-}
-
-template <typename T>
-typename MutantStack<T>::const_iterator	MutantStack<T>::crbegin()
-{
-	return this->c.crbegin();
-}
-
-template <typename T>
-typename MutantStack<T>::const_iterator	MutantStack<T>::crend()
-{
-	return this->c.crend();
 }
