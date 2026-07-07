@@ -8,7 +8,7 @@ GREEN		= \033[0;32m
 NC			= \033[0m
 
 # Compiler
-NAME		= mtack
+NAME		= mstack
 CC			= c++
 CFLAGS		= -Wall -Werror -Wextra -std=c++98
 RM			= rm -rf
@@ -36,6 +36,7 @@ clean:
 	@echo "$(BBLUE)$(NAME)$(NC): Objects cleaned"
 
 fclean: clean
+	@$(RM) $(NAME)
 	@echo "$(BBLUE)$(NAME)$(NC): Fully cleaned"
 
 re: fclean all

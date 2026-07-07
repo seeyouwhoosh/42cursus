@@ -36,6 +36,7 @@ clean:
 	@echo "$(BBLUE)$(NAME)$(NC): Objects cleaned"
 
 fclean: clean
+	@$(RM) $(NAME)
 	@echo "$(BBLUE)$(NAME)$(NC): Fully cleaned"
 
 re: fclean all

@@ -16,7 +16,7 @@
 #include <list>
 #include <deque>
 
-//*
+/*
 int main()
 {
 	MutantStack<int>	mstack;
@@ -65,9 +65,9 @@ int main()
 	std::cout << "Rbegin: " << *mstack.rbegin() << "\n";
 	std::cout << "Rend: " << *--mstack.rend() << "\n";
 
+	std::cout << "COPY CONSTRUCTOR TEST\n";
 	std::stack<int> s(mstack);
 	std::cout << s.top();
-
 	return 0;
 } 
 	
@@ -114,8 +114,10 @@ int main()
 		it++;
 	}
 
+	std::cout << "COPY CONSTRUCTOR TEST\n";
 	std::list<int> s(mstack);
+	std::cout << s.back();
 	return 0;
 }
 
-/*/
+//*/
