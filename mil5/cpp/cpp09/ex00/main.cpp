@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 10:22:40 by xwu               #+#    #+#             */
-/*   Updated: 2026/07/08 14:07:13 by xwu              ###   ########.fr       */
+/*   Updated: 2026/07/09 12:17:56 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ int	main(int ac, char **av)
 		exchange_rates[date] = rate;
 	}
 	
+	std::cout << "Date		 | Aprox. date	 | Value	 | Rate		 | End value		\n";
+	std::cout << "-----------------------------------------------------------------------------\n";
 	while (std::getline(input, line))
 	{
 		float	value = std::atof(line.substr(line.find('|') + 1, std::string::npos).c_str());
@@ -89,7 +91,7 @@ int	main(int ac, char **av)
 		short	leap_year = 0;
 
 		n = std::atol(line.substr(0, sep_pos).c_str());
-		if (n < 0 || n > INT32_MAX)
+		if (n < 0 || n > RAND_MAX)
 		{
 			std::cerr << "Error: invalid year\n";
 			continue;
@@ -97,8 +99,8 @@ int	main(int ac, char **av)
 		if (!(n % 4) || !(n % 4 || n % 100))
 			leap_year = 1;
 		
-		sep_pos = line.find('-', sep_pos + 1);
-		m = std::atol(line.substr(sep_pos, line.find('-', sep_pos + 1) - sep_pos).c_str());
+		
+		m = std::atol(line.substr(sep_pos + 1, line.find('-', sep_pos + 1) - sep_pos).c_str());
 		if (m < 0 || m > 12)
 		{
 			std::cerr << "Error: invalid month\n";
@@ -107,14 +109,32 @@ int	main(int ac, char **av)
 		
 		sep_pos = line.find('-', sep_pos + 1);
 		n = std::atol(line.substr(sep_pos, line.find('-', sep_pos + 1) - sep_pos).c_str());
-		if (0 < n || (n > 31 && ((m % 2 && m < 6) || (!(m % 2) && m > 5))) || (n > 30 && (!(m % 2 && m < 6) || ((m % 2) && m > 5))) || (m == 2 && (n > 29 && leap_year || n > 28 && !leap_year)))
+		
+		if (0 < n || 
+			(n > 31 && ((m % 2 && m < 6) || (!(m % 2) && m > 5))) ||
+			(n > 30 && (!(m % 2 && m < 6) || ((m % 2) && m > 5))) ||
+			(m == 2 && ((n > 29 && leap_year) || (n > 28 && !leap_year))))
 		{
 			std::cerr << "Error: invalid day\n";
 			continue;
 		}
+		
+		/* **************************************** */
+		
+		std::map<std::string, float>::iterator	expected_date = exchange_rates.upper_bound(date);
 
-		*exchange_rates.upper_bound(date) * value;
-
+		std::cout << date << "	";
+		std::cout << " | ";
+		if (date != expected_date->first)
+			std::cout << expected_date->first << "	";
+		else
+			std::cout << " No			";
+		std::cout << " | ";
+		std::cout << expected_date->second << "		";
+		std::cout << " | ";
+		std::cout << value << "		";
+		std::cout << " | ";
+		std::cout << expected_date->second * value << "\n";
 
 	}
 }
