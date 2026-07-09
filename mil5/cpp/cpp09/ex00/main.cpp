@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 10:22:40 by xwu               #+#    #+#             */
-/*   Updated: 2026/07/09 12:17:56 by xwu              ###   ########.fr       */
+/*   Updated: 2026/07/09 12:23:30 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ int	main(int ac, char **av)
 		}
 		
 		/* **************************************** */
-		
+		// NOTA: falta por poner el igual, es decir, cuando la fecha es igual, se debería coger la exacta. Also, no está funcionando el checking del mes
 		std::map<std::string, float>::iterator	expected_date = exchange_rates.upper_bound(date);
 
 		std::cout << date << "	";
