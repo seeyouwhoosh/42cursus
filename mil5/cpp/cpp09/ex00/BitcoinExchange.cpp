@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 10:22:36 by xwu               #+#    #+#             */
-/*   Updated: 2026/07/10 13:16:26 by xwu              ###   ########.fr       */
+/*   Updated: 2026/07/11 01:04:58 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,12 @@ int	BitcoinExchange::process_value(std::string line, float *val_ptr)
 	value = std::strtod(line.substr(line.find('|') + 1, std::string::npos).c_str(), &remainder);
 	if (*remainder != '\n' && *remainder != '\0')
 	{
-		std::cerr << "Error: incorrect format\n";
+		std::cerr << "Error: incorrect format => \"" << line << "\"\n";
 		return 1;
 	}
 	if (value > 1000 || value < 0)
 	{
-		std::cerr << "Error: value must be between 0 and 1000\n";
+		std::cerr << "Error: value must be between 0 and 1000 => " << value << "\n";
 		return 1;
 	}
 	*val_ptr = value;
@@ -129,18 +129,18 @@ int	BitcoinExchange::process_date(std::string line, std::string *date_ptr,
 	int long_months[] = {1, 3, 5, 7, 8, 10, 12};
 
 	date = line.substr(0, line.find(" |"));
-	sep_pos = line.find('-');
-	if (std::count(line.begin(), line.end(), '-') > 2 ||
-		!ft_all_of(line.begin(), line.begin() + sep_pos, is_date, 0))
+	sep_pos = date.find('-');
+	if (std::count(date.begin(), date.end(), '-') > 2 ||
+		!ft_all_of(date.begin(), date.end(), is_date, 0))
 	{
-		std::cerr << "Error: incorrect format" << "\n";
+		std::cerr << "Error: incorrect format => \"" << date << "\"\n";
 		return 1;
 	}
 
 	y = std::atol(line.substr(0, sep_pos).c_str());
 	if (y < 0 || y > RAND_MAX)
 	{
-		std::cerr << "Error: invalid year\n";
+		std::cerr << "Error: invalid year => " << date << "\n";
 		return 1;
 	}
 	if (!(y % 4) || !(y % 4 || y % 100))
@@ -149,7 +149,7 @@ int	BitcoinExchange::process_date(std::string line, std::string *date_ptr,
 	m = std::atol(line.substr(sep_pos + 1, line.find('-', sep_pos + 1) - sep_pos).c_str());
 	if (m < 0 || m > 12)
 	{
-		std::cerr << "Error: invalid month\n";
+		std::cerr << "Error: invalid month => " << date << "\n";
 		return 1;
 	}
 
@@ -160,13 +160,20 @@ int	BitcoinExchange::process_date(std::string line, std::string *date_ptr,
 		(d > 30 && !ft_any_of(long_months, long_months + 7, is_that_month, m)) ||
 		(m == 2 && ((d > 29 && leap_year) || (d > 28 && !leap_year))))
 	{
-		std::cerr << "Error: invalid day\n";
+		std::cerr << "Error: invalid day => " << date << "\n";
 		return 1;
 	}
 
 	*date_ptr = date;
-	if (exchange_rates.find(date) == exchange_rates.end() && exchange_rates.end()->first != date) 
+	if (exchange_rates.find(date) == exchange_rates.end())
+	{
+		if (exchange_rates.lower_bound(date) == exchange_rates.end())
+		{
+			std::cerr << "Error: too big of a date => " << date << "\n";
+			return 1;
+		}
 		*aprox_date = exchange_rates.lower_bound(date);
+	} 
 	else
 		*aprox_date = exchange_rates.find(date);
 	return 0;
