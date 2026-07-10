@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 10:22:36 by xwu               #+#    #+#             */
-/*   Updated: 2026/07/11 01:04:58 by xwu              ###   ########.fr       */
+/*   Updated: 2026/07/11 01:07:28 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,29 +185,28 @@ static void	print_header()
 	std::cout << " | ";
 	std::cout << std::setw(10) << "Aprox_date";
 	std::cout << " | ";
-	std::cout.precision(2);
-	std::cout << std::setw(5) << "Value";
+	std::cout << std::setw(7) << "Value";
 	std::cout << " | ";
-	std::cout << std::setw(5) << "Rate";
+	std::cout << std::setw(7) << "Rate";
 	std::cout << " | ";
-	std::cout << std::setw(5) << "End value";
+	std::cout << std::setw(7) << "End value";
 	std::cout << "\n";
-	std::cout << "----------------------------------------------------\n";
+	std::cout << "--------------------------------------------------------\n";
 }
 
 static void	print_row(std::string date, float value,
 						std::map<std::string, float>::iterator aprox_date)
 {
+	std::cout.precision(4);
 	std::cout << std::setw(10) << date;
 	std::cout << " | ";
 	std::cout << std::setw(10) << aprox_date->first;
 	std::cout << " | ";
-	std::cout.precision(2);
-	std::cout << std::setw(5) << value;
+	std::cout << std::setw(7) << value;
 	std::cout << " | ";
-	std::cout << std::setw(5) << aprox_date->second;
+	std::cout << std::setw(7) << aprox_date->second;
 	std::cout << " | ";
-	std::cout << std::setw(5) << aprox_date->second * value;
+	std::cout << std::setw(7) << aprox_date->second * value;
 	std::cout << "\n";
 }
 
