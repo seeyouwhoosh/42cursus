@@ -6,16 +6,28 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 10:22:36 by xwu               #+#    #+#             */
-/*   Updated: 2026/07/10 01:43:42 by xwu              ###   ########.fr       */
+/*   Updated: 2026/07/10 13:16:26 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "BitcoinExchange.hpp"
+#include <iterator>
+#include <iomanip>
 
 BitcoinExchange::BitcoinExchange() {}
-BitcoinExchange::BitcoinExchange(BitcoinExchange &other) {}
+
+BitcoinExchange::BitcoinExchange(BitcoinExchange &other)
+{
+	(void)other;
+}
+
 BitcoinExchange::~BitcoinExchange() {}
-BitcoinExchange	&BitcoinExchange::operator=(const BitcoinExchange &other){}
+
+BitcoinExchange	&BitcoinExchange::operator=(const BitcoinExchange &other)
+{
+	(void)other;
+	return *this;
+}
 
 int	BitcoinExchange::load_data()
 {
@@ -41,23 +53,24 @@ int	BitcoinExchange::load_data()
 	return 0;
 }
 
-std::fstream	&BitcoinExchange::load_input(char *input_file)
+int	BitcoinExchange::load_input(char *input_file)
 {
 	input.open(input_file);
 	if (!input)
 	{
 		std::cout << "Error: bad input file\n";
-		return ;
+		return 1;
 	}
+	return 0;
 }
 
 int	BitcoinExchange::process_value(std::string line, float *val_ptr)
 {
 	float	value;
-	char	**remainder;
+	char	*remainder;
 
-	value = std::strtod(line.substr(line.find('|') + 1, std::string::npos).c_str(), remainder);
-	if (**remainder != '\n' || **remainder != '\0')
+	value = std::strtod(line.substr(line.find('|') + 1, std::string::npos).c_str(), &remainder);
+	if (*remainder != '\n' && *remainder != '\0')
 	{
 		std::cerr << "Error: incorrect format\n";
 		return 1;
@@ -71,59 +84,133 @@ int	BitcoinExchange::process_value(std::string line, float *val_ptr)
 	return 0;
 }
 
-int	BitcoinExchange::process_date(std::string line, std::string *date_ptr, std::map<std::string, float>::iterator *aprox_date)
+template<class InputIterator>
+bool ft_all_of(InputIterator first, InputIterator last, bool (*func)(int, int), const int &param)
+{
+	while (first != last)
+	{
+		if (!func(*first, param))
+			return false;
+		++first;
+	}
+	return true;
+}
+
+template<class InputIterator>
+bool ft_any_of(InputIterator first, InputIterator last, bool (*func)(int, int), const int &param)
+{
+	while (first != last)
+	{
+		if (func(*first, param))
+			return true;
+		++first;
+	}
+	return false;
+}
+
+bool	is_date(int c, int n)
+{
+	(void)n;
+	return (std::isdigit(c) || c == '-');
+}
+
+bool	is_that_month(int c, int n)
+{
+	return c == n;
+}
+
+int	BitcoinExchange::process_date(std::string line, std::string *date_ptr,
+									std::map<std::string, float>::iterator *aprox_date)
 {
 	std::string	date;
-	size_t	sep_pos;
+	size_t		sep_pos;
+	long		y, m, d;
+	short		leap_year = 0;
+	int long_months[] = {1, 3, 5, 7, 8, 10, 12};
 
 	date = line.substr(0, line.find(" |"));
-	if (std::count(line.begin(), line.end(), '-') > 2)
+	sep_pos = line.find('-');
+	if (std::count(line.begin(), line.end(), '-') > 2 ||
+		!ft_all_of(line.begin(), line.begin() + sep_pos, is_date, 0))
 	{
-		std::cerr << "Error: incorrect format:" << date << "\n";
+		std::cerr << "Error: incorrect format" << "\n";
 		return 1;
 	}
 
-	sep_pos = line.find('-');
-	long	n;
-	long	m;
-	short	leap_year = 0;
-
-	n = std::atol(line.substr(0, sep_pos).c_str());
-	if (n < 0 || n > RAND_MAX)
+	y = std::atol(line.substr(0, sep_pos).c_str());
+	if (y < 0 || y > RAND_MAX)
 	{
 		std::cerr << "Error: invalid year\n";
 		return 1;
 	}
-	if (!(n % 4) || !(n % 4 || n % 100))
+	if (!(y % 4) || !(y % 4 || y % 100))
 		leap_year = 1;
-	
-	
+
 	m = std::atol(line.substr(sep_pos + 1, line.find('-', sep_pos + 1) - sep_pos).c_str());
 	if (m < 0 || m > 12)
 	{
 		std::cerr << "Error: invalid month\n";
-		continue;
+		return 1;
 	}
-	
+
 	sep_pos = line.find('-', sep_pos + 1);
-	n = std::atol(line.substr(sep_pos, line.find('-', sep_pos + 1) - sep_pos).c_str());
-	
-	if (0 < n || 
-		(n > 31 && ((m % 2 && m < 6) || (!(m % 2) && m > 5))) ||
-		(n > 30 && (!(m % 2 && m < 6) || ((m % 2) && m > 5))) ||
-		(m == 2 && ((n > 29 && leap_year) || (n > 28 && !leap_year))))
+	d = std::atol(line.substr(sep_pos + 1, line.find('-', sep_pos + 1) - sep_pos).c_str());
+	if (d < 0 || 
+		(d > 31 && ft_any_of(long_months, long_months + 7, is_that_month, m)) ||
+		(d > 30 && !ft_any_of(long_months, long_months + 7, is_that_month, m)) ||
+		(m == 2 && ((d > 29 && leap_year) || (d > 28 && !leap_year))))
 	{
 		std::cerr << "Error: invalid day\n";
-		continue;
+		return 1;
 	}
+
+	*date_ptr = date;
+	if (exchange_rates.find(date) == exchange_rates.end() && exchange_rates.end()->first != date) 
+		*aprox_date = exchange_rates.lower_bound(date);
+	else
+		*aprox_date = exchange_rates.find(date);
+	return 0;
+}
+
+static void	print_header()
+{
+	std::cout << std::setw(10) << "Date";
+	std::cout << " | ";
+	std::cout << std::setw(10) << "Aprox_date";
+	std::cout << " | ";
+	std::cout.precision(2);
+	std::cout << std::setw(5) << "Value";
+	std::cout << " | ";
+	std::cout << std::setw(5) << "Rate";
+	std::cout << " | ";
+	std::cout << std::setw(5) << "End value";
+	std::cout << "\n";
+	std::cout << "----------------------------------------------------\n";
+}
+
+static void	print_row(std::string date, float value,
+						std::map<std::string, float>::iterator aprox_date)
+{
+	std::cout << std::setw(10) << date;
+	std::cout << " | ";
+	std::cout << std::setw(10) << aprox_date->first;
+	std::cout << " | ";
+	std::cout.precision(2);
+	std::cout << std::setw(5) << value;
+	std::cout << " | ";
+	std::cout << std::setw(5) << aprox_date->second;
+	std::cout << " | ";
+	std::cout << std::setw(5) << aprox_date->second * value;
+	std::cout << "\n";
 }
 
 void	BitcoinExchange::exchange(char *input_file)
 {
-	std::string	line;
-	std::string	date;
-	float		value;
-	
+	std::string								line;
+	std::string								date;
+	float									value;
+	std::map<std::string, float>::iterator	aprox_date;
+
 	if (load_data())
 		return;
 	if (load_input(input_file))
@@ -134,26 +221,27 @@ void	BitcoinExchange::exchange(char *input_file)
 	{
 		if (process_value(line, &value))
 			continue;
-		if (process_date(line, &date))
+		if (process_date(line, &date, &aprox_date))
 			continue;
-
-			
-		
-		// NOTA: falta por poner el igual, es decir, cuando la fecha es igual, se debería coger la exacta. Also, no está funcionando el checking del mes
-		std::map<std::string, float>::iterator	expected_date = exchange_rates.lower_bound(date);
-
-		std::cout << date << "	";
-		std::cout << " | ";
-		if (date != expected_date->first)
-			std::cout << expected_date->first << "	";
-		else
-			std::cout << " No			";
-		std::cout << " | ";
-		std::cout << expected_date->second << "		";
-		std::cout << " | ";
-		std::cout << value << "		";
-		std::cout << " | ";
-		std::cout << expected_date->second * value << "\n";
-
+		print_row(date, value, aprox_date);
 	}
 }
+
+/*
+Error: incorrect format
+Error: value must be between 0 and 1000
+2010-08-30 | 2010-09-01 |  0.07 |  0.06 | 0.0042
+2010-08-31 | 2010-09-01 |  0.06 |  0.06 | 0.0036
+Error: invalid day
+Error: invalid day
+2010-02-28 | 2010-03-01 |  0.06 |     0 |     0
+Error: invalid day
+2010-09-14 | 2010-09-16 |  0.06 |  0.15 | 0.009
+2010-09-16 | 2010-09-16 |  0.15 |  0.15 | 0.023
+2010-09-19 | 2010-09-19 |  0.06 |  0.06 | 0.0036
+Error: incorrect format:2010
+Error: incorrect format
+Error: invalid month
+2010-10-01 | 2010-10-01 |  0.06 |  0.06 | 0.0036
+zsh: segmentation fault (core dumped)  ./btc input.txt
+*/
