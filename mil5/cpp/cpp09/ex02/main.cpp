@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 11:08:32 by xwu               #+#    #+#             */
-/*   Updated: 2026/07/07 11:25:37 by xwu              ###   ########.fr       */
+/*   Updated: 2026/07/11 18:06:02 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,3 +18,15 @@ Time to process a range of 5 elements with std::[..] : 0.00014 us
 
 containers: list vector
 */
+
+#include "PmergeMe.hpp"
+
+int	main(int ac, char **av)
+{
+	PmergeMe	p;
+
+	if (p.input_validation(av))
+		p.order_and_measure();
+	
+	return 0;
+}
