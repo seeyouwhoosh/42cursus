@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 11:10:00 by xwu               #+#    #+#             */
-/*   Updated: 2026/07/11 19:36:44 by xwu              ###   ########.fr       */
+/*   Updated: 2026/07/11 19:40:35 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ std::ostream &operator<<(std::ostream &os, std::vector<int> v)
 	while (it != v.end())
 	{
 		os << *it;
-		if (*(it + 1) != v.end())
+		if (it + 1 != v.end())
 			os << " ";
 		it++;
 	}
