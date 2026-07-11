@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 10:22:36 by xwu               #+#    #+#             */
-/*   Updated: 2026/07/11 01:07:28 by xwu              ###   ########.fr       */
+/*   Updated: 2026/07/11 11:05:20 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ bool	is_that_month(int c, int n)
 	return c == n;
 }
 
-int	BitcoinExchange::process_date(std::string line, std::string *date_ptr,
+int	BitcoinExchange::process_date(std::string line, std::string *date_ptr, 
 									std::map<std::string, float>::iterator *aprox_date)
 {
 	std::string	date;
@@ -232,22 +232,3 @@ void	BitcoinExchange::exchange(char *input_file)
 		print_row(date, value, aprox_date);
 	}
 }
-
-/*
-Error: incorrect format
-Error: value must be between 0 and 1000
-2010-08-30 | 2010-09-01 |  0.07 |  0.06 | 0.0042
-2010-08-31 | 2010-09-01 |  0.06 |  0.06 | 0.0036
-Error: invalid day
-Error: invalid day
-2010-02-28 | 2010-03-01 |  0.06 |     0 |     0
-Error: invalid day
-2010-09-14 | 2010-09-16 |  0.06 |  0.15 | 0.009
-2010-09-16 | 2010-09-16 |  0.15 |  0.15 | 0.023
-2010-09-19 | 2010-09-19 |  0.06 |  0.06 | 0.0036
-Error: incorrect format:2010
-Error: incorrect format
-Error: invalid month
-2010-10-01 | 2010-10-01 |  0.06 |  0.06 | 0.0036
-zsh: segmentation fault (core dumped)  ./btc input.txt
-*/
