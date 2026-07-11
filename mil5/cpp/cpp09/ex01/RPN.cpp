@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 10:56:17 by xwu               #+#    #+#             */
-/*   Updated: 2026/07/11 12:49:01 by xwu              ###   ########.fr       */
+/*   Updated: 2026/07/11 13:04:25 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,16 +74,30 @@ int	RPN::calculate(std::string expr)
 	std::string::iterator	c = expr.begin();
 	std::string				operators("+-/*");
 	int						result;
+	int						sign;
 
 	while (c != expr.end())
 	{
+		sign = 1;
 		if (*c == ' ')
 		{
 			++c;
 			continue;
 		}
+
+		if (*c == '-' && (c + 1 != expr.end() && std::isdigit(*(c + 1))))
+		{
+			sign = -1;
+			++c;
+		}
+		else if (c + 1 != expr.end() && *(c + 1) != ' ')
+		{
+			std::cerr << "Error: invalid token \"" << *c << *(c + 1)<< "\"\n";
+			return 1;
+		}
+
 		if (std::isdigit(*c))
-			s.push(*c - '0');
+			s.push((*c - '0') * sign);
 		else if (operators.find(*c) != std::string::npos)
 		{
 			try
