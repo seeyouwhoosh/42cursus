@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 11:10:03 by xwu               #+#    #+#             */
-/*   Updated: 2026/07/11 19:35:58 by xwu              ###   ########.fr       */
+/*   Updated: 2026/07/13 18:49:29 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 #include <vector>
 #include <list>
 #include <ctime>
+#include <cstdlib>
 #include <iostream>
+#define ABOBA 1
 
 class PmergeMe
 {
@@ -32,10 +34,9 @@ public:
 	PmergeMe &operator=(PmergeMe &other);
 	~PmergeMe();
 
-	int		input_validation(char **av);
+	int		input_validation(int ac, char **av);
 	void	order_and_measure();
 };
 
 std::ostream &operator<<(std::ostream &os, char **av);
 std::ostream &operator<<(std::ostream &os, std::vector<int> v);
-std::ostream &operator<<(std::ostream &os, std::list<int> l);

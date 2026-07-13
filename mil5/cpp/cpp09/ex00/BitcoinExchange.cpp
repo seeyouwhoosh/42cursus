@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 10:22:36 by xwu               #+#    #+#             */
-/*   Updated: 2026/07/11 11:05:20 by xwu              ###   ########.fr       */
+/*   Updated: 2026/07/13 17:54:21 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ int	BitcoinExchange::process_date(std::string line, std::string *date_ptr,
 
 	date = line.substr(0, line.find(" |"));
 	sep_pos = date.find('-');
-	if (std::count(date.begin(), date.end(), '-') > 2 ||
+	if (std::count(date.begin(), date.end(), '-') != 2 ||
 		!ft_all_of(date.begin(), date.end(), is_date, 0))
 	{
 		std::cerr << "Error: incorrect format => \"" << date << "\"\n";
