@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 11:10:00 by xwu               #+#    #+#             */
-/*   Updated: 2026/07/14 12:18:12 by xwu              ###   ########.fr       */
+/*   Updated: 2026/07/14 13:12:53 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,29 +31,29 @@ PmergeMe &PmergeMe::operator=(PmergeMe &other)
 
 /* VECTOR VERSION */
 
-void	PmergeMe::v_merge_insertion(std::vector<int> unordered)
+void	PmergeMe::v_merge_insertion(std::vector<int> &unordered)
 {
-	std::vector<int>	main;
-	std::vector<int>	sub;
-	std::pair<std::vector<int> *, std::vector<int> *>	p(&main, &sub);
+	std::vector<std::pair<int,int>>	pairs;
 
 	int	*odd = NULL;
 	if (this->size % 2)
-		odd = &*(this->v.end() - 1);
-	
+		odd = &*(unordered.end() - 1);
+
 	size_t	i = 0;
 	int	min, max;
 	while (i < this->size / 2)
 	{
-		main.push_back(std::max(this->v[i], this->v[i + 1]));
-		sub.push_back(std::min(this->v[i], this->v[i + 1]));
+		min = std::min(unordered[i], unordered[i + 1]);
+		max = std::max(unordered[i], unordered[i + 1]);
+		pairs.push_back(std::make_pair(max, min));
 		i += 2;;
 	}
 
-	PmergeMe::v_merge_insertion(main);
-
-	
-	;
+	PmergeMe::v_merge_insertion(pairs);
+	/*
+	crear operadores para comparar pairs
+	mirar qué es realmente el Jacobsthal
+	*/
 }
 
 /* LIST VERSION */
