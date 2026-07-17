@@ -28,7 +28,8 @@ private:
 	std::list<int>		l;
 	size_t				size;
 
-	void	v_merge_insertion(std::vector<int> unordered);
+	void	swap_groups(size_t step, std::vector<int>::iterator &a, std::vector<int>::iterator &b);
+	void	v_merge_insertion(size_t len, size_t n);
 	void	l_merge_insertion();
 public:
 	PmergeMe();

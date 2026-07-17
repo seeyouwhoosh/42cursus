@@ -31,25 +31,44 @@ PmergeMe &PmergeMe::operator=(PmergeMe &other)
 
 /* VECTOR VERSION */
 
-void	PmergeMe::v_merge_insertion(std::vector<int> &unordered)
+
+// No funciona
+void	PmergeMe::swap_groups(size_t step, std::vector<int>::iterator &a, std::vector<int>::iterator &b)
 {
-	std::vector<std::pair<int,int>>	pairs;
+	int	temp;
 
-	int	*odd = NULL;
-	if (this->size % 2)
-		odd = &*(unordered.end() - 1);
-
-	size_t	i = 0;
-	int	min, max;
-	while (i < this->size / 2)
+	while (step > 0)
 	{
-		min = std::min(unordered[i], unordered[i + 1]);
-		max = std::max(unordered[i], unordered[i + 1]);
-		pairs.push_back(std::make_pair(max, min));
-		i += 2;;
+		temp = *a;
+		*a = *b;
+		*b = temp;
+		a--;
+		b--;
+		step--;
 	}
+}
 
-	PmergeMe::v_merge_insertion(pairs);
+void	PmergeMe::v_merge_insertion(size_t len, size_t n)
+{
+	size_t	step = 2 * n;
+	std::vector<int>::iterator	odd;
+
+	if (!(len % 2))
+		odd = v.end() - 1;
+	(void)step;
+	std::vector<int>::iterator	group_1;
+	std::vector<int>::iterator	group_2;
+	for (size_t i = n - 1; i <= (len / 2); i += step)
+	{
+		group_1 = v.begin() + i;
+		group_2 = v.begin() + i + n;
+		std::cout << *group_1 << " " << *group_2 << "\n";
+/* 		if (*group_1 > *group_2)
+			swap_groups(step, group_1, group_2);
+ */	}
+
+	//PmergeMe::v_merge_insertion(this->size / step, step);
+
 	/*
 	crear operadores para comparar pairs
 	mirar qué es realmente el Jacobsthal
@@ -68,7 +87,7 @@ void	PmergeMe::l_merge_insertion()
 template<class InputIterator, class T>
 InputIterator find(InputIterator first, InputIterator last, const T& val)
 {
-	while (first!=last
+	while (first!=last)
 	{
 		if (*first==val)
 			return first;
@@ -110,7 +129,9 @@ int	PmergeMe::input_validation(int ac, char **av)
 			}
 			try
 			{
-				unordered.push_back(std::atol(av[i]));
+				this->unordered.push_back(std::atol(av[i]));
+				this->v.push_back(std::atol(av[i]));
+				this->l.push_back(std::atol(av[i]));
 			}
 			catch(const std::exception& e)
 			{
@@ -137,7 +158,7 @@ void	PmergeMe::order_and_measure()
 	clock_t	l_finish;
 
 	v_start = clock();
-	v_merge_insertion();
+	v_merge_insertion(this->size, 2);
 	v_finish = clock();
 	l_start = clock();
 	l_merge_insertion();
