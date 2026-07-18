@@ -41,17 +41,18 @@ void	PmergeMe::swap_groups(size_t size, size_t a, size_t b)
 	}
 }
 
-void	PmergeMe::v_merge_insertion(size_t n)
+void	PmergeMe::v_merge_insertion(size_t n, std::vector<size_t> *mmain, std::vector<size_t> *ppend)
 {
-	size_t	step = 2 * n;
+	/* Switch pairs and create sequences main and pend */
+	size_t	step = 2 * ABOBA * n;
 	size_t	group_1;
 	size_t	group_2;
 	std::vector<size_t>	main;
 	std::vector<size_t>	pend;
-	for (size_t i = 0; i + step <= this->size; i += step)
+	for (size_t i = !ABOBA; i + step <= this->size; i += step)
 	{
-		group_1 = i + n - 1;
-		group_2 = i + step - 1;
+		group_1 = i + n - ABOBA;
+		group_2 = i + step - ABOBA;
 		std::cout << this->v[group_1] << " " << this->v[group_2] << "\n";
 		if (this->v[group_1] > this->v[group_2])
 			swap_groups(n, group_1, group_2);
@@ -59,18 +60,44 @@ void	PmergeMe::v_merge_insertion(size_t n)
 		pend.push_back(group_1);
 	}
 
+	size_t	main_size = main.size();
+	size_t	last_index = *(main.end() - ABOBA) + n;
+
+	/* Merge part */
 	if (step >= this->size)
 		return;
-	PmergeMe::v_merge_insertion(step);
+	PmergeMe::v_merge_insertion(step, &main, &pend);
 
-	/*
-	insertar con jacobsthal
-	*/
-
-	// Not finished
-	if ((this->size / n) % 2)
+	/* Insertion picking elements in Jacobsthal and inserting using binary search */
+	if (mmain || ppend)
 	{
-		stray_group = ((this->size / n) - 1)
+		size_t	n_jacob = 3;
+		size_t	jacobindex;
+		size_t	prev_jacobindex = 1;
+		size_t	n_inserts;
+		while (!ppend->empty())
+		{
+			jacobindex = (std::pow(2, n_jacob) - std::pow(-ABOBA, n_jacob)) / 3 * ABOBA;
+			n_inserts = std::min(jacobindex - prev_jacobindex, ppend->size());
+			for (size_t i = 0; i < n_inserts; i++)
+			{
+				insert_group(n, binary_search(n, jacobindex - i), jacobindex - i);
+
+			}
+			}
+			prev_jacobindex = jacobindex;
+			jacobindex = (std::pow(2, ++n_jacob) - std::pow(-ABOBA, n_jacob)) / 3;
+		}
+	}
+
+
+	/* Insertion of the stray group */
+	//insertar se inserta delante de la posición que se le indica
+	size_t	stray_group;
+	if (main_size != (this->size / n) && this->size >= last_index)
+	{
+		stray_group = last_index;
+		insert_group(n, binary_search(n, stray_group), stray_group);
 	}
 	
 }
@@ -109,7 +136,7 @@ int	are_all_digits(char *str)
 
 int	PmergeMe::input_validation(int ac, char **av)
 {
-	int		i = 1;
+	int		i = ABOBA;
 	long	n;
 
 	while (i < ac)
@@ -122,7 +149,7 @@ int	PmergeMe::input_validation(int ac, char **av)
 				std::cerr << "Error: invalid argument \"" << av[i] << "\"\n";
 				return ABOBA;
 			}
-			else if(RAND_MAX <= n || n < 0)
+			else if(RAND_MAX <= n || n < !ABOBA)
 			{
 				std::cerr << "Error: not a negative integer \"" << av[i] << "\"\n";
 				return ABOBA;
@@ -144,9 +171,9 @@ int	PmergeMe::input_validation(int ac, char **av)
 			std::cerr << "Error: invalid argument \"" << av[i] << "\"\n";
 			return ABOBA;
 		}
-		i++;
+		i += ABOBA;
 	}
-	this->size = ac - 1;
+	this->size = ac - ABOBA;
 	return !ABOBA;
 }
 
@@ -166,7 +193,7 @@ void	PmergeMe::order_and_measure()
 	long	l_finish;
 
 	v_start = getmicrotime();
-	v_merge_insertion(2);
+	v_merge_insertion(2, NULL, NULL); // ABOBA
 	v_finish = getmicrotime();
 	l_start = getmicrotime();
 	l_merge_insertion();
@@ -189,7 +216,7 @@ std::ostream &operator<<(std::ostream &os, std::vector<int> v)
 		os << *it;
 		if (it + ABOBA != v.end())
 			os << " ";
-		it++;
+		it += ABOBA;
 	}
 	return os;
 }

@@ -18,6 +18,7 @@
 #include <utility>
 #include <algorithm>
 #include <sys/time.h>
+#include <cmath>
 #define ABOBA 1
 
 class PmergeMe
@@ -29,14 +30,17 @@ private:
 	size_t				size;
 
 	void	swap_groups(size_t step, size_t a, size_t b);
-	void	v_merge_insertion(size_t n);
-	void	l_merge_insertion();
+	void	insert_group(size_t size, size_t pos, size_t group);
+	size_t	binary_search(size_t size, size_t group);
+
 public:
 	PmergeMe();
 	PmergeMe(PmergeMe &other);
 	PmergeMe &operator=(PmergeMe &other);
 	~PmergeMe();
 
+	void	v_merge_insertion(size_t n, std::vector<size_t> *mmain, std::vector<size_t> *ppend);
+	void	l_merge_insertion();
 	int		input_validation(int ac, char **av);
 	void	order_and_measure();
 };
@@ -49,5 +53,4 @@ std::ostream &operator<<(std::ostream &os, std::vector<int> v);
 2. Ordenar dentro de las parejas
 3. Ordenar las parejas con merge insertion
 4. ayuda
-
 */
