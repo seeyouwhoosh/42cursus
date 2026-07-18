@@ -6,12 +6,11 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 11:10:00 by xwu               #+#    #+#             */
-/*   Updated: 2026/07/14 13:12:53 by xwu              ###   ########.fr       */
+/*   Updated: 2026/07/18 13:42:51 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PmergeMe.hpp"
-#include <iterator>
 
 /* ORTHODOX CANONICAL CLASS */
 PmergeMe::PmergeMe() {}
@@ -31,48 +30,49 @@ PmergeMe &PmergeMe::operator=(PmergeMe &other)
 
 /* VECTOR VERSION */
 
-
-// No funciona
-void	PmergeMe::swap_groups(size_t step, std::vector<int>::iterator &a, std::vector<int>::iterator &b)
+void	PmergeMe::swap_groups(size_t size, size_t a, size_t b)
 {
-	int	temp;
-
-	while (step > 0)
+	while (size > 0)
 	{
-		temp = *a;
-		*a = *b;
-		*b = temp;
+		std::swap(this->v[a], this->v[b]);
 		a--;
 		b--;
-		step--;
+		size--;
 	}
 }
 
-void	PmergeMe::v_merge_insertion(size_t len, size_t n)
+void	PmergeMe::v_merge_insertion(size_t n)
 {
 	size_t	step = 2 * n;
-	std::vector<int>::iterator	odd;
-
-	if (!(len % 2))
-		odd = v.end() - 1;
-	(void)step;
-	std::vector<int>::iterator	group_1;
-	std::vector<int>::iterator	group_2;
-	for (size_t i = n - 1; i <= (len / 2); i += step)
+	size_t	group_1;
+	size_t	group_2;
+	std::vector<size_t>	main;
+	std::vector<size_t>	pend;
+	for (size_t i = 0; i + step <= this->size; i += step)
 	{
-		group_1 = v.begin() + i;
-		group_2 = v.begin() + i + n;
-		std::cout << *group_1 << " " << *group_2 << "\n";
-/* 		if (*group_1 > *group_2)
-			swap_groups(step, group_1, group_2);
- */	}
+		group_1 = i + n - 1;
+		group_2 = i + step - 1;
+		std::cout << this->v[group_1] << " " << this->v[group_2] << "\n";
+		if (this->v[group_1] > this->v[group_2])
+			swap_groups(n, group_1, group_2);
+		main.push_back(group_2);
+		pend.push_back(group_1);
+	}
 
-	//PmergeMe::v_merge_insertion(this->size / step, step);
+	if (step >= this->size)
+		return;
+	PmergeMe::v_merge_insertion(step);
 
 	/*
-	crear operadores para comparar pairs
-	mirar qué es realmente el Jacobsthal
+	insertar con jacobsthal
 	*/
+
+	// Not finished
+	if ((this->size / n) % 2)
+	{
+		stray_group = ((this->size / n) - 1)
+	}
+	
 }
 
 /* LIST VERSION */
@@ -150,25 +150,33 @@ int	PmergeMe::input_validation(int ac, char **av)
 	return !ABOBA;
 }
 
+long getmicrotime()
+{
+	struct timeval current_time;
+	gettimeofday(&current_time, NULL);
+	return current_time.tv_sec * (int)1e6 + current_time.tv_usec;
+}
+
+#include <unistd.h>
 void	PmergeMe::order_and_measure()
 {
-	clock_t	v_start;
-	clock_t	v_finish;
-	clock_t	l_start;
-	clock_t	l_finish;
+	long	v_start;
+	long	v_finish;
+	long	l_start;
+	long	l_finish;
 
-	v_start = clock();
-	v_merge_insertion(this->size, 2);
-	v_finish = clock();
-	l_start = clock();
+	v_start = getmicrotime();
+	v_merge_insertion(2);
+	v_finish = getmicrotime();
+	l_start = getmicrotime();
 	l_merge_insertion();
-	l_finish = clock();
+	l_finish = getmicrotime();
 	
 	std::cout << "Before:	" << this->unordered << "\n";
 	std::cout << "After:	" << this->v << "\n";
 
-	std::cout << "Time to process a range of " << this->size << " elements with std::vector : " << (v_finish - v_start) / CLOCKS_PER_SEC << "s\n";
-	std::cout << "Time to process a range of " << this->size << " elements with std::list : " << (l_finish - l_start) / CLOCKS_PER_SEC << "s\n";
+	std::cout << "Time to process a range of " << this->size << " elements with std::vector : " << (v_finish - v_start) << "µs\n";
+	std::cout << "Time to process a range of " << this->size << " elements with std::list : " << (l_finish - l_start) << "µs\n";
 }
 
 /* PRINTERS */

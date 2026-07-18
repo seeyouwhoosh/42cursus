@@ -6,18 +6,18 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 11:10:03 by xwu               #+#    #+#             */
-/*   Updated: 2026/07/14 12:13:19 by xwu              ###   ########.fr       */
+/*   Updated: 2026/07/18 12:05:22 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 #include <vector>
 #include <list>
-#include <ctime>
 #include <cstdlib>
 #include <iostream>
 #include <utility>
 #include <algorithm>
+#include <sys/time.h>
 #define ABOBA 1
 
 class PmergeMe
@@ -28,8 +28,8 @@ private:
 	std::list<int>		l;
 	size_t				size;
 
-	void	swap_groups(size_t step, std::vector<int>::iterator &a, std::vector<int>::iterator &b);
-	void	v_merge_insertion(size_t len, size_t n);
+	void	swap_groups(size_t step, size_t a, size_t b);
+	void	v_merge_insertion(size_t n);
 	void	l_merge_insertion();
 public:
 	PmergeMe();
