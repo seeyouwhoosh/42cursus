@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 11:10:03 by xwu               #+#    #+#             */
-/*   Updated: 2026/07/18 12:05:22 by xwu              ###   ########.fr       */
+/*   Updated: 2026/07/19 17:46:16 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,13 @@ private:
 	std::list<int>		l;
 	size_t				size;
 
-	void	swap_groups(size_t step, size_t a, size_t b);
-	void	insert_group(size_t size, size_t pos, size_t group);
-	size_t	binary_search(size_t size, size_t group);
-
 public:
 	PmergeMe();
 	PmergeMe(PmergeMe &other);
 	PmergeMe &operator=(PmergeMe &other);
 	~PmergeMe();
 
-	void	v_merge_insertion(size_t n, std::vector<size_t> *mmain, std::vector<size_t> *ppend);
+	void	v_merge_insertion(std::vector<int> &v);
 	void	l_merge_insertion();
 	int		input_validation(int ac, char **av);
 	void	order_and_measure();
