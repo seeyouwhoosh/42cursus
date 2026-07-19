@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 11:10:00 by xwu               #+#    #+#             */
-/*   Updated: 2026/07/18 13:42:51 by xwu              ###   ########.fr       */
+/*   Updated: 2026/07/19 12:39:12 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,98 @@ void	PmergeMe::swap_groups(size_t size, size_t a, size_t b)
 	}
 }
 
+void	PmergeMe::swap_index(size_t group_1, size_t group_2, std::vector<int> &main, std::vector<int> &pend)
+{
+	std::swap(main[group_1], main[group_2]);
+	std::swap(pend[group_1], pend[group_2]);
+}
+
+void	PmergeMe::insert_element(std::vector<int>::iterator pos, size_t element, std::vector<int> &main, std::vector<int> &mmain, std::vector<int> &ppend)
+{
+	main.insert(pos, main[element]);
+	main.erase(main.begin() + element);
+	mmain.insert(pos, mmain[element]);
+	mmain.erase(mmain.begin() + element);
+	ppend.insert(pos, ppend[element]);
+	ppend.erase(mmain.begin() + element);
+}
+
+bool	is_zero(int n)
+{
+	return !n;
+}
+
+template<class InputIterator>
+bool ft_all_of(InputIterator first, InputIterator last, bool (*func)(int))
+{
+	while (first != last)
+	{
+		if (!func(*first))
+			return false;
+		++first;
+	}
+	return true;
+}
+
 void	PmergeMe::v_merge_insertion(size_t n, std::vector<size_t> *mmain, std::vector<size_t> *ppend)
 {
+	size_t	step = 2 * ABOBA * n;
+	std::vector<size_t>	main;
+	std::vector<size_t>	pend;
+	size_t	group_1;
+	size_t	group_2;
+
+	if (!mmain || !ppend)
+	{
+		*mmain = std::vector<int>;
+		*ppend = std::vector<int>;
+		for (size_t i = 0; i < this->size; i++)
+		{
+			mmain->push_back(i);
+			ppend->pop_back(0);
+		}
+	}
+	
+	for (size_t i = !ABOBA; i + ABOBA <= mmain->size(); i++)
+	{
+		size_t	index = (*mmain)[i];
+		group_1 = index;
+		group_2 = index + ABOBA;
+		std::cout << this->v[group_1] << " " << this->v[group_2] << "\n"; // DEBUG
+		if (this->v[group_1] > this->v[group_2])
+		{
+			swap_index(i, i + ABOBA, *mmain, *ppend);
+			main.push_back(group_1);
+			pend.push_back(group_2);
+		}
+		else
+		{
+			main.push_back(group_2);
+			pend.push_back(group_1);
+		}
+	}
+	
+	if (ft_all_of(ppend->begin(), ppend->end() - 1, is_zero))
+	{
+		size_t	n_jacob = 3;
+		size_t	jacobindex;
+		size_t	prev_jacobindex = 1;
+		size_t	n_inserts;
+		while (!ppend->empty())
+		{
+			jacobindex = (std::pow(2, n_jacob) - std::pow(-ABOBA, n_jacob)) / 3;
+			n_inserts = std::min(jacobindex - prev_jacobindex, ppend->size());
+			for (size_t i = 0; i < n_inserts; i++)
+			{
+				insert_element(binary_search(), jacobindex - i, main, *mmain, *ppend);
+			}
+			++n_jacob;
+			prev_jacobindex = jacobindex;
+			jacobindex = (std::pow(2, n_jacob) - std::pow(-ABOBA, n_jacob)) / 3;
+		}
+	}
+	
+	
 	/* Switch pairs and create sequences main and pend */
 	size_t	step = 2 * ABOBA * n;
 	size_t	group_1;
@@ -69,7 +159,7 @@ void	PmergeMe::v_merge_insertion(size_t n, std::vector<size_t> *mmain, std::vect
 	PmergeMe::v_merge_insertion(step, &main, &pend);
 
 	/* Insertion picking elements in Jacobsthal and inserting using binary search */
-	if (mmain || ppend)
+	if (ppend)
 	{
 		size_t	n_jacob = 3;
 		size_t	jacobindex;
@@ -84,7 +174,6 @@ void	PmergeMe::v_merge_insertion(size_t n, std::vector<size_t> *mmain, std::vect
 				insert_group(n, binary_search(n, jacobindex - i), jacobindex - i);
 
 			}
-			}
 			prev_jacobindex = jacobindex;
 			jacobindex = (std::pow(2, ++n_jacob) - std::pow(-ABOBA, n_jacob)) / 3;
 		}
@@ -94,7 +183,7 @@ void	PmergeMe::v_merge_insertion(size_t n, std::vector<size_t> *mmain, std::vect
 	/* Insertion of the stray group */
 	//insertar se inserta delante de la posición que se le indica
 	size_t	stray_group;
-	if (main_size != (this->size / n) && this->size >= last_index)
+	if (main_size != (this->size / n) && this->size - 1 >= last_index)
 	{
 		stray_group = last_index;
 		insert_group(n, binary_search(n, stray_group), stray_group);
