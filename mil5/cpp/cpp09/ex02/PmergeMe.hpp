@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 11:10:03 by xwu               #+#    #+#             */
-/*   Updated: 2026/07/19 17:46:16 by xwu              ###   ########.fr       */
+/*   Updated: 2026/07/21 01:24:13 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ public:
 	~PmergeMe();
 
 	void	v_merge_insertion(std::vector<int> &v);
-	void	l_merge_insertion();
+	void	l_merge_insertion(std::list<int> &l);
 	int		input_validation(int ac, char **av);
 	void	order_and_measure();
 };

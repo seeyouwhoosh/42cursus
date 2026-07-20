@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 11:10:00 by xwu               #+#    #+#             */
-/*   Updated: 2026/07/19 17:58:27 by xwu              ###   ########.fr       */
+/*   Updated: 2026/07/21 01:25:08 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,17 +43,15 @@ size_t get_jacobsthal(size_t n)
 template <class Iterator>
 Iterator	binary_search(Iterator first, Iterator last, int n)
 {
-	m = (last - first) / 2;
-	if (v[m] == n)
-		return v.begin() + m;
-	else if (v[m] > n)
-	{
-		return binary_search(first, first + m, n);
-	}
-	else if (v[m] < n)
-	{
-		return binary_search(first + m + 1, last, n);
-	}
+	if (first == last)
+		return first;
+	Iterator m = first + (last - first) / 2;
+	if (*m == n)
+		return m;
+	else if (*m  > n)
+		return binary_search(first, m, n);
+	else
+		return binary_search(m + 1, last, n);
 }
 
 void	PmergeMe::v_merge_insertion(std::vector<int> &v)
@@ -64,11 +62,10 @@ void	PmergeMe::v_merge_insertion(std::vector<int> &v)
 	int	*odd = NULL;
 	if (v.size() % 2)
 	{
-		*odd = v.back();
+		odd = new int(v.back());
 		v.pop_back();
 	}
 	
-	size_t							i = 0;
 	std::vector<std::pair<int,int> >	pairs;
 	std::vector<int>				main;
 	int								min, max;
@@ -100,21 +97,27 @@ void	PmergeMe::v_merge_insertion(std::vector<int> &v)
 	size_t	prev_jacobindex = 1;
 	size_t	n_inserts;
 	int		num;
-	num = sorted_pairs[jacobindex - i].second;
+
 	main.insert(main.begin(), sorted_pairs[0].second);
 	sorted_pairs.erase(sorted_pairs.begin());
 	while (!sorted_pairs.empty())
 	{
 		jacobindex = get_jacobsthal(n_jacob);
 		n_inserts = std::min(jacobindex - prev_jacobindex, sorted_pairs.size());
-		for (size_t i = n_inserts - 1; i != 0 ; i--)
+		for (int i = n_inserts - 1; i >= 0; i--)
 		{
 			num = sorted_pairs[i].second;
-			main.insert(binary_search(main, num), num);
+			main.insert(binary_search(main.begin(), main.end(), num), num);
 		}
 		sorted_pairs.erase(sorted_pairs.begin(), sorted_pairs.begin() + n_inserts);
 		prev_jacobindex = jacobindex;
 		++n_jacob;
+	}
+
+	if (odd)
+	{
+		main.insert(binary_search(main.begin(), main.end(), *odd), *odd);
+		delete odd;	
 	}
 
 	v = main;
@@ -122,9 +125,73 @@ void	PmergeMe::v_merge_insertion(std::vector<int> &v)
 
 /* LIST VERSION */
 
-void	PmergeMe::l_merge_insertion()
+void	PmergeMe::l_merge_insertion(std::list<int> &l)
 {
-	;
+	if (l.size() <= 1)
+		return;
+	
+	int	*odd = NULL;
+	if (l.size() % 2)
+	{
+		odd = new int(l.back());
+		l.pop_back();
+	}
+	
+	std::list<std::pair<int,int> >	pairs;
+	std::list<int>					main;
+	int								min, max;
+	for (size_t i = 0; i < l.size(); i += 2)
+	{
+		min = std::min(l[i], l[i + 1]);
+		max = std::max(l[i], l[i + 1]);
+		main.push_back(max);
+		pairs.push_back(std::make_pair(max, min));
+	}
+
+	PmergeMe::l_merge_insertion(main);
+
+	std::list<std::pair<int,int> >	sorted_pairs;
+	for (size_t i = 0; i < main.size(); i++)
+	{
+		for (size_t j = 0; j < pairs.size(); j++)
+		{
+			if (main[i] == pairs[j].first)
+			{
+				sorted_pairs.push_back(pairs[j]);
+				break;
+			}
+		}
+	}
+
+	size_t	n_jacob = 3;
+	size_t	jacobindex;
+	size_t	prev_jacobindex = 1;
+	size_t	n_inserts;
+	int		num;
+
+	main.insert(main.begin(), sorted_pairs[0].second);
+	sorted_pairs.erase(sorted_pairs.begin());
+	while (!sorted_pairs.empty())
+	{
+		jacobindex = get_jacobsthal(n_jacob);
+		n_inserts = std::min(jacobindex - prev_jacobindex, sorted_pairs.size());
+		for (int i = n_inserts - 1; i >= 0; i--)
+		{
+			num = sorted_pairs[i].second;
+			main.insert(binary_search(main.begin(), main.end(), num), num);
+		}
+		sorted_pairs.erase(sorted_pairs.begin(), sorted_pairs.begin() + n_inserts);
+		prev_jacobindex = jacobindex;
+		++n_jacob;
+	}
+
+	if (odd)
+	{
+		main.insert(binary_search(main.begin(), main.end(), *odd), *odd);
+		delete odd;	
+	}
+
+	l = main;
 }
 
 /* COSTUMER SERVICE */
@@ -214,7 +281,7 @@ void	PmergeMe::order_and_measure()
 	v_merge_insertion(this->v); // ABOBA
 	v_finish = getmicrotime();
 	l_start = getmicrotime();
-	l_merge_insertion();
+	l_merge_insertion(this->l);
 	l_finish = getmicrotime();
 	
 	std::cout << "Before:	" << this->unordered << "\n";

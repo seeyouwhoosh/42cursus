@@ -10,7 +10,7 @@ NC			= \033[0m
 # Compiler
 NAME		= PmergeMe
 CC			= c++
-CFLAGS		= -Wall -Werror -Wextra -std=c++98
+CFLAGS		= -Wall -Werror -Wextra -std=c++98 -g3
 RM			= rm -rf
 
 # Sources
