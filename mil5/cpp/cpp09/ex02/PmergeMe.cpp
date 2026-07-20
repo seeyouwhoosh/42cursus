@@ -39,19 +39,20 @@ size_t get_jacobsthal(size_t n)
 
 /* VECTOR VERSION */
 
-template <class Container, class Iterator>
-Container::Iterator	binary_search(Container v, int n)
+// Not sure if this template thingy is correct or not
+template <class Container::iterator>
+Container::iterator	binary_search(Container::iterator first, Container::iterator last, int n)
 {
-	m = v.size() / 2;
+	m = (last - first) / 2;
 	if (v[m] == n)
-		return v.begin() + m + 1;
+		return v.begin() + m;
 	else if (v[m] > n)
 	{
-		return binary_search(Container v(v.begin() + m, v.end()), n);
+		return binary_search(first, first + m, n);
 	}
 	else if (v[m] < n)
 	{
-		return binary_search(Container v(v.begin(), v.begin() + m), n);
+		return binary_search(first + m + 1, last, n);
 	}
 }
 
