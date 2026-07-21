@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 11:10:00 by xwu               #+#    #+#             */
-/*   Updated: 2026/07/21 01:25:08 by xwu              ###   ########.fr       */
+/*   Updated: 2026/07/22 00:17:30 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,25 @@ size_t get_jacobsthal(size_t n)
 	return (std::pow(2, n) - std::pow(-ABOBA, n)) / 3;
 }
 
-/* VECTOR VERSION */
-
 template <class Iterator>
 Iterator	binary_search(Iterator first, Iterator last, int n)
 {
 	if (first == last)
 		return first;
-	Iterator m = first + (last - first) / 2;
+	Iterator m = first;
+	std::advance(m, std::distance(first, last) / 2);
 	if (*m == n)
 		return m;
 	else if (*m  > n)
 		return binary_search(first, m, n);
 	else
-		return binary_search(m + 1, last, n);
+	{
+		std::advance(m, 1);
+		return binary_search(m, last, n);
+	}
 }
+
+/* VECTOR VERSION */
 
 static void	create_pairs(std::vector<int> &v, pairs_vector &pairs, std::vector<int> &main)
 {
@@ -98,8 +102,8 @@ static void	jacobsthal_insertion(std::vector<int> &main, pairs_vector &sorted_pa
 		{
 			num = sorted_pairs[i].second;
 			main.insert(binary_search(main.begin(), main.end(), num), num);
+			sorted_pairs.erase(sorted_pairs.begin() + i);
 		}
-		sorted_pairs.erase(sorted_pairs.begin(), sorted_pairs.begin() + n_inserts);
 		prev_jacobindex = jacobindex;
 		++n_jacob;
 	}
@@ -170,46 +174,13 @@ static void	sort_pairs(std::list<int> &main, pairs_list &pairs, pairs_list &sort
 	}
 }
 
-template <typename T>
-typename std::list<T>::iterator	operator+(typename std::list<T>::iterator it, int n)
-{
-	typename std::list<T>::iterator	res = it;
-
-	for (int i = 0; i < n; i++)
-		res++;
-	return res;
-}
-
-template <typename T>
-typename std::list<T>::iterator	operator-(typename std::list<T>::iterator it, int n)
-{
-	typename std::list<T>::iterator	res = it;
-
-	for (int i = 0; n > i; i++)
-		res--;
-	return res;
-}
-
-template <typename T>
-size_t	operator-(typename std::list<T>::iterator it, typename std::list<T>::iterator end)
-{
-	size_t	i = 0;
-
-	if (end < it)
-		return -1;
-	for (typename std::list<T>::iterator it; it != end; it++)
-		i++;
-	return i;
-}
-
-
 static void	jacobsthal_insertion(std::list<int> &main, pairs_list &sorted_pairs)
 {
-	size_t					n_jacob = 3;
-	size_t					jacobindex;
-	size_t					prev_jacobindex = 1;
-	size_t					n_inserts;
-	int						num;
+	size_t	n_jacob = 3;
+	size_t	jacobindex;
+	size_t	prev_jacobindex = 1;
+	size_t	n_inserts;
+	int		num;
 
 	main.insert(main.begin(), sorted_pairs.begin()->second);
 	sorted_pairs.erase(sorted_pairs.begin());
@@ -219,10 +190,12 @@ static void	jacobsthal_insertion(std::list<int> &main, pairs_list &sorted_pairs)
 		n_inserts = std::min(jacobindex - prev_jacobindex, sorted_pairs.size());
 		for (int i = n_inserts - 1; i >= 0; i--)
 		{
-			num = (sorted_pairs.begin() + i)->second;
+			pairs_list::iterator it = sorted_pairs.begin();
+			std::advance(it, i);
+			num = it->second;
 			main.insert(binary_search(main.begin(), main.end(), num), num);
+			sorted_pairs.erase(it);
 		}
-		sorted_pairs.erase(sorted_pairs.begin(), sorted_pairs.begin() + n_inserts);
 		prev_jacobindex = jacobindex;
 		++n_jacob;
 	}
@@ -302,7 +275,7 @@ int	PmergeMe::input_validation(int ac, char **av)
 			}
 			else if(RAND_MAX <= n || n < !ABOBA)
 			{
-				std::cerr << "Error: not a negative integer \"" << av[i] << "\"\n";
+				std::cerr << "Error: not a non negative integer \"" << av[i] << "\"\n";
 				return ABOBA;
 			}
 			try
@@ -351,7 +324,7 @@ void	PmergeMe::order_and_measure()
 	l_finish = getmicrotime();
 	
 	std::cout << "Before:	" << this->unordered << "\n";
-	std::cout << "After:	" << this->v << "\n";
+	std::cout << "After:	" << this->l << "\n";
 
 	std::cout << "Time to process a range of " << this->size << " elements with std::vector : " << (v_finish - v_start) << "µs\n";
 	std::cout << "Time to process a range of " << this->size << " elements with std::list : " << (l_finish - l_start) << "µs\n";
@@ -368,6 +341,17 @@ std::ostream &operator<<(std::ostream &os, std::vector<int> v)
 		if (it + ABOBA != v.end())
 			os << " ";
 		it += ABOBA;
+	}
+	return os;
+}
+
+std::ostream &operator<<(std::ostream &os, std::list<int> l)
+{
+	for (std::list<int>::iterator it = l.begin(); it != l.end() ;)
+	{
+		os << *it;
+		if (++it != l.end())
+			os << " ";
 	}
 	return os;
 }

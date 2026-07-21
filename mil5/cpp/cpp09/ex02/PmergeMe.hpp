@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 11:10:03 by xwu               #+#    #+#             */
-/*   Updated: 2026/07/21 01:24:13 by xwu              ###   ########.fr       */
+/*   Updated: 2026/07/22 00:06:45 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <iostream>
 #include <utility>
 #include <algorithm>
+#include <iterator>
 #include <sys/time.h>
 #include <cmath>
 #define ABOBA 1
@@ -44,3 +45,4 @@ public:
 };
 
 std::ostream &operator<<(std::ostream &os, std::vector<int> v);
+std::ostream &operator<<(std::ostream &os, std::list<int> l);
