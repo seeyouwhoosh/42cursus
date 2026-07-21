@@ -31,6 +31,7 @@ int main()
 	int	max = 0;
 	int	min = INT_MAX;
 
+	std::srand(time(NULL));
 	for (size_t i = 0; i < 99; i++)
 	{
 		n = std::rand();
@@ -43,10 +44,24 @@ int main()
 	std::cout << n << "\n";
 	std::cout << "----------------------------------------\n";
 
-	std::cout << sp.shortestSpan() << std::endl;
+	std::cout << "Shortest span: " << sp.shortestSpan() << std::endl;
 	
 	std::cout << max << " - " << min << " = " << max - min << std::endl;
-	std::cout << sp.longestSpan() << std::endl;
-	
+	std::cout << "Longest span: " << sp.longestSpan() << std::endl;
+
+	std::cout << "----------------------------------------\n";
+	std::vector<int>	v;
+	for (size_t i = 0; i < 5; i++)
+	{
+		n = std::rand() % 10;
+		v.push_back(n);
+		std::cout << n << "\n";
+	}
+	Span	sp2(v.size());
+	sp2.addNumber(v.begin(), v.end());
+
+	std::cout << "Shortest span: " << sp2.shortestSpan() << std::endl;
+	std::cout << "Longest span: " << sp2.longestSpan() << std::endl;
+
 	return (0);
 }

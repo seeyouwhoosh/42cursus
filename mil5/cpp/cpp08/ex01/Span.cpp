@@ -52,14 +52,6 @@ void	Span::addNumber(int n)
 	v.push_back(n);
 }
 
-void	Span::addNumber(std::vector<int>::iterator begin, std::vector<int>::iterator end)
-{
-	for (std::vector<int>::iterator it = begin; it != end ; it++)
-	{
-		this->addNumber(*it);
-	}
-}
-
 unsigned int	Span::shortestSpan()
 {
 	if (N < 2 || v.size() < 2)

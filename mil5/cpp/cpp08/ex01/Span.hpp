@@ -41,8 +41,14 @@ public:
 	};
 
 	void			addNumber(int n);
-	void			addNumber(std::vector<int>::iterator begin, std::vector<int>::iterator end);
 	unsigned int	shortestSpan();
 	unsigned int	longestSpan();
+
+	template <class Iterator>
+	void	addNumber(Iterator begin, Iterator end)
+	{
+		for (Iterator it = begin; it != end ; it++)
+			this->addNumber(*it);
+	}
 };
 

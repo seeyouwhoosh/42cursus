@@ -21,6 +21,11 @@ class MutantStack: public std::stack<T>
 private:
 
 public:
+	MutantStack();
+	MutantStack(MutantStack &other);
+	MutantStack &operator=(MutantStack &other);
+	~MutantStack();
+
 	typedef typename std::stack<T>::container_type::iterator iterator;
 	typedef typename std::stack<T>::container_type::reverse_iterator reverse_iterator;
 
