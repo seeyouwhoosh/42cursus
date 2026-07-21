@@ -20,6 +20,8 @@
 #include <sys/time.h>
 #include <cmath>
 #define ABOBA 1
+typedef std::vector<std::pair<int,int> > pairs_vector;
+typedef std::list<std::pair<int,int> > pairs_list;
 
 class PmergeMe
 {
@@ -42,11 +44,3 @@ public:
 };
 
 std::ostream &operator<<(std::ostream &os, std::vector<int> v);
-
-/* Apuntes*/
-/*
-1. Separar por parejas (si es impar, separar una del resto)
-2. Ordenar dentro de las parejas
-3. Ordenar las parejas con merge insertion
-4. ayuda
-*/

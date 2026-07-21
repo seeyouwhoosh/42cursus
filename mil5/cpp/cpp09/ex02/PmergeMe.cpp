@@ -39,7 +39,6 @@ size_t get_jacobsthal(size_t n)
 
 /* VECTOR VERSION */
 
-// Not sure if this template thingy is correct or not
 template <class Iterator>
 Iterator	binary_search(Iterator first, Iterator last, int n)
 {
@@ -54,21 +53,10 @@ Iterator	binary_search(Iterator first, Iterator last, int n)
 		return binary_search(m + 1, last, n);
 }
 
-void	PmergeMe::v_merge_insertion(std::vector<int> &v)
+static void	create_pairs(std::vector<int> &v, pairs_vector &pairs, std::vector<int> &main)
 {
-	if (v.size() <= 1)
-		return;
-	
-	int	*odd = NULL;
-	if (v.size() % 2)
-	{
-		odd = new int(v.back());
-		v.pop_back();
-	}
-	
-	std::vector<std::pair<int,int> >	pairs;
-	std::vector<int>				main;
-	int								min, max;
+	int	min, max;
+
 	for (size_t i = 0; i < v.size(); i += 2)
 	{
 		min = std::min(v[i], v[i + 1]);
@@ -76,10 +64,9 @@ void	PmergeMe::v_merge_insertion(std::vector<int> &v)
 		main.push_back(max);
 		pairs.push_back(std::make_pair(max, min));
 	}
-
-	PmergeMe::v_merge_insertion(main);
-
-	std::vector<std::pair<int,int> >	sorted_pairs;
+}
+static void	sort_pairs(std::vector<int> &main, pairs_vector &pairs, pairs_vector &sorted_pairs)
+{
 	for (size_t i = 0; i < main.size(); i++)
 	{
 		for (size_t j = 0; j < pairs.size(); j++)
@@ -91,7 +78,10 @@ void	PmergeMe::v_merge_insertion(std::vector<int> &v)
 			}
 		}
 	}
+}
 
+static void	jacobsthal_insertion(std::vector<int> &main, pairs_vector &sorted_pairs)
+{
 	size_t	n_jacob = 3;
 	size_t	jacobindex;
 	size_t	prev_jacobindex = 1;
@@ -113,6 +103,30 @@ void	PmergeMe::v_merge_insertion(std::vector<int> &v)
 		prev_jacobindex = jacobindex;
 		++n_jacob;
 	}
+}
+
+void	PmergeMe::v_merge_insertion(std::vector<int> &v)
+{
+	if (v.size() <= 1)
+		return;
+	
+	int	*odd = NULL;
+	if (v.size() % 2)
+	{
+		odd = new int(v.back());
+		v.pop_back();
+	}
+	
+	pairs_vector		pairs;
+	std::vector<int>	main;
+	create_pairs(v, pairs, main);
+
+	PmergeMe::v_merge_insertion(main);
+
+	pairs_vector	sorted_pairs;
+	sort_pairs(main, pairs, sorted_pairs);
+
+	jacobsthal_insertion(main, sorted_pairs);
 
 	if (odd)
 	{
@@ -124,6 +138,95 @@ void	PmergeMe::v_merge_insertion(std::vector<int> &v)
 }
 
 /* LIST VERSION */
+
+static void	create_pairs(std::list<int> &l, pairs_list &pairs, std::list<int> &main)
+{
+	int	min, max;
+	int	a, b;
+
+	for (std::list<int>::iterator it = l.begin(); it != l.end(); it++)
+	{
+		a = *it++;
+		b = *it;
+		min = std::min(a, b);
+		max = std::max(a, b);
+		main.push_back(max);
+		pairs.push_back(std::make_pair(max, min));
+	}
+}
+
+static void	sort_pairs(std::list<int> &main, pairs_list &pairs, pairs_list &sorted_pairs)
+{
+	for (std::list<int>::iterator it = main.begin(); it != main.end(); it++)
+	{
+		for (pairs_list::iterator jt = pairs.begin(); jt != pairs.end(); jt++)
+		{
+			if (*it == jt->first)
+			{
+				sorted_pairs.push_back(*jt);
+				break;
+			}
+		}
+	}
+}
+
+template <typename T>
+typename std::list<T>::iterator	operator+(typename std::list<T>::iterator it, int n)
+{
+	typename std::list<T>::iterator	res = it;
+
+	for (int i = 0; i < n; i++)
+		res++;
+	return res;
+}
+
+template <typename T>
+typename std::list<T>::iterator	operator-(typename std::list<T>::iterator it, int n)
+{
+	typename std::list<T>::iterator	res = it;
+
+	for (int i = 0; n > i; i++)
+		res--;
+	return res;
+}
+
+template <typename T>
+size_t	operator-(typename std::list<T>::iterator it, typename std::list<T>::iterator end)
+{
+	size_t	i = 0;
+
+	if (end < it)
+		return -1;
+	for (typename std::list<T>::iterator it; it != end; it++)
+		i++;
+	return i;
+}
+
+
+static void	jacobsthal_insertion(std::list<int> &main, pairs_list &sorted_pairs)
+{
+	size_t					n_jacob = 3;
+	size_t					jacobindex;
+	size_t					prev_jacobindex = 1;
+	size_t					n_inserts;
+	int						num;
+
+	main.insert(main.begin(), sorted_pairs.begin()->second);
+	sorted_pairs.erase(sorted_pairs.begin());
+	while (!sorted_pairs.empty())
+	{
+		jacobindex = get_jacobsthal(n_jacob);
+		n_inserts = std::min(jacobindex - prev_jacobindex, sorted_pairs.size());
+		for (int i = n_inserts - 1; i >= 0; i--)
+		{
+			num = (sorted_pairs.begin() + i)->second;
+			main.insert(binary_search(main.begin(), main.end(), num), num);
+		}
+		sorted_pairs.erase(sorted_pairs.begin(), sorted_pairs.begin() + n_inserts);
+		prev_jacobindex = jacobindex;
+		++n_jacob;
+	}
+}
 
 void	PmergeMe::l_merge_insertion(std::list<int> &l)
 {
@@ -137,53 +240,16 @@ void	PmergeMe::l_merge_insertion(std::list<int> &l)
 		l.pop_back();
 	}
 	
-	std::list<std::pair<int,int> >	pairs;
-	std::list<int>					main;
-	int								min, max;
-	for (size_t i = 0; i < l.size(); i += 2)
-	{
-		min = std::min(l[i], l[i + 1]);
-		max = std::max(l[i], l[i + 1]);
-		main.push_back(max);
-		pairs.push_back(std::make_pair(max, min));
-	}
+	pairs_list		pairs;
+	std::list<int>	main;
+	create_pairs(l, pairs, main);
 
 	PmergeMe::l_merge_insertion(main);
 
-	std::list<std::pair<int,int> >	sorted_pairs;
-	for (size_t i = 0; i < main.size(); i++)
-	{
-		for (size_t j = 0; j < pairs.size(); j++)
-		{
-			if (main[i] == pairs[j].first)
-			{
-				sorted_pairs.push_back(pairs[j]);
-				break;
-			}
-		}
-	}
+	pairs_list	sorted_pairs;
+	sort_pairs(main, pairs, sorted_pairs);
 
-	size_t	n_jacob = 3;
-	size_t	jacobindex;
-	size_t	prev_jacobindex = 1;
-	size_t	n_inserts;
-	int		num;
-
-	main.insert(main.begin(), sorted_pairs[0].second);
-	sorted_pairs.erase(sorted_pairs.begin());
-	while (!sorted_pairs.empty())
-	{
-		jacobindex = get_jacobsthal(n_jacob);
-		n_inserts = std::min(jacobindex - prev_jacobindex, sorted_pairs.size());
-		for (int i = n_inserts - 1; i >= 0; i--)
-		{
-			num = sorted_pairs[i].second;
-			main.insert(binary_search(main.begin(), main.end(), num), num);
-		}
-		sorted_pairs.erase(sorted_pairs.begin(), sorted_pairs.begin() + n_inserts);
-		prev_jacobindex = jacobindex;
-		++n_jacob;
-	}
+	jacobsthal_insertion(main, sorted_pairs);
 
 	if (odd)
 	{
