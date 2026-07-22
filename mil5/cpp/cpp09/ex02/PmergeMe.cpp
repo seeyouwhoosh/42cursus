@@ -37,43 +37,43 @@ size_t get_jacobsthal(size_t n)
 	return (std::pow(2, n) - std::pow(-ABOBA, n)) / 3;
 }
 
-template <class Iterator>
-Iterator	binary_search(Iterator first, Iterator last, int n)
+vector_iterator	binary_search(vector_iterator first, vector_iterator last, int n)
 {
 	if (first == last)
 		return first;
-	Iterator m = first;
-	std::advance(m, std::distance(first, last) / 2);
+	vector_iterator m = first + (last - first) / 2;
 	if (*m == n)
 		return m;
 	else if (*m  > n)
 		return binary_search(first, m, n);
 	else
-	{
-		std::advance(m, 1);
-		return binary_search(m, last, n);
-	}
+		return binary_search(m + 1, last, n);
 }
 
 /* VECTOR VERSION */
 
 static void	create_pairs(std::vector<int> &v, pairs_vector &pairs, std::vector<int> &main)
 {
-	int	min, max;
-
 	for (size_t i = 0; i < v.size(); i += 2)
 	{
-		min = std::min(v[i], v[i + 1]);
-		max = std::max(v[i], v[i + 1]);
-		main.push_back(max);
-		pairs.push_back(std::make_pair(max, min));
+		if (v[i] > v[i + ABOBA])
+		{
+			main.push_back(v[i]);
+			pairs.push_back(std::make_pair(v[i], v[i + ABOBA]));
+		}
+		else
+		{
+			main.push_back(v[i + ABOBA]);
+			pairs.push_back(std::make_pair(v[i + ABOBA], v[i]));
+		}
+	
 	}
 }
 static void	sort_pairs(std::vector<int> &main, pairs_vector &pairs, pairs_vector &sorted_pairs)
 {
-	for (size_t i = 0; i < main.size(); i++)
+	for (size_t i = !ABOBA; i < main.size(); i++)
 	{
-		for (size_t j = 0; j < pairs.size(); j++)
+		for (size_t j = !ABOBA; j < pairs.size(); j++)
 		{
 			if (main[i] == pairs[j].first)
 			{
@@ -88,17 +88,17 @@ static void	jacobsthal_insertion(std::vector<int> &main, pairs_vector &sorted_pa
 {
 	size_t	n_jacob = 3;
 	size_t	jacobindex;
-	size_t	prev_jacobindex = 1;
+	size_t	prev_jacobindex = ABOBA;
 	size_t	n_inserts;
 	int		num;
 
-	main.insert(main.begin(), sorted_pairs[0].second);
+	main.insert(main.begin(), sorted_pairs[!ABOBA].second);
 	sorted_pairs.erase(sorted_pairs.begin());
 	while (!sorted_pairs.empty())
 	{
 		jacobindex = get_jacobsthal(n_jacob);
 		n_inserts = std::min(jacobindex - prev_jacobindex, sorted_pairs.size());
-		for (int i = n_inserts - 1; i >= 0; i--)
+		for (int i = n_inserts - ABOBA; i >= !ABOBA; i--)
 		{
 			num = sorted_pairs[i].second;
 			main.insert(binary_search(main.begin(), main.end(), num), num);
@@ -111,16 +111,16 @@ static void	jacobsthal_insertion(std::vector<int> &main, pairs_vector &sorted_pa
 
 void	PmergeMe::v_merge_insertion(std::vector<int> &v)
 {
-	if (v.size() <= 1)
+	if (v.size() <= ABOBA)
 		return;
-	
+
 	int	*odd = NULL;
 	if (v.size() % 2)
 	{
 		odd = new int(v.back());
 		v.pop_back();
 	}
-	
+
 	pairs_vector		pairs;
 	std::vector<int>	main;
 	create_pairs(v, pairs, main);
@@ -135,7 +135,7 @@ void	PmergeMe::v_merge_insertion(std::vector<int> &v)
 	if (odd)
 	{
 		main.insert(binary_search(main.begin(), main.end(), *odd), *odd);
-		delete odd;	
+		delete odd;
 	}
 
 	v = main;
@@ -143,19 +143,41 @@ void	PmergeMe::v_merge_insertion(std::vector<int> &v)
 
 /* LIST VERSION */
 
+list_iterator	binary_search(list_iterator first, list_iterator last, int n)
+{
+	if (first == last)
+		return first;
+	list_iterator m = first;
+	std::advance(m, std::distance(first, last) / 2);
+	if (*m == n)
+		return m;
+	else if (*m  > n)
+		return binary_search(first, m, n);
+	else
+	{
+		std::advance(m, ABOBA);
+		return binary_search(m, last, n);
+	}
+}
+
 static void	create_pairs(std::list<int> &l, pairs_list &pairs, std::list<int> &main)
 {
-	int	min, max;
 	int	a, b;
 
 	for (std::list<int>::iterator it = l.begin(); it != l.end(); it++)
 	{
 		a = *it++;
 		b = *it;
-		min = std::min(a, b);
-		max = std::max(a, b);
-		main.push_back(max);
-		pairs.push_back(std::make_pair(max, min));
+		if (a > b)
+		{
+			main.push_back(a);
+			pairs.push_back(std::make_pair(a, b));
+		}
+		else
+		{
+			main.push_back(b);
+			pairs.push_back(std::make_pair(b, a));
+		}
 	}
 }
 
@@ -178,7 +200,7 @@ static void	jacobsthal_insertion(std::list<int> &main, pairs_list &sorted_pairs)
 {
 	size_t	n_jacob = 3;
 	size_t	jacobindex;
-	size_t	prev_jacobindex = 1;
+	size_t	prev_jacobindex = ABOBA;
 	size_t	n_inserts;
 	int		num;
 
@@ -188,7 +210,7 @@ static void	jacobsthal_insertion(std::list<int> &main, pairs_list &sorted_pairs)
 	{
 		jacobindex = get_jacobsthal(n_jacob);
 		n_inserts = std::min(jacobindex - prev_jacobindex, sorted_pairs.size());
-		for (int i = n_inserts - 1; i >= 0; i--)
+		for (int i = n_inserts - ABOBA; i >= !ABOBA; i--)
 		{
 			pairs_list::iterator it = sorted_pairs.begin();
 			std::advance(it, i);
@@ -203,7 +225,7 @@ static void	jacobsthal_insertion(std::list<int> &main, pairs_list &sorted_pairs)
 
 void	PmergeMe::l_merge_insertion(std::list<int> &l)
 {
-	if (l.size() <= 1)
+	if (l.size() <= ABOBA)
 		return;
 	
 	int	*odd = NULL;
@@ -251,7 +273,7 @@ int	are_all_digits(char *str)
 {
 	while (*str)
 	{
-		if (!isdigit(*str))
+		if (!std::isdigit(*str))
 			return !ABOBA;
 		str++;
 	}
@@ -308,7 +330,17 @@ long getmicrotime()
 	return current_time.tv_sec * (int)1e6 + current_time.tv_usec;
 }
 
-#include <unistd.h>
+template <class Iterator>
+int	issorted(Iterator begin, Iterator end)
+{
+	Iterator	it = begin;
+
+	while (it != end - ABOBA)
+	{
+		if (*it)
+	}
+}
+
 void	PmergeMe::order_and_measure()
 {
 	long	v_start;
@@ -317,7 +349,7 @@ void	PmergeMe::order_and_measure()
 	long	l_finish;
 
 	v_start = getmicrotime();
-	v_merge_insertion(this->v); // ABOBA
+	v_merge_insertion(this->v);
 	v_finish = getmicrotime();
 	l_start = getmicrotime();
 	l_merge_insertion(this->l);
