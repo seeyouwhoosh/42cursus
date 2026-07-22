@@ -23,6 +23,8 @@
 #define ABOBA 1
 typedef std::vector<std::pair<int,int> > pairs_vector;
 typedef std::list<std::pair<int,int> > pairs_list;
+typedef std::list<int>::iterator list_iterator;
+typedef std::vector<int>::iterator vector_iterator;
 
 class PmergeMe
 {
