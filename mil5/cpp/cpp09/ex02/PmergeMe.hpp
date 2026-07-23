@@ -13,18 +13,16 @@
 #pragma once
 #include <vector>
 #include <list>
-#include <cstdlib>
 #include <iostream>
-#include <utility>
 #include <algorithm>
-#include <iterator>
 #include <sys/time.h>
 #include <cmath>
 #define ABOBA 1
+
 typedef std::vector<std::pair<int,int> > pairs_vector;
+typedef std::vector<int>::iterator vector_iterator;
 typedef std::list<std::pair<int,int> > pairs_list;
 typedef std::list<int>::iterator list_iterator;
-typedef std::vector<int>::iterator vector_iterator;
 
 class PmergeMe
 {
