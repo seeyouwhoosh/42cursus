@@ -6,7 +6,7 @@
 /*   By: xwu <xwu@student.42urduliz.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 11:10:00 by xwu               #+#    #+#             */
-/*   Updated: 2026/07/22 00:17:30 by xwu              ###   ########.fr       */
+/*   Updated: 2026/07/23 11:41:49 by xwu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -334,11 +334,19 @@ template <class Iterator>
 int	issorted(Iterator begin, Iterator end)
 {
 	Iterator	it = begin;
+	Iterator	it_2 = begin;
+	Iterator	et = end;
 
-	while (it != end - ABOBA)
+	et--;
+	it_2++;
+	while (it != et)
 	{
-		if (*it)
+		if (*it > *it_2)
+			return 0;
+		it++;
+		it_2++;
 	}
+	return 1;
 }
 
 void	PmergeMe::order_and_measure()
@@ -357,7 +365,7 @@ void	PmergeMe::order_and_measure()
 	
 	std::cout << "Before:	" << this->unordered << "\n";
 	std::cout << "After:	" << this->l << "\n";
-
+	//std::cout << "Is it sorted? " << (issorted(v.begin(), v.end()) && issorted(l.begin(), l.end())) << "\n";
 	std::cout << "Time to process a range of " << this->size << " elements with std::vector : " << (v_finish - v_start) << "µs\n";
 	std::cout << "Time to process a range of " << this->size << " elements with std::list : " << (l_finish - l_start) << "µs\n";
 }
