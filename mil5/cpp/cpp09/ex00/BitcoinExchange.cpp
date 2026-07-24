@@ -67,6 +67,11 @@ int	BitcoinExchange::load_input(char *input_file)
 		std::cout << "Error: bad input file\n";
 		return 1;
 	}
+	if (input.peek() == std::fstream::traits_type::eof())
+	{
+		std::cout << "Error: empty file\n";
+		return 1;
+	}
 	return 0;
 }
 /* 3. PROCESS VALUE */

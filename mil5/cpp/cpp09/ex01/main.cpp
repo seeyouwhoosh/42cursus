@@ -13,12 +13,6 @@
 #include <iostream>
 #include "RPN.hpp"
 
-/*
-3 4 * 4 5 + * = (5 + 4) * (4 * 3)
-
-container stack
-*/
-
 int	main(int ac, char **av)
 {
 	RPN	rpn;
