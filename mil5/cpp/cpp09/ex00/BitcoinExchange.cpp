@@ -195,12 +195,7 @@ int	BitcoinExchange::get_aprox_date(std::string &date, std::map<std::string, flo
 	if (exchange_rates.find(date) == exchange_rates.end())
 	{
 		it = exchange_rates.lower_bound(date);
-		if (it == exchange_rates.end())
-		{
-			std::cerr << "Error: too big of a date => " << date << "\n";
-			return 1;
-		}
-		else if (it == exchange_rates.begin())
+		if (it == exchange_rates.begin())
 		{
 			std::cerr << "Error: too low of a date => " << date << "\n";
 			return 1;
