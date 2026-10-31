@@ -37,3 +37,9 @@
 [submodule "mil4/cpp_modules"]
 	path = mil4/cpp_modules
 	url = git@github.com:seeyouwhoosh/cpp_modules.git
+[submodule "mil5/webserv"]
+	path = mil5/webserv
+	url = git@github.com:seeyouwhoosh/webserv.git
+[submodule "mil5/inception"]
+	path = mil5/inception
+	url = git@github.com:seeyouwhoosh/inception.git
