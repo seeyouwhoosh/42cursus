@@ -7,3 +7,12 @@
 [submodule "mil1/ft_printf"]
 	path = mil1/ft_printf
 	url = git@github.com:seeyouwhoosh/ft_printf.git
+[submodule "fract-ol"]
+	path = fract-ol
+	url = git@github.com:seeyouwhoosh/fract-ol.git
+[submodule "pipex"]
+	path = pipex
+	url = git@github.com:seeyouwhoosh/pipex.git
+[submodule "push_swap"]
+	path = push_swap
+	url = git@github.com:seeyouwhoosh/push_swap.git
