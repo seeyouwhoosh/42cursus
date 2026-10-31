@@ -31,3 +31,9 @@
 [submodule "mil3/philosophers"]
 	path = mil3/philosophers
 	url = git@github.com:seeyouwhoosh/philosophers.git
+[submodule "mil4/miniRT"]
+	path = mil4/miniRT
+	url = git@github.com:Koitz940/miniRT.git
+[submodule "mil4/cpp_modules"]
+	path = mil4/cpp_modules
+	url = git@github.com:seeyouwhoosh/cpp_modules.git
