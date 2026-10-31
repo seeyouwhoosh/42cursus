@@ -25,3 +25,9 @@
 [submodule "mil2/push_swap"]
 	path = mil2/push_swap
 	url = git@github.com:seeyouwhoosh/push_swap.git
+[submodule "mil3/minishell"]
+	path = mil3/minishell
+	url = git@github.com:seeyouwhoosh/minishell.git
+[submodule "mil3/philosophers"]
+	path = mil3/philosophers
+	url = git@github.com:seeyouwhoosh/philosophers.git
