@@ -9,10 +9,19 @@
 	url = git@github.com:seeyouwhoosh/ft_printf.git
 [submodule "fract-ol"]
 	path = fract-ol
-	url = git@github.com:seeyouwhoosh/fract-ol.git
+	url = mil2/git@github.com:seeyouwhoosh/fract-ol.git
 [submodule "pipex"]
 	path = pipex
 	url = git@github.com:seeyouwhoosh/pipex.git
 [submodule "push_swap"]
 	path = push_swap
+	url = git@github.com:seeyouwhoosh/push_swap.git
+[submodule "mil2/fract-ol"]
+	path = mil2/fract-ol
+	url = git@github.com:seeyouwhoosh/fract-ol.git
+[submodule "mil2/pipex"]
+	path = mil2/pipex
+	url = git@github.com:seeyouwhoosh/pipex.git
+[submodule "mil2/push_swap"]
+	path = mil2/push_swap
 	url = git@github.com:seeyouwhoosh/push_swap.git
