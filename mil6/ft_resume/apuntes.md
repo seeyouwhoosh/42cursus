@@ -33,3 +33,5 @@ first experience or a strong personal/academic project background.
 - **MLOps**: "Similar to DevOps or DataOps approaches, MLOps seeks to increase automation and improve the quality of production models, while also focusing on business and regulatory requirements. While MLOps started as a set of best practices, it is slowly evolving into an independent approach to ML lifecycle management"
 - **AI model serving**: "is the process of making a trained machine learning or large language model (LLM) available in a production environment so external applications can send input data and receive predictions or generated text in real time"
 
+## Plantilla usada
+https://github.com/subidit/rover-resume
